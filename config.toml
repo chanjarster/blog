@@ -1,0 +1,4 @@
+baseURL = "https://chanjarster.github.io/"
+languageCode = "zh-cn"
+title = "颇忒脱的技术博客"
+theme = "ananke"
