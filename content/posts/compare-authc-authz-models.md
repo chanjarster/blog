@@ -14,7 +14,7 @@ PS. 本文假设你已经理解了各种认证模式的具体细节。
 
 OAuth2.0是一个被广泛采用的事实标准，它同时包含认证和授权两种模式，我们来看一下它有几种模式：
 
-| Mode                                                 | Client belong | User context?| Client type               | App type    |
+| Grant type                                           | Client owner  | User context?| Client type               | App type    |
 |------------------------------------------------------|---------------|--------------|---------------------------|-------------|
 | Authorization Code                                   | Third-party   | Y            | confidential              | Web app     |
 | Authorization Code, without client secret            | Third-party   | Y            | public                    | User-agent app |
@@ -28,7 +28,7 @@ OAuth2.0是一个被广泛采用的事实标准，它同时包含认证和授权
 * **User**: 自然人。
 * **Client**: 索要Authorization Code和Access Token的程序。
 
-Client belong:
+Client owner:
 
 * **First-party**: 第一方client，即client开发者/厂商和Resource Server是同一个人/厂商。
 * **Third-party**: 第三方client，即client开发者/厂商和Resource Server不是同一个人/厂商。OAuth 2.0主要解决的是第三方client的授权问题。
