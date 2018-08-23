@@ -1,4 +1,34 @@
 baseURL = "https://chanjarster.github.io/"
 languageCode = "zh-cn"
 title = "颇忒脱的技术博客"
-theme = "ananke"
+theme = "hugo-nuo"
+enableRobotsTXT = true
+PygmentsCodeFences = true
+canonifyurls = true
+
+[[menu.main]]
+  name = "Home"
+  weight = 10
+  identifier = "home"
+  url = "/"
+
+[[menu.main]]
+  name = "Works"
+  weight = 20
+  identifier = "works"
+  url = "https://github.com/chanjarster"
+
+[[menu.main]]
+  name = "Tags"
+  weight = 30
+  identifier = "tags"
+  url = "/tags/"
+
+[params]
+  author = "颇忒脱"
+  avatar = "/img/avatar2.jpg"
+  
+  github = "chanjarster"
+  seotitle = "颇忒脱的技术博客"
+  description = "颇忒脱的技术博客"
+  paginate = 20
