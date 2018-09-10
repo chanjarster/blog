@@ -19,7 +19,7 @@ date: 2018-09-10T19:51:11+08:00
 
 ### 要针对可变配置项做环境变量化
 
-这句话的意思是在配置文件里使用[placeholder][spring-boot-placeholder]。下面是两种方式：
+这句话对应[The 12-factor App的Config章节][12-factors-config]。具体做法是在配置文件里使用[placeholder][spring-boot-placeholder]。下面是两种方式：
 
 ```
 app.name=${APP_NAME}
