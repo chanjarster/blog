@@ -11,10 +11,10 @@ date: 2018-09-17T15:09:20+08:00
 
 ## 先给总结
 
-* JDBC程序不需要特别注意什么事情。只要保证JVM时区和用户所在时区保持一致即可。
-* 对于`TIMESTAMP`类型，MySQL会正确的根据connection时区（对于JDBC来说就是JVM时区）/服务端时区做转换。**其余数据类型不支持**。
-* MySQL默认时区是操作系统所在时区，一般来说我们也不会把这两个时区设置成不一致。
-* 不要在服务器端获得日期时间格式化字符串，因为返回的结果是服务端的时区，而不是connection的时区（对于JDBC来说就是JVM时区）。
+* `DATE`和`TIME`类型不支持时区转换。
+* 对于`TIMESTAMP`类型，MySQL会正确的根据connection时区（对于JDBC来说就是JVM时区）/服务端时区做转换。
+  * JDBC程序不需要特别注意什么事情。只要保证JVM时区和用户所在时区保持一致即可。
+* 不要在服务器端做日期时间的字符串格式化（`DATE_FORMAT()`），因为返回的结果是服务端的时区，而不是connection的时区（对于JDBC来说就是JVM时区）。
 * `CURRENT_TIMESTAMP()`, `CURRENT_TIME()`, `CURRENT_DATE()`可以安全的使用，返回的结果会转换成connection时区（对于JDBC来说就是JVM时区）。
 * `CURRENT_TIME()`有一个不知道是不是BUG的[Bug #92453][mysql-bug-92453]。
 
@@ -71,8 +71,7 @@ Retrieve java.util.Date       : 2018-09-14 04:00:00
 Retrieve formatted string     : 2018-09-14 02:00:00
 ```
 
-可以看到`Retrieve java.util.Date`返回的结果根据JVM时区做了转换的。
-而`Retrieve formatted string`返回的结果则是UTC时间。
+可以看到`Retrieve java.util.Date`返回的结果根据JVM时区做了转换的。而`Retrieve formatted string`返回的结果则是UTC时间。
 
 ## 当前日期时间相关函数
 
@@ -88,15 +87,15 @@ MySQL与"当前日期时间"相关的函数有这么些，[MySQL - Date and Time
 下面是运行结果：
 
 ```txt
-Call functions, Time Zone        : 中国标准时间
-Test CURRENT_DATE()              : 2018-09-17
-Test CURRENT_TIME()              : 14:17:57
-Test CURRENT_TIMESTAMP()         : 2018-09-17 14:17:57.0
+JVM Time Zone              : 中国标准时间
+Test CURRENT_DATE()        : 2018-09-18
+Test CURRENT_TIME()        : 10:55:41
+Test CURRENT_TIMESTAMP()   : 2018-09-18 10:55:41.0
 --------------------
-Call functions, Time Zone        : 中欧时间
-Test CURRENT_DATE()              : 2018-09-17
-Test CURRENT_TIME()              : 07:17:57
-Test CURRENT_TIMESTAMP()         : 2018-09-17 08:17:57.0
+JVM Time Zone              : 中欧时间
+Test CURRENT_DATE()        : 2018-09-18
+Test CURRENT_TIME()        : 03:56:02
+Test CURRENT_TIMESTAMP()   : 2018-09-18 04:56:02.0
 ```
 
 可以看到结果是基本符合文档里的说明的，但是要注意，在`Europe/Paris`时区，`CURRENT_TIME()`和`CURRENT_TIMESTAMP()`的时间部分相差一小时。
@@ -115,6 +114,14 @@ SET time_zone = 'Asia/Shanghai';
 
 详见：[MySQL Server Time Zone Support][mysql-timezone-support]
 
+## 参考资料
+
+* [MySQL - The DATE, DATETIME, and TIMESTAMP Types][mysql-datetime-types]
+* [MySQL - Date and Time Functions][mysql-date-time-functions]
+* [MySQL Server Time Zone Support][mysql-timezone-support]
+* [Wiki - List of tz database time zones][wiki-tz-database]
+* [W3C- Working with timezone][w3c-working-with-timezone]
+
 ## 相关代码
 
 https://github.com/chanjarster/jdbc-timezone
@@ -124,4 +131,4 @@ https://github.com/chanjarster/jdbc-timezone
 [mysql-date-time-functions]: https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html
 [wiki-tz-database]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 [mysql-bug-92453]: https://bugs.mysql.com/bug.php?id=92453
-
+[w3c-working-with-timezone]: https://www.w3.org/TR/timezone/
