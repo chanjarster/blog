@@ -114,6 +114,14 @@ SET time_zone = 'Asia/Shanghai';
 
 详见：[MySQL Server Time Zone Support][mysql-timezone-support]
 
+## Docker启动时设定时区
+
+<del>你可以在docker启动的时候设定MySQL容器的时区，比如这样`-e TZ=Asia/Shanghai`。</del>
+
+这个方法有问题，会出现时间错乱，workaround是root用户连接到MySQL，然后执行`SET GLOBAL time_zone = 'Asia/Shanghai';`。
+
+这样客户端（非JDBC）连接MySQL时，查询的时间的时区都是`Asia/Shanghai`了。
+
 ## 参考资料
 
 * [MySQL - The DATE, DATETIME, and TIMESTAMP Types][mysql-datetime-types]
