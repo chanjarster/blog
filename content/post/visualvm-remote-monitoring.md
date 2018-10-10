@@ -41,6 +41,8 @@ jstatd -J-Djava.security.policy=jstatd.all.policy -J-Djava.rmi.server.hostname=<
 * 远程主机经过层层NAT，它的内部ip比如是`192.168.xxx.xxx`，它的对外的NAT地址是`172.100.xxx.xxx`。jstatd启动时指定`-J-Djava.rmi.server.hostname=172.100.xxx.xxx`，VisualVm连接`172.100.xxx.xxx`。
 * 上面两种方式混合，即在VisualVm所在主机的`/etc/hosts`里配置`some-name <ip-to-remote-host-nat-address>`。jstatd启动时指定`-J-Djava.rmi.server.hostname=some-name`，VisualVm连接`some-name`。
 
+还有要注意一点，运行`jstatd`的用户必须和运行Java程序的用户相同，或者是root，否则会监控不到远程主机上的Java进程。
+
 ## 第二步：启动VisualVm
 
 在你的机器上运行`jvisualvm`启动VisualVm。按照下面步骤添加远程主机：
