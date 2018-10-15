@@ -127,6 +127,13 @@ jvisualvm -J-Djavax.net.ssl.keyStore=<path to visualvm.keystore> \
 
 相关K8S样例配置文件在[这里][gist-tomcat-jmx-non-ssl]（用tomcat做的例子）。
 
+## 参考文档
+
+* [Why Java opens 3 ports when JMX is configured?][so-1]
+* [How can I connect to JMX through Kubernetes managed Docker containers?][so-2]
+
 [visualvm-remote-monitoring-jmx]: ../visualvm-remote-monitoring-jmx/
 [visualvm-remote-monitoring-jmx-ssl]: ../visualvm-remote-monitoring-jmx-ssl/
 [gist-tomcat-jmx-non-ssl]: https://gist.github.com/chanjarster/c8de40ef4086cded378df122bea6fe7d
+[so-1]: https://stackoverflow.com/a/21552812/1287790
+[so-2]: https://stackoverflow.com/questions/41069686/how-can-i-connect-to-jmx-through-kubernetes-managed-docker-containers

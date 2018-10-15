@@ -49,6 +49,30 @@ PS. 使用SSL方式保护JMX连接的方法会另写文章说明。
 
 双击这个进程，你就能看到CPU、线程、还有MBeans了。
 
+## 但是Visual GC没有内容
+
+使用上面的步骤建立完JMX连接之后，你会发现Visual GC没有内容：
+
+![Step 1](no-visual-gc.png)
+
+解决办法要启动jstatd。
+
+按照[利用VisualVm远程监控Java进程][visualvm-remote-monitoring]的方法先建立远程主机。
+
+给这个远程主机添加JMX连接：
+
+![Step 1](visualvm-04.png)
+
+![Step 2](visualvm-05.png)
+
+然后你会发现多了一个JMX图标的Java进程：
+
+![Step 3](visualvm-06.png)
+
+在这个进程里就能看到Visual GC了。
+
+![Step 4](visual-gc.png)
+
 ## 参考资料
 
 * [VisualVm - Connecting to JMX Agents Explicitly][Connecting to JMX Agents Explicitly]
