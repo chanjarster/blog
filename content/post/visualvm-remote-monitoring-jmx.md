@@ -26,7 +26,7 @@ VisualVm能够自动发现本机的Java进程，如果要监控远程主机上�
 为了演示目的，我们用Tomcat来测试，不开启ssl和authenticate，把JMX端口设置为`1100`，执行下列命令启动Tomcat：
 
 ```bash
-CATALINA_OPTS='-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=1100 Dcom.sun.management.jmxremote.rmi.port=1100 -Djava.rmi.server.hostname=k8s-oracle' bin/startup.sh
+CATALINA_OPTS='-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=1100 -Dcom.sun.management.jmxremote.rmi.port=1100 -Djava.rmi.server.hostname=k8s-oracle' bin/startup.sh
 ```
 
 注意上面有一个`-Djava.rmi.server.hostname=k8s-oracle`参数，JMX agent本质上也是一个RMI server，因此需要指定这个参数，否则就会像[利用VisualVm远程监控Java进程][visualvm-remote-monitoring]里提到的一样，VisualVm无法连接到该Java进程。
