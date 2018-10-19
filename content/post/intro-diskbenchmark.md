@@ -1,5 +1,5 @@
 ---
-title: "使用Diskbenchmark测试硬盘"
+title: "使用Diskbenchmark测试硬盘性能"
 author: "颇忒脱"
 tags: ["运维"]
 date: 2018-10-19T14:14:12+08:00
