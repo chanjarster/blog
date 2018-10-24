@@ -30,7 +30,7 @@ date: 2018-10-24T16:52:08+08:00
 
 1) 新建一个目录，名字叫做`prom-jvm-demo`。
 
-2) [下载JMX exporter][download-jmx-exporter]到这个目录
+2) [下载JMX exporter][download-jmx-exporter]到这个目录。
 
 3) 新建一个文件`simple-config.yml`内容如下：
 
@@ -44,24 +44,24 @@ blacklistObjectNames: ["*:*"]
 ```bash
 docker run -d \
   --name tomcat-1 \
-  -v <path-to-prom-jvm-demo>:/usr/local/jmx-exporter \
-  -e CATALINA_OPTS="-Xms64m -Xmx128m -javaagent:/usr/local/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/usr/local/jmx-exporter/simple-config.yml" \
+  -v <path-to-prom-jvm-demo>:/jmx-exporter \
+  -e CATALINA_OPTS="-Xms64m -Xmx128m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/simple-config.yml" \
   -p 6060:6060 \
   -p 8080:8080 \
   tomcat:8.5-alpine
 
 docker run -d \
   --name tomcat-2 \
-  -v <path-to-prom-jvm-demo>:/usr/local/jmx-exporter \
-  -e CATALINA_OPTS="-Xms64m -Xmx128m -javaagent:/usr/local/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/usr/local/jmx-exporter/simple-config.yml" \
+  -v <path-to-prom-jvm-demo>:/jmx-exporter \
+  -e CATALINA_OPTS="-Xms64m -Xmx128m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/simple-config.yml" \
   -p 6061:6060 \
   -p 8081:8080 \
   tomcat:8.5-alpine
 
 docker run -d \
   --name tomcat-3 \
-  -v <path-to-prom-jvm-demo>:/usr/local/jmx-exporter \
-  -e CATALINA_OPTS="-Xms64m -Xmx128m -javaagent:/usr/local/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/usr/local/jmx-exporter/simple-config.yml" \
+  -v <path-to-prom-jvm-demo>:/jmx-exporter \
+  -e CATALINA_OPTS="-Xms64m -Xmx128m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/simple-config.yml" \
   -p 6062:6060 \
   -p 8082:8080 \
   tomcat:8.5-alpine
@@ -75,7 +75,7 @@ docker run -d \
 
 ## 第二步：启动Prometheus
 
-1) 在之前新建目录`prom-jvm-demo`，新建一个文件`prometheus.yml`，内容如下：
+1) 在之前新建目录`prom-jvm-demo`，新建一个文件`prom-jmx.yml`，内容如下：
 
 ```yaml
 crape_configs:
@@ -108,10 +108,7 @@ docker run -d \
 1) 启动Grafana：
 
 ```bash
-docker run -d \
-  --name=grafana \
-  -p 3000:3000 \
-  grafana/grafana
+docker run -d --name=grafana -p 3000:3000 grafana/grafana
 ```
 
 2) 访问[http://localhost:3000](http://localhost:3000)，使用`admin/admin`登录。
