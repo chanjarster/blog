@@ -1,13 +1,15 @@
 ---
 title: "使用Prometheus+Grafana监控JVM"
 author: "颇忒脱"
-tags: ["java", "jmx", "prometheus", "grafana"]
+tags: ["java", "jmx", "prometheus", "grafana", "运维"]
 date: 2018-10-24T16:52:08+08:00
 ---
 
 本文介绍如何使用Prometheus+Grafana监控JVM的方法。
 
 <!--more-->
+
+本文所提到的脚本可以在[这里](https://github.com/chanjarster/prometheus-learn/tree/master/jvm-monitoring)下载。
 
 ## 摘要
 
@@ -16,13 +18,13 @@ date: 2018-10-24T16:52:08+08:00
 * Docker，本文大量使用了Docker来启动各个应用。
 * [Prometheus][prometheus]，负责抓取/存储指标信息，并提供查询功能。
 * [Grafana][grafana]，负责数据可视化。
-* [JMX exporter][jmx-exporter]，提供JMX中和JVM相关的信息。
+* [JMX exporter][jmx-exporter]，提供JMX中和JVM相关的metrics。
 * Tomcat，用来模拟一个Java应用。
 
 先讲一下大致步骤：
 
 1. 利用[JMX exporter][jmx-exporter]，在Java进程内启动一个小型的Http server
-1. 配置[Prometheus][prometheus]抓取那个Http server提供的数据。
+1. 配置[Prometheus][prometheus]抓取那个Http server提供的metrics。
 1. 配置[Grafana][grafana]连接[Prometheus][prometheus]，配置Dashboard。
 
 
