@@ -90,7 +90,7 @@ docker run -d \
 1) 在之前新建目录`prom-jvm-demo`，新建一个文件`prom-jmx.yml`，内容如下：
 
 ```yaml
-crape_configs:
+scrape_configs:
   - job_name: 'java'
     static_configs:
     - targets:
