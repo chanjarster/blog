@@ -143,6 +143,17 @@ sudo docker run \
 * Maven：Maven3
 * Docker：Docker
 
+## 配置时区
+
+用Docker启动Jenkins时区是GMT+0
+
+见wiki：https://wiki.jenkins.io/display/JENKINS/Change+time+zone
+
+系统管理 -> 脚本命令行
+
+```java
+System.setProperty('org.apache.commons.jelly.tags.fmt.timeZone', 'Asia/Shanghai')
+```
 ## 清理重装方法
 
 如果你配置错误搞砸了，想从头开始，那么这么做，只需要这么几步：
