@@ -68,7 +68,11 @@ date: 2018-11-28T15:04:54+08:00
 点击“Pipeline Maven Configuration“，配置Global Settings file，选择我们刚刚新建的Config file。
 ![](config-pipeline-4.png)
 
-然后保存。
+点击“JIRA”，勾选“Enable project-based security“，如下图所示配置。
+
+![](config-pipeline-5.png)
+
+保存。
 
 # 创建Jenkinsfile
 
