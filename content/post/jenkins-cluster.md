@@ -94,6 +94,10 @@ sudo docker run \
 
 到B窗口，刷新一下，继续后面的管理员动作。
 
+下图是推荐的配置方法：
+
+![global-security-settings](global-security-settings.png)
+
 ## 添加Slave节点
 
 前期准备
