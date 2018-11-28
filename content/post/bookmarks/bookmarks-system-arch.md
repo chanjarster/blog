@@ -8,12 +8,22 @@ draft: false
 
 <!--more-->
 
-# 日志
+# Monitoring
 
 * [Metrics, tracing, and logging](https://peter.bourgon.org/blog/2017/02/21/metrics-tracing-and-logging.html)
 Metrics、tracing、logging三个监控系统的区别和联系
 * [Observability 3 ways: logging metrics and tracing](https://speakerdeck.com/adriancole/observability-3-ways-logging-metrics-and-tracing)
 同上，Slides。
+* ["How NOT to Measure Latency" by Gil Tene](https://www.youtube.com/watch?v=lJ8ydIuPFeU) 如何正确解读监控/压力测试结果
+
+
+## Prometheus
+
+* [Counting with Prometheus [I] - Brian Brazil, Robust Perception](https://www.youtube.com/watch?v=67Ulrq6DxwA) 
+* [rate()/increase() extrapolation considered harmful](https://github.com/prometheus/prometheus/issues/3746) 关于rate()/increase()函数extrapolation算法的讨论
+
+## Log
+
 * [The Log: What every software engineer should know about real-time data's unifying abstraction](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
 讲了Log/Event/Stream与Table是同一件事情的两个面，为流处理应用，分布式存储系统的建设提供了高屋建瓴的指导。
 
