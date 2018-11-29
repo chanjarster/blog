@@ -29,15 +29,13 @@ date: 2018-11-28T15:04:54+08:00
 点击创建流水线后Jenkins会拉取GIT仓库，并且尝试寻找存在`Jenkinsfile`的分支，然后构建。不过不管构建是否成功，都不要管它，我们回到经典页面做进一步配置。
 ![](new-pipeline-5.png)
 
-# 配置凭据
+# 配置Maven settings.xml
 
 我们先配置一下私有Maven仓库的用户名密码。
 
 按照下图的顺序进入凭据管理页面
 
 ![](config-credential-1.png)添加凭据![](config-credential-2.png)输入用户名密码![](config-credential-3.png)
-
-# 配置Config Files
 
 有了用户名密码还不够，还得提供Maven的settings.xml。
 
