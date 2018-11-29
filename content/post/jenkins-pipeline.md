@@ -1,7 +1,7 @@
 ---
 title: "创建Jenkins Pipeline流水账"
 author: "颇忒脱"
-tags: ["CI/CD", "Jenkins"]
+tags: ["CI_CD", "Jenkins"]
 date: 2018-11-28T15:04:54+08:00
 ---
 

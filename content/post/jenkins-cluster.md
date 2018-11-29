@@ -1,7 +1,7 @@
 ---
 title: "搭建Jenkins集群流水账"
 author: "颇忒脱"
-tags: ["CI/CD", "Jenkins"]
+tags: ["CI_CD", "Jenkins"]
 date: 2018-11-23T10:41:18+08:00
 ---
 

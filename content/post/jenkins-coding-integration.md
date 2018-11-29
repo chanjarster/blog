@@ -1,7 +1,7 @@
 ---
 title: "Coding集成Jenkins流水账"
 author: "颇忒脱"
-tags: ["CI/CD", "Jenkins"]
+tags: ["CI_CD", "Jenkins"]
 date: 2018-11-29T13:06:05+08:00
 ---
 
