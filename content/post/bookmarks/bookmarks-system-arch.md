@@ -21,6 +21,7 @@ Metrics、tracing、logging三个监控系统的区别和联系
 
 * [Counting with Prometheus [I] - Brian Brazil, Robust Perception](https://www.youtube.com/watch?v=67Ulrq6DxwA) 
 * [rate()/increase() extrapolation considered harmful](https://github.com/prometheus/prometheus/issues/3746) 关于rate()/increase()函数extrapolation算法的讨论
+* [Robust Perception Blog](https://www.robustperception.io/blog)，大部分由P8S main contributor写的博客
 
 ## Log
 
