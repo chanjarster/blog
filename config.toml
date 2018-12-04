@@ -24,6 +24,12 @@ canonifyurls = true
   identifier = "tags"
   url = "/tags/"
 
+[[menu.main]]
+  name = "Bookmarks"
+  weight = 15
+  identifier = "bookmarks"
+  url = "/tags/收藏夹/"
+  
 [params]
   author = "颇忒脱"
   avatar = "/img/avatar2.jpg"

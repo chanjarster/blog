@@ -3,27 +3,11 @@ title: "收藏夹 - 系统架构（持续更新）"
 author: "颇忒脱"
 tags: ["收藏夹"]
 date: 2018-11-15T15:21:38+08:00
-draft: false
 ---
 
 <!--more-->
 
-# Monitoring
-
-* [Metrics, tracing, and logging](https://peter.bourgon.org/blog/2017/02/21/metrics-tracing-and-logging.html)
-Metrics、tracing、logging三个监控系统的区别和联系
-* [Observability 3 ways: logging metrics and tracing](https://speakerdeck.com/adriancole/observability-3-ways-logging-metrics-and-tracing)
-同上，Slides。
-* ["How NOT to Measure Latency" by Gil Tene](https://www.youtube.com/watch?v=lJ8ydIuPFeU) 如何正确解读监控/压力测试结果
-
-
-## Prometheus
-
-* [Counting with Prometheus [I] - Brian Brazil, Robust Perception](https://www.youtube.com/watch?v=67Ulrq6DxwA) 
-* [rate()/increase() extrapolation considered harmful](https://github.com/prometheus/prometheus/issues/3746) 关于rate()/increase()函数extrapolation算法的讨论
-* [Robust Perception Blog](https://www.robustperception.io/blog)，大部分由P8S main contributor写的博客
-
-## Log
+# Logging
 
 * [The Log: What every software engineer should know about real-time data's unifying abstraction](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
 讲了Log/Event/Stream与Table是同一件事情的两个面，为流处理应用，分布式存储系统的建设提供了高屋建瓴的指导。
@@ -63,3 +47,10 @@ Metrics、tracing、logging三个监控系统的区别和联系
 * [左耳听风 | 性能设计篇之"数据库扩展"](https://time.geekbang.org/column/article/7045)
 * [左耳听风 | 性能设计篇之"秒杀"](https://time.geekbang.org/column/article/7047)
 * [左耳听风 | 性能设计篇之"边缘计算"](https://time.geekbang.org/column/article/7086)
+
+## 缓存
+
+* [The Three Types of Cache][cache-1]
+
+
+[cache-1]: https://www.robustperception.io/the-three-types-of-cache
