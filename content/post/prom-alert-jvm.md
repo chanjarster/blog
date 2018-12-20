@@ -341,7 +341,7 @@ docker run -d \
   --name=alertmanager \
   -v <path-to-prom-jvm-demo>:/alertmanager-config \
   -p 9093:9093 \
-  prom/alertmanager --config.file=/alertmanager-config/alertmanager-config.yml
+  prom/alertmanager:master --config.file=/alertmanager-config/alertmanager-config.yml
 ```
 
 4) 访问[http://localhost:9093](http://localhost:9093)，看看有没有收到Prometheus发送过来的告警(如果没有看到稍等一下)：
