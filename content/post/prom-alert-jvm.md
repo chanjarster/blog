@@ -48,7 +48,14 @@ date: 2018-10-26T15:57:03+08:00
 
 ```yaml
 ---
-blacklistObjectNames: ["*:*"]
+lowercaseOutputLabelNames: true
+lowercaseOutputName: true
+whitelistObjectNames: ["java.lang:type=OperatingSystem"]
+rules:
+ - pattern: 'java.lang<type=OperatingSystem><>((?!process_cpu_time)\w+):'
+   name: os_$1
+   type: GAUGE
+   attrNameSnakeCase: true
 ```
 
 4) 运行以下命令启动3个Tomcat，记得把`<path-to-prom-jvm-demo>`替换成正确的路径（这里故意把`-Xmx`和`-Xms`设置的很小，以触发告警条件）：
@@ -92,6 +99,7 @@ docker run -d \
 ```yaml
 scrape_configs:
   - job_name: 'java'
+    scrape_interval: 30s
     static_configs:
     - targets:
       - '<host-ip>:6060'
