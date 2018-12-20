@@ -309,7 +309,16 @@ receivers:
 
 修改里面关于`smtp_*`的部分和最下面`user-a`的邮箱地址。
 
-**备注：因为国内邮箱几乎都不支持TLS，而Alertmanager目前又不支持SSL，因此请使用Gmail或其他支持TLS的邮箱来发送告警邮件，见这个[issue][gh-am-issue]**
+<del>**备注：因为国内邮箱几乎都不支持TLS，而Alertmanager目前又不支持SSL，因此请使用Gmail或其他支持TLS的邮箱来发送告警邮件，见这个[issue][gh-am-issue]**</del>，这个问题已经修复，下面是阿里云企业邮箱的配置例子：
+
+```yaml
+smtp_smarthost: 'smtp.qiye.aliyun.com:465'
+smtp_hello: 'company.com'
+smtp_from: 'username@company.com'
+smtp_auth_username: 'username@company.com'
+smtp_auth_password: password
+smtp_require_tls: false
+```
 
 2) 新建文件`alert-template.tmpl`，这个是邮件内容模板：
 
