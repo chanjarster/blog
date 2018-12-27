@@ -165,6 +165,11 @@ docker run -p 8080:8080 -e JAVA_OPTS='-Xmx128M -Xms128M -Dabc=xyz -Ddef=uvw' cha
 docker run -p 8080:8080 chanjarster/dockerfile-java-examples-1:1.0-SNAPSHOT --debug
 ```
 
+## 2018-12-27更新
+
+在`docker-entrypoint.sh`里启动Java进程时，使用`exec /usr/bin/java ...`这种形式，保证进程PID=1，这样在进程能够在`docker stop`时收到`SIGTERM`。
+详见：[docker stop][docker-stop]
+
 ## 参考文档
 
 * [Dockerfile best practice][dockerfile-best-practice]
@@ -176,3 +181,4 @@ docker run -p 8080:8080 chanjarster/dockerfile-java-examples-1:1.0-SNAPSHOT --de
 [docker-endpoint]: https://docs.docker.com/engine/reference/builder/#entrypoint
 [dockerfile-best-practice]: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 [dockerfile-user]: https://docs.docker.com/engine/reference/builder/#use
+[docker-stop]: https://docs.docker.com/engine/reference/commandline/stop/
