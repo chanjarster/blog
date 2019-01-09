@@ -20,7 +20,7 @@ date: 2019-01-09T10:59:56+08:00
   2. 有状态应用：利用`docker run`/`docker compose up`创建的。
 * 希望两种应用能够连接到同一个overlay网络，在网络内部能够通过
   1. `tasks.<service-name>` DNS name 连接到无状态应用（见[Container discovery][doc-cd]）
-  2. `<container-name>` DNS name 连接到状态应用
+  2. `<container-name>` DNS name 连接到有状态应用
 
 解决办法：
 
