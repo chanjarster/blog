@@ -177,8 +177,9 @@ PING c.1.p5n70vhtnz2f5q8p2pcvbyfmw (10.0.2.7): 56 data bytes
 
 * [Use overlay networks][doc-overlay]
 * [Use an overlay network for standalone containers][doc-standalone]
-
+* [Docker Reference Architecture: Designing Scalable, Portable Docker Container Networks][ref-network-arch]
 
 [doc-cd]: https://docs.docker.com/network/overlay/#container-discovery
 [doc-overlay]: https://docs.docker.com/network/overlay/
 [doc-standalone]: https://docs.docker.com/network/network-tutorial-overlay/#use-an-overlay-network-for-standalone-containers
+[ref-network-arch]: https://success.docker.com/article/networking
