@@ -3,7 +3,6 @@ title: "收藏夹 - 监控（持续更新）"
 author: "颇忒脱"
 tags: ["收藏夹"]
 date: 2018-12-03T13:14:38+08:00
-draft: false
 ---
 
 <!--more-->
