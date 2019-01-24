@@ -64,6 +64,16 @@ RUN set -eux; \
     echo $TZ > /etc/timezone
 ```
 
+如果是alpine系列的则要安装tzdata：
+
+```bash
+ENV TZ=Asia/Shanghai
+RUN set -eux; \
+    apk add --no-cache --update tzdata; \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime; \
+    echo $TZ > /etc/timezone
+```
+
 关于数据库时区的相关内容可以见：
 
 * [数据库时区那些事儿 - MySQL的时区处理](https://segmentfault.com/a/1190000016426048)

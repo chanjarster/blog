@@ -1,6 +1,6 @@
 ---
 title: "使用Fluentd收集Docker容器日志"
-author: "破忒脱"
+author: "颇忒脱"
 tags: ["docker", "运维", "fluentd"]
 date: 2019-01-24T11:32:32+08:00
 ---
