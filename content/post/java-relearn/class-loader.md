@@ -1,7 +1,7 @@
 ---
 title: "初步了解ClassLoader"
 author: "颇忒脱"
-tags: ["重学Java", "ClassLoader"]
+tags: ["重学Java", "ClassLoader", "JVM"]
 date: 2019-01-24T20:25:52+08:00
 ---
 
@@ -64,15 +64,15 @@ Classloader for this class: sun.misc.Launcher$AppClassLoader@18b4aac2
 
 > Returns the class loader for the class. Some implementations may use null to represent the bootstrap class loader. This method will return null in such implementations if this class was loaded by the bootstrap class loader.
 
-### Array类的ClassLoader
+### 数组类的ClassLoader
 
 > Class objects for array classes are not created by class loaders, but are created automatically as required by the Java runtime. The class loader for an array class, as returned by Class.getClassLoader() is the same as the class loader for its element type; if the element type is a primitive type, then the array class has no class loader.
 
 简单来说说了三点：
 
-1. Array也是类，但是它的Class对象不是由ClassLoader创建的，而是由Java runtime根据需要自动创建的。
-2. `Array.getClassLoader()`的结果同其元素类型的ClassLoader
-3. 如果元素是基础类型，则Array类没有ClassLoader
+1. 数组也是类，但是它的Class对象不是由ClassLoader创建的，而是由Java runtime根据需要自动创建的。
+2. 数组的`getClassLoader()`的结果同其元素类型的ClassLoader
+3. 如果元素是基础类型，则数组类没有ClassLoader
 
 下面是一段实验代码：
 
@@ -124,7 +124,7 @@ ClassLoader for this Object[][] of this class[]: null
 
 注意第四行的结果，我们构建了一个`Object[][]`，里面放的是`PrintArrayArrayClassLoader[]`，但结果依然是null。所以：
 
-1. 二维数组的ClassLoader和其定义的类型的ClassLoader相同。
+1. 二维数组的ClassLoader和其定义的类型（元素类型）的ClassLoader相同。
 2. 与其实际内部存放的类型无关。
 
 ### ClassLoader类的ClassLoader
@@ -157,7 +157,7 @@ ClassLoader for custom ClassLoader: null
 
 ## ClassLoader解决了什么问题
 
-简单来说ClassLoader就是解决类加载问题的，当然这是一句废话。JDK里的ClassLoader是一个抽象类，这样做的目的是能够让应用开发者定制自己的ClassLoader实现（比如添加解密/加密），我认为这才是ClassLoader存在的最大意义。
+简单来说ClassLoader就是解决类加载问题的，当然这是一句废话。JDK里的ClassLoader是一个抽象类，这样做的目的是能够让应用开发者定制自己的ClassLoader实现（比如添加解密/加密）、动态插入字节码等，我认为这才是ClassLoader存在的最大意义。
 
 ## ClassLoader的工作原理
 
@@ -201,6 +201,25 @@ protected Class<?> loadClass(String name, boolean resolve)
     Class<?> c = findLoadedClass(name);
     if (c == null) {
       // ...
+      try {
+        if (parent != null) {
+            c = parent.loadClass(name, false);
+        } else {
+            c = findBootstrapClassOrNull(name);
+        }
+      } catch (ClassNotFoundException e) {
+        // ClassNotFoundException thrown if class not found
+        // from the non-null parent class loader
+      }
+
+      if (c == null) {
+        // If still not found, then invoke findClass in order
+        // to find the class.
+        // ...
+        c = findClass(name);
+
+        // ...
+      }
     }
     // ...
     return c;
@@ -208,65 +227,43 @@ protected Class<?> loadClass(String name, boolean resolve)
 }
 ```
 
-如果一个类被两个不同的ClassLoader加载会怎样呢？结果就是会得到两个不同的Class，同时这个类所使用的其他类也会是两份，见这段代码：
+如果一个类被两个不同的ClassLoader加载会怎样呢？看下面代码：
 
 ```java
+// 把这个项目打包然后放到/tmp目录下
 public class ClassUniqueness {
 
   public static void main(String[] args) throws Exception {
+    Class<?> fooClass1 = Class.forName("me.chanjar.javarelearn.classloader.ClassUniqueness");
+    System.out.println("1st ClassUniqueness's ClassLoader: " + fooClass1.getClassLoader());
 
-    System.out.println("1st Foo class: loaded by application class loader");
-    Class<?> fooClass1 = Class.forName("me.chanjar.javarelearn.classloader.Foo");
-    fooClass1.newInstance();
-
-    System.out.println();
-
-    System.out.println("2st Foo class: loaded by URLClassLoader");
     // 故意将parent class loader设置为null，否则就是SystemClassLoader（即ApplicationClassLoader）
     URLClassLoader ucl = new URLClassLoader(new URL[] { new URL("file:///tmp/classloader.jar") }, null);
-    Class<?> fooClass2 = ucl.loadClass("me.chanjar.javarelearn.classloader.Foo");
-    fooClass2.newInstance();
+    Class<?> fooClass2 = ucl.loadClass("me.chanjar.javarelearn.classloader.ClassUniqueness");
+    System.out.println("2nd ClassUniqueness's ClassLoader: " + fooClass2.getClassLoader());
 
-    System.out.println();
-
-    System.out.println("1st Foo class == 2nd Foo class? : " + fooClass1.equals(fooClass2));
+    System.out.println("Two ClassUniqueness class equals? " + fooClass1.equals(fooClass2));
   }
 
-}
-
-public class Foo {
-
-  public Foo() {
-    System.out.println("Foo's ClassLoader: " + Foo.class.getClassLoader());
-    System.out.println("Bar's ClassLoader: " + Bar.class.getClassLoader());
-  }
-
-}
-
-public class Bar {
 }
 ```
 
-结果你会发现Foo和Bar的ClassLoader分别是Application class loader和我们自己使用的URLClassLoader，并且两者并不相同：
+运行结果是：
 
 ```txt
-1st Foo class: loaded by application class loader
-Foo's ClassLoader: sun.misc.Launcher$AppClassLoader@18b4aac2
-Bar's ClassLoader: sun.misc.Launcher$AppClassLoader@18b4aac2
-
-2st Foo class: loaded by URLClassLoader
-Foo's ClassLoader: java.net.URLClassLoader@66d3c617
-Bar's ClassLoader: java.net.URLClassLoader@66d3c617
-
-1st Foo class == 2nd Foo class? : false
+1st ClassUniqueness's ClassLoader: sun.misc.Launcher$AppClassLoader@18b4aac2
+2nd ClassUniqueness's ClassLoader: java.net.URLClassLoader@66d3c617
+Two ClassUniqueness class equals? false```
 ```
 
-通过上面代码可以观察到两点：
+观察到两点：
 
-1. 一个Class的唯一性不仅仅是其全限定名（Fully-qualified-name），而是 加载其的ClassLoader + 其全限定名。
-2. 除非特别指定，否则一个Class所使用的其他类型的ClassLoader与加载其的ClassLoader相同。
+1. 虽然是同一个类，但是加载它们的ClassLoader不同。
+1. 虽然是同一个类，但是它们并不相等。
 
-这种机制对于解决诸如类冲突问题非常有用，类冲突问题就是在运行时存在同一个类的两个不同版本，同时代码里又都需要使用这两个不同版本的类。解决这个问题的思路就是使用不同的ClassLoader加载这两个版本的类。事实上OSGi或者Web容器就是这样做的。
+由此可以得出结论：一个Class的唯一性不仅仅是其全限定名（Fully-qualified-name），而是由【加载其的ClassLoader + 其全限定名】联合保证唯一。
+
+这种机制对于解决诸如类冲突问题非常有用，类冲突问题就是在运行时存在同一个类的两个不同版本，同时代码里又都需要使用这两个不同版本的类。解决这个问题的思路就是使用不同的ClassLoader加载这两个版本的类。事实上OSGi或者Web容器就是这样做的（它们不是严格遵照委托模型，而是先自己找，找不到了再委托给parent ClassLoader）。
 
 ## 参考文档
 
@@ -275,8 +272,8 @@ Bar's ClassLoader: java.net.URLClassLoader@66d3c617
 * [Java虚拟机是如何加载Java类的?][geektime-jvm-classloader]（极客时间专栏，需付费购买）
 * [Class Loaders in Java][java-class-loaders]
 * [深入探讨Java类加载器][deep-in-class-loader]
-* [Java Language Specification - Chapter 12. Execution][jls-execution]
-* [Java Virtual Machine Specification - Chapter 5. Loading, Linking, and Initializing][jvms-loading-linking-initializing]
+* [Java Language Specification - Chapter 12. Execution][jls-12]
+* [Java Virtual Machine Specification - Chapter 5. Loading, Linking, and Initializing][jvms-5]
 
 [javadoc-class-loader]: https://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html
 [javadoc-class-getclassloader]: https://docs.oracle.com/javase/7/docs/api/java/lang/Class.html#getClassLoader()
@@ -284,6 +281,6 @@ Bar's ClassLoader: java.net.URLClassLoader@66d3c617
 [java-extension]: https://docs.oracle.com/javase/6/docs/technotes/guides/extensions/spec.htm
 [deep-in-class-loader]: https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html
 [java-class-loaders]: https://www.baeldung.com/java-classloaders
-[jls-execution]: https://docs.oracle.com/javase/specs/jls/se8/html/jls-12.html
-[jvms-loading-linking-initializing]: https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-5.html
+[jls-12]: https://docs.oracle.com/javase/specs/jls/se8/html/jls-12.html
+[jvms-5]: https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-5.html
 [github]: https://github.com/chanjarster/java-relearn/tree/master/classloader

@@ -6,10 +6,19 @@
     <description>Recent content in Tags on 颇忒脱的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 26 Oct 2018 15:57:03 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 30 Jan 2019 20:43:08 +0800</lastBuildDate>
     
 	<atom:link href="https://chanjarster.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Akka</title>
+      <link>https://chanjarster.github.io/tags/akka/</link>
+      <pubDate>Wed, 30 Jan 2019 20:43:08 +0800</pubDate>
+      
+      <guid>https://chanjarster.github.io/tags/akka/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Alertmanager</title>
@@ -17,6 +26,24 @@
       <pubDate>Fri, 26 Oct 2018 15:57:03 +0800</pubDate>
       
       <guid>https://chanjarster.github.io/tags/alertmanager/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Arts</title>
+      <link>https://chanjarster.github.io/tags/arts/</link>
+      <pubDate>Wed, 30 Jan 2019 20:43:08 +0800</pubDate>
+      
+      <guid>https://chanjarster.github.io/tags/arts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Arts R</title>
+      <link>https://chanjarster.github.io/tags/arts-r/</link>
+      <pubDate>Wed, 30 Jan 2019 20:43:08 +0800</pubDate>
+      
+      <guid>https://chanjarster.github.io/tags/arts-r/</guid>
       <description></description>
     </item>
     
@@ -32,7 +59,7 @@
     <item>
       <title>Classloader</title>
       <link>https://chanjarster.github.io/tags/classloader/</link>
-      <pubDate>Thu, 24 Jan 2019 20:25:52 +0800</pubDate>
+      <pubDate>Sat, 26 Jan 2019 13:59:55 +0800</pubDate>
       
       <guid>https://chanjarster.github.io/tags/classloader/</guid>
       <description></description>
@@ -120,6 +147,15 @@
     </item>
     
     <item>
+      <title>Jvm</title>
+      <link>https://chanjarster.github.io/tags/jvm/</link>
+      <pubDate>Sat, 26 Jan 2019 13:59:55 +0800</pubDate>
+      
+      <guid>https://chanjarster.github.io/tags/jvm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Jwt</title>
       <link>https://chanjarster.github.io/tags/jwt/</link>
       <pubDate>Wed, 22 Aug 2018 13:25:35 +0800</pubDate>
@@ -131,7 +167,7 @@
     <item>
       <title>K8s</title>
       <link>https://chanjarster.github.io/tags/k8s/</link>
-      <pubDate>Mon, 22 Oct 2018 10:15:20 +0800</pubDate>
+      <pubDate>Wed, 30 Jan 2019 20:43:08 +0800</pubDate>
       
       <guid>https://chanjarster.github.io/tags/k8s/</guid>
       <description></description>
@@ -237,6 +273,15 @@
     </item>
     
     <item>
+      <title>架构</title>
+      <link>https://chanjarster.github.io/tags/%E6%9E%B6%E6%9E%84/</link>
+      <pubDate>Wed, 30 Jan 2019 20:43:08 +0800</pubDate>
+      
+      <guid>https://chanjarster.github.io/tags/%E6%9E%B6%E6%9E%84/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>运维</title>
       <link>https://chanjarster.github.io/tags/%E8%BF%90%E7%BB%B4/</link>
       <pubDate>Thu, 24 Jan 2019 11:32:32 +0800</pubDate>
@@ -248,7 +293,7 @@
     <item>
       <title>重学java</title>
       <link>https://chanjarster.github.io/tags/%E9%87%8D%E5%AD%A6java/</link>
-      <pubDate>Thu, 24 Jan 2019 20:25:52 +0800</pubDate>
+      <pubDate>Sat, 26 Jan 2019 13:59:55 +0800</pubDate>
       
       <guid>https://chanjarster.github.io/tags/%E9%87%8D%E5%AD%A6java/</guid>
       <description></description>
