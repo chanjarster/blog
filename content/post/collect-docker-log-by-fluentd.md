@@ -28,10 +28,35 @@ Docker提供了很多[logging driver][config-logging-driver]，默认情况下�
   @type   forward
 </source>
 
-<match *>
-
+# 处理docker service容器的日志
+# input 
+#   tag: busybox.2.sphii6yg9rw045kqi4kh6owxv
+# output
+#   file: busybox/inst-2.yyyy-MM-dd.log
+<match *.*.*>
   @type              file
+  path               /fluentd/log/${tag[0]}/inst-${tag[1]}
+  append             true
+  <format>
+    @type            single_value
+    message_key      log
+  </format>
+  <buffer tag,time>
+    @type             file
+    timekey           1d
+    timekey_wait      10m
+    flush_mode        interval
+    flush_interval    30s
+  </buffer>
+</match>
 
+# 处理standalone容器的日志
+# input 
+#   tag: busybox
+# output
+#   file: busybox/busybox.yyyy-MM-dd.log
+<match *>
+  @type              file
   path               /fluentd/log/${tag}/${tag}
   append             true
   <format>
@@ -63,7 +88,7 @@ docker run -it \
 
 ## 第二步：指定容器的logging driver
 
-在启动容器的时候执行使用fluentd作为logging driver：
+在启动容器的时候执行使用fluentd作为logging driver，下面以standalone容器举例：
 
 ```bash
 docker run -d \
@@ -73,6 +98,27 @@ docker run -d \
   --log-opt mode=non-blocking \
   --log-opt tag={{.Name}} \
   <image>
+```
+
+注意上面的`--log-opt tag={{.Name}}`参数。
+
+如果是docker compose / docker stack deploy部署，则在`docker-compose.yaml`中这样做 ：
+
+```yaml
+version: "3.7"
+x-logging:
+  &default-logging
+  driver: fluentd
+  options:
+    fluentd-address: <fluentdhost>:24224
+    fluentd-async-connect: 'true'
+    mode: non-blocking
+    max-buffer-size: 4m
+    tag: "{{.Name}}"
+services:
+  busybox:
+    image: busybox
+    logging: *default-logging
 ```
 
 ## 第三步：观察日志

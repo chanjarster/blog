@@ -21,7 +21,13 @@ date: 2019-01-11T09:16:30+08:00
 
 然后执行`docker info`来验证配置是否生效。
 
-## `registry-mirrors`
+## 1. 当前用户添加到docker用户组
+
+执行`sudo usermod -aG docker $USER`将当前用户添加到docker用户组。
+
+执行完成后重新登录服务器，你所登录的用户就能够执行docker命令了。
+
+## 2. `registry-mirrors`
 
 ```json
 {
@@ -33,7 +39,7 @@ date: 2019-01-11T09:16:30+08:00
 
 可以使用[Daocloud加速器][daocloud-acc]（需注册，使用免费）或者其他云厂商提供的免费的加速服务。它们的原理就是修改`registry-mirrors`参数。
 
-## `dns`
+## 3. `dns`
 
 ```json
 {
@@ -60,7 +66,7 @@ Docker内置了一个DNS Server，它用来做两件事情：
 }
 ```
 
-## `log-driver`
+## 4. `log-driver`
 
 [Log driver][config-log-driver]是Docker用来接收来自容器内部`stdout/stderr`的日志的模块，Docker默认的log driver是[JSON File logging driver][json-file-log-driver]。这里只讲`json-file`的配置，其他的请查阅相关文档。
 
@@ -81,7 +87,7 @@ Docker内置了一个DNS Server，它用来做两件事情：
 }
 ```
 
-## `storage-driver`
+## 5. `storage-driver`
 
 Docker推荐使用[overlay2][overlay2-driver]作为Storage driver。你可以通过`docker info | grep Storage`来确认一下当前使用的是什么：
 
@@ -98,7 +104,7 @@ Storage Driver: overlay2
 }
 ```
 
-## `mtu`
+## 6. bridge网络的`mtu`
 
 **如果docker host machine的网卡MTU为1500，则不需要此步骤**
 
@@ -108,6 +114,14 @@ MTU是一个很容易被忽略的参数，Docker默认的MTU是1500，这也是�
 $ ip link
 1: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
     link/ether fa:16:3e:71:09:f5 brd ff:ff:ff:ff:ff:ff
+```
+
+也可以通过下列命令观察`bridge`网络的MTU：
+
+```bash
+$ docker network inspect -f '{{json .Options}}' bridge
+
+{"com.docker.network.bridge.default_bridge":"true","com.docker.network.bridge.enable_icc":"true","com.docker.network.bridge.enable_ip_masquerade":"true","com.docker.network.bridge.host_binding_ipv4":"0.0.0.0","com.docker.network.bridge.name":"docker0","com.docker.network.driver.mtu":"1500"}
 ```
 
 当Docker网络的MTU比docker host machine网卡MTU大的时候可能会发生：
@@ -150,7 +164,17 @@ $ docker exec busybox ip link
     link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
 ```
 
-关于Overlay network的MTU看[这篇文章][docker-overlay-network-mtu]
+## 7. bridge网络的子网
+
+观察默认`bridge`的子网是否与已有网络冲突：
+
+```bash
+$ docker network inspect -f '{{json .IPAM}}' bridge
+
+{"Driver":"default","Options":null,"Config":[{"Subnet":"172.17.0.0/16","Gateway":"172.17.0.1"}]}
+```
+
+如果有则参考[Configure the default bridge network][docker-configure-the-default-bridge-network]（可忽略IPv6部分的配置）。
 
 ## 参考资料
 
@@ -158,10 +182,13 @@ $ docker exec busybox ip link
 * [Configure logging drivers][config-log-driver]
 * [JSON File logging driver][json-file-log-driver]
 * [Use the OverlayFS storage driver][overlay2-driver]
+* [Post-installation steps for Linux][docker-linux-postinstall]
+* [Configure the default bridge network][docker-configure-the-default-bridge-network]
 
 [dockerd-options]: https://docs.docker.com/engine/reference/commandline/dockerd/
 [daocloud-acc]: https://www.daocloud.io/mirror#accelerator-doc
 [config-log-driver]: https://docs.docker.com/config/containers/logging/configure/
 [json-file-log-driver]: https://docs.docker.com/config/containers/logging/json-file/
 [overlay2-driver]: https://docs.docker.com/storage/storagedriver/overlayfs-driver/#configure-docker-with-the-overlay-or-overlay2-storage-driver
-[docker-overlay-network-mtu]: ../docker-overlay-network-mtu/
+[docker-linux-postinstall]: https://docs.docker.com/install/linux/linux-postinstall/
+[docker-configure-the-default-bridge-network]: https://docs.docker.com/network/bridge/#configure-the-default-bridge-network

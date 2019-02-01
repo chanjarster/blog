@@ -1,5 +1,5 @@
 ---
-title: "Docker Overlay网络的MTU"
+title: "Docker Overlay网络的MTU和子网"
 author: "颇忒脱"
 tags: ["docker"]
 date: 2019-01-11T14:20:16+08:00
@@ -9,9 +9,32 @@ date: 2019-01-11T14:20:16+08:00
 
 <!--more-->
 
-**如果docker host machine的网卡MTU为1500，则不需要此步骤**
+## 判断是否需要本文
 
-## 设置`ingress`和`docker_gwbridge`的MTU
+如果存在以下任意一种情况，则需要阅读本文：
+
+1. Docker machine的MTU不是1500
+1. Docker swarm创建`ingress`和`docker_gwbridge`网络的子网和现有网络冲突
+
+观察MTU的方法：
+
+```bash
+$ docker network inspect -f '{{json .Options}}' <network-name>
+
+{"com.docker.network.driver.mtu":"1450","com.docker.network.driver.overlay.vxlanid_list":"4099"}
+```
+
+如果没有`com.docker.network.driver.mtu`，那么就是默认的1500。
+
+观察子网的方法：
+
+```bash
+$ docker network inspect -f '{{json .IPAM}}' <network-name>
+
+{"Driver":"default","Options":null,"Config":[{"Subnet":"10.0.0.0/24","Gateway":"10.0.0.1"}]}
+```
+
+## 修改`ingress`和`docker_gwbridge`网络
 
 **以下步骤得在swarm init或join之前做**
 
@@ -22,25 +45,9 @@ date: 2019-01-11T14:20:16+08:00
 2) [manager] 获得`docker_gwbridge`的参数，注意`Subnet`
 
 ```bash
-$ docker network inspect docker_gwbridge
-[
-    {
-        "Name": "docker_gwbridge",
-        ...
-        "IPAM": {
-            ...
-            "Config": [
-                {
-                    "Subnet": "172.18.0.0/16",
-                    ...
-                }
-            ]
-        },
-        ...
-    }
-]
+$ docker network inspect -f '{{json .IPAM}}' docker_gwbridge
+{"Driver":"default","Options":null,"Config":[{"Subnet":"172.18.0.0/16","Gateway":"172.18.0.1"}]}
 ```
-
 
 3) [manager] `docker swarm leave --force`
 
@@ -57,7 +64,7 @@ $ sudo ip link del dev docker_gwbridge
 
 7) [manager] 重建`docker_gwbridge`，
 
-记得设置之前得到的`Subnet`参数和正确的MTU值
+记得设置之前得到的`Subnet`参数和正确的MTU值，如果子网和现有网络冲突，则要修改subnet参数：
 
 ```bash
 $ docker network rm docker_gwbridge
@@ -77,28 +84,13 @@ $ docker network create \
 9) [manager] 先观察`ingress` network的参数，注意`Subnet`和`Gateway`：
 
 ```bash
-$ docker network inspect ingress
-[
-    {
-        "Name": "ingress",
-        ...
-        "IPAM": {
-            ...
-            "Config": [
-                {
-                    "Subnet": "10.255.0.0/16",
-                    "Gateway": "10.255.0.1"
-                }
-            ]
-        },
-        ...
-    }
-]
+$ docker network inspect -f '{{json .IPAM}}' ingress
+{"Driver":"default","Options":null,"Config":[{"Subnet":"10.255.0.0/16","Gateway":"10.255.0.1"}]}
 ```
 
 10) [manager] 删除`ingress` network，`docker network rm ingress`。
 
-11) [manager] 重新创建`ingress` network，记得填写之前得到的`Subnet`和`Gateway`，以及正确的MTU值：
+11) [manager] 重新创建`ingress` network，记得填写之前得到的`Subnet`和`Gateway`，以及正确的MTU值，如果子网和现有网络冲突，则要修改subnet参数：：
 
 ```bash
 $ docker network create \
@@ -150,7 +142,7 @@ $ docker exec b.1.pdsdgghzyy5rhqkk5et59qa3o ip link
     link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
 ```
 
-## 自建overlay network的MTU
+## 自建overlay network的MTU和子网
 
 ### 方法一：在docker compose file设置
 
@@ -159,7 +151,11 @@ $ docker exec b.1.pdsdgghzyy5rhqkk5et59qa3o ip link
 
 networks:                                
   my-overlay:                               
-    driver: bridge                       
+    driver: overlay
+    ipam:
+      driver: default
+      config:
+      - subnet: <subnet>                       
     driver_opts:                         
       com.docker.network.driver.mtu: 1450
 ```
@@ -171,6 +167,7 @@ networks:
 ```bash
 docker network create \
   -d overlay \
+  --subnet <subnet-net> \
   --opt com.docker.network.driver.mtu=1450 \
   --attachable \
   my-overlay
