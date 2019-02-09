@@ -1,7 +1,7 @@
 ---
-title: "Class加载过程"
+title: "ClassLoader（二）- 加载过程"
 author: "颇忒脱"
-tags: ["重学Java", "ClassLoader", "JVM"]
+tags: ["ClassLoader", "JVM", "ARTS", "ARTS-T"]
 date: 2019-01-25T21:36:01+08:00
 ---
 
@@ -135,7 +135,7 @@ Bar's classLoader: user-defined 1
 
 ### 解析（Resolution）
 
-JVM在运行时会为每个类维护一个run-time constant pool，run-time constant pool来构建自类的二进制形式里的`constant_pool`表。run-time constant pool里的所有引用一开始都是符号引用（symbolic reference）（见[Java Virutal Machine Specification - 5.1. The Run-Time Constant Pool][jvms-5.1]）。符号引用就是并非真正引用（即引用内存地址），只是指向了一个名字而已（就是字符串）。解析阶段做的事情就是将符号引用转变成实际引用）。
+JVM在运行时会为每个类维护一个run-time constant pool，run-time constant pool构建自类的二进制形式里的`constant_pool`表。run-time constant pool里的所有引用一开始都是符号引用（symbolic reference）（见[Java Virutal Machine Specification - 5.1. The Run-Time Constant Pool][jvms-5.1]）。符号引用就是并非真正引用（即引用内存地址），只是指向了一个名字而已（就是字符串）。解析阶段做的事情就是将符号引用转变成实际引用）。
 
 [Java Virutal Machine Specification - 5.4. Linking][jvms-5.4]：
 
