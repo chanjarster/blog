@@ -1,7 +1,7 @@
 ---
 title: "Stateful Service Design Consideration for the Kubernetes Stack"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-R", "Akka", "架构", "k8s"]
+tags: ["ARTS", "ARTS-R", "Akka", "微服务", "k8s"]
 date: 2019-01-30T20:43:08+08:00
 ---
 
@@ -9,7 +9,7 @@ date: 2019-01-30T20:43:08+08:00
 
 [原文地址][origin]
 
-关键词：Cloud-native stateful service，Akka
+关键词：微服务、Cloud-native stateful service、Akka
 
 ## 大纲
 
