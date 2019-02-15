@@ -176,6 +176,20 @@ $ docker network inspect -f '{{json .IPAM}}' bridge
 
 如果有则参考[Configure the default bridge network][docker-configure-the-default-bridge-network]（可忽略IPv6部分的配置）。
 
+## 8. live restore
+
+开启live restore特性能够在Docker daemon停止的时候依旧让容器保持运行。
+
+```json
+{
+  "live-restore": true
+}
+```
+
+注意：在Daemon停机期间，容器的日志被暂存在一个缓冲区中，如果缓冲区满了（默认大小64K），则容器就会被阻塞住。
+
+本特性不支持，对Docker daemon做major或minor升级所引起的daemon停机。
+
 ## 参考资料
 
 * [Daemon CLI][dockerd-options]
@@ -184,6 +198,7 @@ $ docker network inspect -f '{{json .IPAM}}' bridge
 * [Use the OverlayFS storage driver][overlay2-driver]
 * [Post-installation steps for Linux][docker-linux-postinstall]
 * [Configure the default bridge network][docker-configure-the-default-bridge-network]
+* [Keep containers alive during daemon downtime][live-restore]
 
 [dockerd-options]: https://docs.docker.com/engine/reference/commandline/dockerd/
 [daocloud-acc]: https://www.daocloud.io/mirror#accelerator-doc
@@ -192,3 +207,4 @@ $ docker network inspect -f '{{json .IPAM}}' bridge
 [overlay2-driver]: https://docs.docker.com/storage/storagedriver/overlayfs-driver/#configure-docker-with-the-overlay-or-overlay2-storage-driver
 [docker-linux-postinstall]: https://docs.docker.com/install/linux/linux-postinstall/
 [docker-configure-the-default-bridge-network]: https://docs.docker.com/network/bridge/#configure-the-default-bridge-network
+[live-restore]: https://docs.docker.com/config/containers/live-restore/

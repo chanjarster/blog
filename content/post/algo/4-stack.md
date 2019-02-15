@@ -1,5 +1,5 @@
 ---
-title: "算法（四） - 栈"
+title: "算法 - 栈"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-A"]
 date: 2019-02-13T20:40:33+08:00

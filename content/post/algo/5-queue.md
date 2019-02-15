@@ -1,5 +1,5 @@
 ---
-title: "算法（五） - 队列"
+title: "算法 - 队列"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-A"]
 date: 2019-02-13T21:10:33+08:00
