@@ -28,3 +28,7 @@ date: 2019-02-18T09:30:06+08:00
 1. 把Pod关联的Deployment删除，把一只处于Terminating的Pod用`kubectl delete pod --force --grace-period=0`的方式删除。
 1. 重新部署Deployment。
 1. 问题解决。
+
+相关[issue][gh-issue]
+
+[gh-issue]: https://github.com/kubernetes/kubernetes/issues/51835
