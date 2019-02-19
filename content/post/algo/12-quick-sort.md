@@ -97,4 +97,4 @@ private void quickSort(int[] a, int start, int end) {
 ![](../sort/quick-sort.png)
 
 [1]: https://time.geekbang.org/column/article/41913
-[merge-sort]: ../merge-sort
+[merge-sort]: ../11-merge-sort
