@@ -3,7 +3,6 @@ title: "Docker容器如何获得自己的名字"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-T", "docker"]
 date: 2019-02-20T10:38:28+08:00
-draft: true
 ---
 
 <!--more-->
