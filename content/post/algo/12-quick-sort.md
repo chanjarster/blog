@@ -85,8 +85,7 @@ private void quickSort(int[] a, int start, int end) {
       pivot_i++;
     }
   }
-  int tmp = a[pivot_i];
-  a[end] = tmp;
+  a[end] = a[pivot_i];
   a[pivot_i] = pivot;
 
   quickSort(a, start, pivot_i - 1);
