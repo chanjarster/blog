@@ -39,6 +39,8 @@ a[i][j]_addr = base_addr + (i * n + j) * type_size
 a[i][j][k]_addr = base_addr + (i * n * p + j * p + k) * type_size
 ```
 
+关于多维数组在内存中的布局参考这篇文章：[Memory Layout of Multi-Dimensional Arrays][dzone-mem-layout]
+
 ## 链表
 
 * 通过“指针”将一组零散的内存块串联起来使用
@@ -82,3 +84,4 @@ a[i][j][k]_addr = base_addr + (i * n * p + j * p + k) * type_size
 [1]: https://time.geekbang.org/column/article/40961
 [2]: https://time.geekbang.org/column/article/41013
 [3]: https://time.geekbang.org/column/article/41149
+[dzone-mem-layout]: https://dzone.com/articles/memory-layout-of-multi-dimensional-arrays-1

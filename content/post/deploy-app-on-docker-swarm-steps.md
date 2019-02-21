@@ -1,7 +1,7 @@
 ---
 title: "Docker Swarm部署应用的总结"
 author: "颇忒脱"
-tags: ["docker", "tagB", "运维"]
+tags: ["docker", "运维"]
 date: 2019-02-01T09:02:45+08:00
 ---
 

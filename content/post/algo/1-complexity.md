@@ -66,7 +66,7 @@ int cal(int m, int n) {
 
   return sum_1 + sum_2;
 }
-```java
+```
 
 
 [1]: https://time.geekbang.org/column/article/40036
