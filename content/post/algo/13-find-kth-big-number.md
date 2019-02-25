@@ -25,6 +25,9 @@ date: 2019-02-25T10:21:10+08:00
 ```java
 public static int findKthBigNumber(int[] a, int kthBig) {
   int n = a.length;
+  if (kthBig > n) {
+    return -1;
+  }
   int lthSmall = n - kthBig;
   return quickFind(a, 0, a.length - 1, lthSmall);
 }
