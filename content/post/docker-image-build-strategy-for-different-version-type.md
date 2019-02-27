@@ -1,5 +1,5 @@
 ---
-title: "Docker Image CI/CD实践"
+title: "稳定与非稳定版本软件的Docker Image构建策略"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-T", "docker", "CI_CD"]
 date: 2019-02-27T09:11:04+08:00
@@ -25,7 +25,7 @@ Docker image的tag是不稳定的，这句话的意思是**就算tag不变，其
 * 从docker image使用方角度，每次启动之前都需要pull一下，确保使用了新的image
 * 从docker image提供方角度，就算你的软件版本已经冻结，你仍然需要定期构建image并发布仓库上
 
-## Docker image的CI/CD
+## 针对稳定与非稳定版本的构建策略
 
 和Maven的版本定义一样，你的软件应该分为两种：
 
