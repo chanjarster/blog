@@ -32,7 +32,7 @@ Docker image的tag是不稳定的，这句话的意思是**就算tag不变，其
 * stable版，即一旦发布其版本号对应的代码不会再做修改
 * snapshot版，又称nightly-build版，即该版本号对应的代码是不稳定的
 
-对于stable版，你应该定期对其构建image。比如你有版本1.0、1.1、1.2，那你应该定期从软件仓库中下载这三个版本的构建物，然后对为它们构建image。以Maven举例，定期从Maven仓库下载它们的Jar，然后为它们构建image。
+对于stable版，你应该定期对其构建image。比如你有版本1.0、1.1、1.2，那你应该定期从软件仓库中下载这三个版本的构建物，然后对为它们构建image。以Maven举例，定期从Maven仓库下载它们的Jar，然后为它们构建image。记得确保`docker build`添加了`--pull`选项。
 
 对于snapshot版，你应该将构建image的过程融入到软件的构建过程中。以Maven为例，使用[spotify-dockerfile-plugin][spotify-dockerfile-plugin]，`mvn clean install dockerfile:build dockerfile:push`。
 
