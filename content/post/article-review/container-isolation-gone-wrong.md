@@ -44,15 +44,15 @@ date: 2019-02-23T16:31:04+08:00
 用`perf`工具进一步观察：
 
 1. `sudo perf top -p <worker-pid> -d 60 --stdio`，观察到`__d_lookup`的调用占了50%以上的时间。`__d_lookup`是内核函数，也就意味着大部分时间被内核占用了。
-1. `__d_lookup`是一个从缓存中查找目录的metadata的函数。linux内核会将之前查找过的目录的metadata（dentry）存到一个缓存中，这个缓存就是一个hash table，这样可以加快执行速度。这个hash table是一个固定长度的数组，数组元素是链表。当hash冲突时将同hash值元素追加到链表里。
+1. `__d_lookup`是一个从缓存中查找文件metadata的函数。linux内核会将之前查找过的文件的metadata（dentry）存到一个缓存中，这个缓存就是一个hash table，这样可以加快执行速度。这个hash table是一个固定长度的数组，数组元素是链表。当hash冲突时将同hash值元素追加到链表里。
 
 观察`dentry cache`：
 
 1. `$ dmesg | grep Dentry`，可以观察到系统启动时这个数组的大小以及尺寸：`Dentry cache hash table entries: 4194304 (order: 13, 33554432 bytes)`
 1. 于是怀疑是否这个cache在trasher运行期间增长过大，导致内核内存使用飙升呢？`sudo slabtop -o`观察到果然占用了~26G内存，存了5百万个dentry。
-1. 但是host上根本没有那么多目录，是怎么产生5百万个dentry呢？
+1. 但是host上根本没有那么多文件，是怎么产生5百万个dentry呢？
 
-了解`dentry`的创建机制：不论你查找的目录是否存在，linux内核都会为查询目录创建一个dentry。而trasher则会大量的查询不存在的目录，导致dentry数量持续上升。这解释了为何trasher启动期间内存使用率持续攀升。
+了解`dentry`的创建机制：不论你查找的目录是否存在，linux内核都会为查询文件创建一个dentry。而trasher则会大量的查询不存在的文件，导致dentry数量持续上升。这解释了为何trasher启动期间内存使用率持续攀升。
 
 > linux内核的这个机制和互联网架构中的缓存穿透一模一样，所谓缓存穿透就是查询数据库中不存在的key，导致每次查询都hit到数据库，避免方式就是对每次查询的key的结果都做缓存。看来很多事情老前辈们早就解决了。
 
