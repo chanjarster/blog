@@ -2,13 +2,12 @@
 title: "What every programmer should know about memory, Part 2: CPU caches"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-T", "kernel"]
-date: 2019-03-05T11:48:12+08:00
-draft: true
+date: 2019-03-05T21:22:12+08:00
 ---
 
 <!--more-->
 
-原文：[What every programmer should know about memory, Memory part 2: CPU caches][origin]
+原文：[What every programmer should know about memory, Part 2: CPU caches][origin]
 
 关键词：Cache prefetching、TLB cache missing、MESI protocol、Cache types（L1d、L1i、L2、L3）
 
@@ -48,7 +47,7 @@ L1d是data cache，L1i是instruction cache（code cache）。上图只是概要�
 
 插播概念[word][wiki-word]：
 
-> **Word**，数据的自然单位，CPU指令集所能处理的数据单位。在x86-64架构中，word size=64 bit=8 bytes。
+> **Word**，数据的自然单位，CPU指令集所能处理的数据单位。在x86-64架构中，word size=64 bits=8 bytes。
 
 CPU cache中存储的条目（entry）不是word，而是cache line，如今一条cache line大小为64 bytes。每次从RAM中抓取数据的时候不仅会将目标数据抓过来，还会将其附近的数据一并抓过来，构成64 bytes大小的cache line。
 
@@ -455,9 +454,9 @@ T<sub>exe</sub> = N[(1-F<sub>mem</sub>)T<sub>proc</sub> + F<sub>mem</sub>(G<sub>
 
 **Figure 3.23: Minimum Cache Hit Rate For Speed-Up**
 
-X轴代表了单线程代码的G<sub>hit</sub>，Y代表了双线程代码所需的cache命中率，双线程的值永远不能比单线程高，否则的话就意味着单线程可以用同样的方法改进代码了。单线程cache命中率<55%的时候，程序总是能够从多线程得到好处。
+X轴代表了单线程代码的G<sub>hit</sub>，Y代表了双线程代码所需的G<sub>hit</sub>，双线程的值永远不能比单线程高，否则的话就意味着单线程可以用同样的方法改进代码了。单线程G<sub>hit</sub> < 55%的时候，程序总是能够从多线程得到好处。
 
-绿色代表的是目标区域，如果一个线程的降速低于50%且每个线程的工作量减半，那么运行时间是有可能低于单线程的运行时间的。看上图，单线程cache命中率60%，如果要得到好处，双线程程序必须命中率在10%以上。如果单线程cache命中率在95%，多线程命中率必须在80%以上，这就难了。特别地，这个问题是关于hyper-threads本身的，实际上给每个hyper-thread的cache尺寸是减半的（L1d、L2、L3都是）。两个hyper-thread使用相同的cache来加载数据。如果两个线程的工作集不重叠，那么原95%也可能减半，那么就远低于要求的80%。
+绿色代表的是目标区域，如果一个线程的降速低于50%且每个线程的工作量减半，那么运行时间是有可能低于单线程的运行时间的。看上图，单线程G<sub>hit</sub>=60%时，如果要得到好处，双线程程序必须在10%以上。如果单线程G<sub>hit</sub>=95%，多线程则必须在80%以上，这就难了。特别地，这个问题是关于hyper-threads本身的，实际上给每个hyper-thread的cache尺寸是减半的（L1d、L2、L3都是）。两个hyper-thread使用相同的cache来加载数据。如果两个线程的工作集不重叠，那么原95%也可能减半，那么就远低于要求的80%。
 
 所以Hyper-threads只在有限范围的场景下有用。单线程下的cache命中率必须足够低，而且就算减半cache大小新的cache命中率在等式中依然能够达到目标。也只有这样使用Hyper-thread才有意义。在实践中是否能够更快取决于处理器是否能够充分交叠一个线程的等待和另一个线程的执行。而代码为了并行处理所引入的其他开销也是要考虑进去的。
 
@@ -465,7 +464,125 @@ X轴代表了单线程代码的G<sub>hit</sub>，Y代表了双线程代码所需
 
 ### 3.3.5 Other Details
 
+现代处理器提供给进程的虚拟地址空间（virtual address space），也就是说有两种地址：虚拟的和物理的。
 
+虚拟地址不是唯一的：
+
+* 一个虚拟地址在不同时间可以指向不同的物理地址。
+* 不同进程的相同的地址也可能指向不同的物理地址。
+
+处理器使用虚拟地址，虚拟地址必须在Memory Management Unit（MMU）的帮助下才能翻译成物理地址。不过这个步骤是很耗时的（注：前面提到的TLB cache缓存的是虚拟->物理地址的翻译结果）。
+
+现代处理器被设计成为L1d、L1i使用虚拟地址，更高层的cache则使用物理地址。
+
+通常来说不必关心cache地址处理的细节，因为这些是不能改变的。
+
+Overflowing the cache capacity是一件坏事情；如果大多数使用的cache line都属于同一个set，则所有缓存都会提前遇到问题。第二个问题可以通过virtual address来解决，但是无法避免user-level进程使用物理地址来缓存。**唯一需要记住的事情是，要尽一切可能，不要在同一个进程里把相同的物理地址位置映射到两个或更多虚拟地址**。
+
+Cache replacement策略，目前使用的是LRU策略。关于cache replacement程序员没有什么事情可做。程序员能做的事情是：
+
+* 完全使用逻辑内存页（logical memory pages）
+* 使用尽可能大的页面大小来尽可能多样化物理地址
+
+## 3.4 Instruction Cache
+
+指令cache比数据cache问题更少，原因是：
+
+* 被执行的代码量取决于所需代码的大小，而代码大小通常取决于问题复杂度，而问题复杂度是固定的。
+* 程序的指令是由编译器生成的，编译器知道怎么生成好代码。
+* 程序流程比数据访问内存更容易预测，现代处理器非常擅长预测模式，这有助于prefetching
+* 代码总是具有良好的空间、时间局部性。
+
+CPU核心和cache（甚至第一级cache）的速度差异在增加。CPU已被流水线化，所谓流水线指一条指令的执行是分阶段的。首先指令被解码，参数被准备，最后被执行。有时候这个pipeline会很长，长pipeline就意味着如果pipeline停止（比如一条指令的执行被中断了），那它得花一些时间才能重新找回速度。pipeline停止总是会发生的，比如无法正确预测下一条指令，或者花太长时间加载下一条指令（比如从内存里加载）。
+
+现代CPU设计师花费了大量时间和芯片资产在分支预测上，为了尽可能不频繁的发生pipeline停止。
+
+### 3.4.1 Self Modifying Code
+
+早些时候为了降低内存使用（内存那个时候很贵），人们使用一种叫做Self Modifing Code（SMC）的技术来减少程序数据的尺寸。
+
+不过现在应该避免SMC，因为如果处理器加载一条指令到流水线中，而这条指令在却又被修改了，那么整个工作就要从头来过。
+
+所以现在到处理器假设code pages是不可变的，所以L1i没有使用MESI，而是使用更简单的SI
+
+## 3.5 Cache Miss Factors
+
+我们已经看到内存访问cache miss导致的开销极具增大，但是有时候这个问题是无法避免的，所以理解实际的开销以及如何缓解这个问题是很重要的。
+
+### 3.5.1 Cache and Memory Bandwidth
+
+测试程序使用x86和x86-64处理器的SSE指令每次加载16 bytes，working set size从1K到512M，测试的是每个周期能够加载/存储多少个bytes。
+
+![](https://static.lwn.net/images/cpumemory/cpumemory.60.png)
+
+**Figure 3.24: Pentium 4 Bandwidth**
+
+这个图是64-bit Intel Netburst处理器的测试结果。
+
+先看读的测试可以看到：
+
+* 当working set size在L1d以内的时候，16 bytes/cycle
+* 当L1d不够用的时候，性能下降很快，6 bytes/cycle
+* 到2<sup>18</sup>的时候又下降了一小段是因为DTLB耗尽了，意思是对每个新page需要额外工作。
+* 这个测试是顺序读的，很利于prefetching，而在任何working set size下都能够达到5.3/cycle，记住这些数字，它们是上限，因为真实程序永远无法达到这个值。
+
+在看写和copy的测试：
+
+* 就算是最小的working set size，也不超过4 bytes/cycle。这说明Netburst处理器使用的Write-through策略，L1d的速度显然受制于L2的速度。
+* copy测试是把一块内存区域copy到另一个不重叠的内存区域，因为上述原因它的结果也没有显著变差。
+* 当L2不够用的时候，下降到0.5 bytes/cycle。
+
+下面是两个线程分别钉在同一核心的两个Hyper-thread上的测试情况：
+
+![](https://static.lwn.net/images/cpumemory/cpumemory.61.png)
+
+**Figure 3.25: P4 Bandwidth with 2 Hyper-Threads**
+
+这个结果符合预期，因为Hyper-thread除了不共享register之外，其他资源都是共享的，cache和带宽都被减半了。这意味着就算一个线程在在等待内存的时候可以让另一个线程执行，但是另一个线程实际上也在等待，所以并没有什么区别。
+
+下图是Intel Core2处理器的测试结果（对比Figure 3.24）：
+
+![](https://static.lwn.net/images/cpumemory/cpumemory.62.png)
+
+**Figure 3.26: Core 2 Bandwidth**
+
+Core 2 L2是P4 L2的四倍。这延迟了write和copy测试的性能下跌。read测试在所有的working set size里都维持在16 bytes/cycle左右，在2<sup>20</sup>处下跌了一点点是因为DTLB放不下working set。能够有这么好的性能表现不仅意味着处理器能够及时地prefetching和传输数据，也意味着数据是被prefetch到L1d的。
+
+看write和copy的表现，Core 2处理器的L1d cache没有采用Write-through策略，只有当必要的时候L1d才会evict，所以能够获得和read接近的表现。当L1d不够用的时候，性能开始下降。当L2不够用的时候再下跌很多。
+
+下图是Intel Core2处理器双线程跑在两个核心上：
+
+![](https://static.lwn.net/images/cpumemory/cpumemory.63.png)
+
+**Figure 3.27: Core 2 Bandwidth with 2 Threads**
+
+这个测试两个线程分别跑在两个核心上，两个线程访问相同的内存，没有完美地同步。read性能和Figure 3.26没有什么差别。
+
+看write和copy的表现，有意思的是在working set能够放进L1d的表现和直接从main memory读取的表现一样。两个线程访问相同的内存区域，针对cache line的RFO消息肯定会被发出。这里可以看到一个问题，RFO的处理速度没有L2快。当L1d不够用的时候，会将修改的cache line flush到共享的L2，这是性能有显著提升是因为L1d中的数据被flush到L2，那就没有RFO了。而且因为两个核心共享FSB，每个核心只拥有一半的FSB带宽，意味着每个线程的性能大约是单线程的一半。
+
+厂商的不同版本CPU和不同厂商的CPU的表现都是不同的。原文里后面比较了AMD Opteron处理器，这里就不写了。
+
+### 3.2.5 Critical Word Load
+
+数据是一block为单位从main memory传输到cache line的，一个block大小为64 bits（记得前面说的word也是64 bits），一条cache line的大小是64/128 bytes，所以填满一个cache line要传输8/16次。
+
+后面没有看懂，大致意思是Critical word是cache line中的关键word，程序要读到它之后才能继续运行，但是如果critical word不是cache line的第一个，那么就得等前面的word都加载完了之后才行。blah blah blah，不过这个理解可能也是不对的。
+
+### 3.5.3 Cache Placement
+
+cache和hyper-thread、core、处理器的关系是程序员无法控制的，但是程序员可以决定线程在哪里执行，所以cache和CPU是如何关联的就显得重要了。
+
+后面没仔细看，大致讲了由于不同的CPU架构，决定如何调度线程是比较复杂的。
+
+### 3.5.4 FSB Influence
+
+不细讲了，对比了667MHz DDR2和800 MHz DDR2（20%的提升），测试下来性能有18%的提升接近理论值（20%）。
+
+![](https://static.lwn.net/images/cpumemory/cpumemory.27.png)
+
+**Figure 3.32: Influence of FSB Speed**
+
+所以更快的FSB的确能够带来好处。要注意CPU可能支持更高的FSB，但是主板/北桥可能不支持的情况。
 
 [origin]: https://lwn.net/Articles/252125/
 [wiki-word]: https://en.wikipedia.org/wiki/Word_(computer_architecture)
