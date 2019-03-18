@@ -8,8 +8,7 @@ date: 2019-03-03T15:30:40+08:00
 
 <!--more-->
 
-原文：[What every programmer should know about memory, Part 1
-, RAM][origin]
+原文：[What every programmer should know about memory, Part 1, RAM][origin]
 
 # 1 Introduction
 
