@@ -15,7 +15,7 @@ date: 2018-10-10T15:47:02+08:00
 
 1. Java client程序在做SSL连接的时候，会拉取server的证书，利用truststore去验证这个证书，如果不存在 or 证书过期 or 不是由可信CA签发，就意味着服务端不被信任，就不能连接。
 1. 如果在程序启动时没有特别指定使用哪个truststore（通过System Property `javax.net.ssl.trustStore` 指定），那么就会使用`$JAVA_HOME/jre/lib/security/cacerts`。如果指定了，就会使用指定的truststore + cacerts来验证。
-1. cacerts存放了JDK信任的CA证书（含有public key），它里面预先已经存放了已知的权威CA证书。你可以通过`keytool -list -keystore - $JAVA_HOME/jre/lib/security/cacerts`看到（让你输密码的时候直接回车就行了）
+1. cacerts存放了JDK信任的CA证书（含有public key），它里面预先已经存放了已知的权威CA证书。你可以通过`keytool -list -keystore $JAVA_HOME/jre/lib/security/cacerts`看到（让你输密码的时候直接回车就行了）
 
 以上过程被称为server authentication，也就是说client验证server是否可信，server authentication是最常见的，https就是这种模式。
 
