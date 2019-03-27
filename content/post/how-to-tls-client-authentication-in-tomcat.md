@@ -706,6 +706,10 @@ public class Client {
 * 所有private key都很重要！如果它被泄漏了，就要回收它所对应都证书。如果CA的private key泄漏了，那么用它签发的所有证书都要被回收。
 * keystore和truststore的密码设置的要复杂一些。
 
+## 关于反向代理
+
+因为服务端认证所需要的证书直接配置在Tomcat上的，因此在做反向代理的时候不能使用SSL Termination模式，而是得使用SSL Passthrough模式。
+
 ## 其他语言、SDK、工具
 
 上面讲的方法不是只适用于Tomcat和Httpclient的，TLS的服务端认证与客户端认证应该在绝大部分的语言、SDK、类库都有支持，请自行参阅文档实践。文中的keystore和truststore是Java特有的，不过不必迷惑，因为它们仅仅起到一个存放证书和private key的保险箱，有些语言或工具则是直接使用证书和private key，比如前面提到的curl。
