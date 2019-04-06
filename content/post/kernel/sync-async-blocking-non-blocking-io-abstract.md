@@ -54,6 +54,8 @@ Reactor Pattern的老祖宗论文：[Reactor Pattern][10]，TL;DR。[Understandi
 1. 文中给Tomcat的线程少了（只给了500），只利用了40%左右的CPU，而vert.x的测试的CPU利用率为100%。我把的Tomcat的线程设到2000，测试结果就和vert.x差不多了（验证了多线程模型派的观点）。
 2. vert.x的测试代码和Tomcat的测试代码不等价，没有使用`Thread.sleep()`。不过当我尝试在vert.x中使用sleep则发生了大量报错，应该是我的使用问题，后面就没有深究了。
 
+我写的测试可以在[这里][14]看到。
+
 ## 总结
 
 看了前面这么多文章其实总结下来就这么几点：
@@ -102,3 +104,4 @@ Reactor Pattern的老祖宗论文：[Reactor Pattern][10]，TL;DR。[Understandi
 [11]: https://dzone.com/articles/understanding-reactor-pattern-thread-based-and-eve
 [12]: https://www.celum.com/en/blog/technology/the-reactor-pattern-and-non-blocking-io
 [13]: ../../concurrent-programming/throughput-and-thread-pool-size/
+[14]: https://github.com/chanjarster/io-modes-benchmark
