@@ -61,7 +61,7 @@ umount /tmp/foo/
 
 ### 观察Java进程的CPU使用情况
 
-你得要先安装[perf-map-agent][perf-map-agent]（下面有安装方法），列举几个用法：
+你得要先安装[perf-map-agent][perf-map-agent]（下面有安装方法），在启动Java进程的时候添加`-XX:+PreserveFramePointer`参数，下面是几个用法：
 
 * `perf-java-top <pid> <perf-top-options>`
 * `perf-java-record-stack <pid> <perf-record-options>`
@@ -71,7 +71,7 @@ umount /tmp/foo/
 
 还可以使用`perf-java-flames <pid> <perf-record-options>`生成火焰图，你得先安装[FlameGraph][flame-graph]（下面有安装方法）。关于火焰图的解读看[netflix的这篇博客][netflix-blog]。
 
-### 观察容器内的Java进程CPU使用情况
+### 观察容器内Java进程CPU使用情况
 
 目前没有办法。
 
