@@ -32,6 +32,7 @@ date: 2018-11-15T15:21:38+08:00
 * [左耳听风 | 弹力设计篇之“重试设计”](https://time.geekbang.org/column/article/4121)
 * [左耳听风 | 弹力设计篇之“熔断设计”](https://time.geekbang.org/column/article/4241)
 * [左耳听风 | 弹力设计篇之“限流设计”](https://time.geekbang.org/column/article/4245)
+* [How to Design a Scalable Rate Limiting Algorithm](https://konghq.com/blog/how-to-design-a-scalable-rate-limiting-algorithm/)，Kong的限流文章
 * [左耳听风 | 弹力设计篇之“降级设计”](https://time.geekbang.org/column/article/4252)
 * [左耳听风 | 弹力设计篇之“弹力设计总结”](https://time.geekbang.org/column/article/4253)
 * 管理设计
