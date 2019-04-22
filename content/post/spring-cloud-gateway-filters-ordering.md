@@ -149,7 +149,7 @@ SCG的优点很明显，它做了Zuul2不做的事情：
 * 执行某个Route的时候，SCG会将Global Filter和Route Filter结合起来并排序：
   * 没有给order的Global Filter则保持order为null去排序
   * 没有给order的Route Filter的order则从1开始，根据Route中定义的顺序给值
-  * 排序逻辑见[spring-AnnotationAwareOrderComparator][spring-AnnotationAwareOrderComparator]
+  * 排序逻辑见[AnnotationAwareOrderComparator][spring-AnnotationAwareOrderComparator]
 * 对于Pre Filter，执行顺序同排序顺序
 * 对于Post Filter，执行顺序与排序顺序相反
 * 如果你要自定义Global Filter，那么一般来说：
