@@ -1,7 +1,7 @@
 ---
 title: "如何在Tomcat中做TLS客户端认证"
 author: "颇忒脱"
-tags: ["java", "tls"]
+tags: ["java", "tls", "openssl"]
 date: 2019-03-27T15:01:57+08:00
 ---
 
