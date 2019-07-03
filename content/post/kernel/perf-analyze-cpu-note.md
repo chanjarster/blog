@@ -168,7 +168,30 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 export FLAMEGRAPH_DIR=<path-to-flame-graph>
 ```
 
+#### BCC
+
+官方[安装文档][bcc]。
+
+如果你是Ubuntu 18.04：
+
+```bash
+sudo apt-get install bpfcc-tools linux-headers-$(uname -r)
+```
+
+如果你是Ubuntu 16.40：
+
+```bash
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+echo "deb https://repo.iovisor.org/apt/$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/iovisor.list
+sudo apt-get update
+sudo apt-get install bcc-tools libbcc-examples linux-headers-$(uname -r)
+```
+
+
+
 [bindfs]: https://bindfs.org/
 [perf-map-agent]: https://github.com/jvm-profiling-tools/perf-map-agent
 [flame-graph]: https://github.com/brendangregg/FlameGraph
 [netflix-blog]: https://medium.com/netflix-techblog/java-in-flames-e763b3d32166
+
+[bcc]: https://github.com/iovisor/bcc/blob/master/INSTALL.md#ubuntu---binary
