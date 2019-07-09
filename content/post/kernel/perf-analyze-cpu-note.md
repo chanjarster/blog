@@ -187,7 +187,7 @@ sudo apt-get update
 sudo apt-get install bcc-tools libbcc-examples linux-headers-$(uname -r)
 ```
 
-
+安装路径在：`/usr/share/bcc/tools`。
 
 [bindfs]: https://bindfs.org/
 [perf-map-agent]: https://github.com/jvm-profiling-tools/perf-map-agent
