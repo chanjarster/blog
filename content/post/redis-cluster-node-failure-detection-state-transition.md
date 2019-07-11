@@ -13,12 +13,12 @@ draft: false
 ## 状态转换图
 
 - 每个Node在本地维护了一张其他Node的状态表，并根据Failure Detection算法更新这张表里的Node的状态
-- 每个Node可以自行把其他Node的状态设置为GOOD（这个状态在文档和源码中均不存在，等价于不是PFAIL也不是FAIL）、PFAIL。
-- 如果要把其他Node的状态设置为FAIL则需要大多数Master Node同意才行，一旦设置成功要将这个消息传播给所有其他能连接的Node，其他Node收到这个信息后也要更新本地Node状态表，将Failed Node的状态更新为FAIL。
+- 修改Node状态表里的Node的状态为GOOD（在文档中称之为Clear Flags）、PFAIL，不需要共识（大多数Master Node同意）。
+- 修改Node状态表里的Node的状态为FAIL则需要共识，一旦设置成功要将这个消息传播给所有能连接的Node，其他Node收到这个信息后也要更新本地Node状态表，将对应Node的状态更新为FAIL。
 
 下面是状态转换图，例举的是Node A观察Node B的例子：
 
-![](state-transition.png)
+![](failure-detection.png)
 
 
 
