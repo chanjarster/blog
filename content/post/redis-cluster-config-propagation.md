@@ -80,7 +80,7 @@ Slave迁移有两个规则：
 * 如果Master A的NodeID的字典顺比Master B的小
 * 那么Master A就把己侧的CurrentEpoch+1，同时ConfigEpoch改成和CurrentEpoch一样
 
-## Node重制
+## Node重置
 
 略，见[文档][spec-2]。
 
