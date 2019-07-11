@@ -12,13 +12,24 @@ draft: false
 
 ## Epoch
 
-* 可以把Epoch当作是一个版本号，是一个64位无符号整形
-* 每个Node自己有一份Cluster.currentEpoch、MySelf.configEpoch、其他Node.configEpoch，详见[文档][cluster-nodes]。
-* 每个Master有自己的ConfigEpoch且在整个Cluster中唯一
-* Slave的ConfigEpoch随其Master
-* Cluster.currentEpoch，该值等于所有Node中最大的ConfigEpoch的值
-* Master的ConfigEpoch初始值是0，也就是说Cluster.CurrentEpoch的初始值也是0
-* Node之间Gossip传输消息时，Receiver发现Sender的ConfigEpoch比自己大，那么就更新自己的Cluster.CurrentEpoch为该值，随时间收敛，所有Node的Cluster.CurrentEpoch都变成一样。
+因为Redis Cluster没有中心节点，因此Cluster中的每个Node都存有：1）自己的状态（[ClusterNode源码][src-node-state]）；2）Cluster的状态（[ClusterState源码][src-cluster-state]）。换句话说每个Node都有一个自己的视角来观察Cluster。
+
+如果大家眼中看到的是一致的自然没有什么问题，如果不一致怎么办？Redis Cluster用是Epoch来解决。那么Epoch是什么？Epoch翻译过来的意思是时代。Redis Cluster定下了规矩，旧时代的说了不算，要听新时代的，某些情况下旧时代发来的请求不予理会（比如一个死了很久的Master复活）。
+
+你可以看到Cluster状态中有一个currentEpoch字段，意思是整个集群当前的时代。考虑到这个Cluster状态是Node从自己的视角观察到的，因此也可以认为是这个Node所处的时代。
+
+Node状态中有一个configEpoch字段，意思并非这个Node所处的时代，而是用来表示Slots由哪个Node掌管的意思——回忆一下有一个Slots->Node的Map。
+
+集群状态发生变更就要产生一个新时代，准确点说当发生Slots易主的情况就要产生一个新时代。你可以理解为Cluster就是当今世界，Slots易主就是世界格局发生变更，每一次变更都是一个新时代。
+
+Redis Cluster中的Node通过Gossip协议传播自己的状态+自己所认为的Cluster的状态，传播过程中都会带上configEpoch和currentEpoch（[ClusterMsg源码][src-cluster-msg]），运用旧时代听新时代的规则，使得Node们达成一致，也就是Cluster状态达成一致。
+
+下面是一些实现细节的总结：
+
+* Epoch是一个64位无符号整形
+* 每个Master有自己的ConfigEpoch且在整个Cluster中唯一、Slave的ConfigEpoch随其Master
+* CurrentEpoch = max(ConfigEpoch)
+* Master的ConfigEpoch初始值是0，也就是说CurrentEpoch的初始值也是0
 
 ## Slave Promotion
 
@@ -143,3 +154,6 @@ A：1）用来判定Node所获得的Cluster信息的新旧。2）当Node要变�
 [ali-1]: https://yq.aliyun.com/articles/638627
 [ali-2]: https://yq.aliyun.com/articles/680237
 [cluster-nodes]: https://redis.io/commands/cluster-nodes
+[src-node-state]: https://github.com/antirez/redis/blob/5.0.0/src/cluster.h#L116-L141
+[src-cluster-state]: https://github.com/antirez/redis/blob/5.0.0/src/cluster.h#L143-L181
+[src-cluster-msg]: https://github.com/antirez/redis/blob/5.0.0/src/cluster.h#L252-L275
