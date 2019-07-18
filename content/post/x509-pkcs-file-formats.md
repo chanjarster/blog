@@ -268,6 +268,22 @@ openssl rsa -in private-key.p8.pem -out private-key.p1.pem
 
 如果这个PKCS #8是加密的，那么你得输入密码。
 
+**PKCS #8 Unencrypted -> PKCS #8 Encrypted**
+
+```bash
+openssl pkcs8 -topk8 -in private-key.p8.nocrypt.pem -out private-key.p8.crypt.pem
+```
+
+过程中会让你输入密码，你至少得输入4位。
+
+**PKCS #8 Encrypted -> PKCS #8 Unencrypted**
+
+```bash
+openssl pkcs8 -topk8 -in private-key.p8.crypt.pem -out private-key.p8.nocrypt.pem -nocrypt
+```
+
+过程中会要求你输入Private Key密码。
+
 ## Public Key操作命令
 
 ### 从PKCS #1/#8提取
