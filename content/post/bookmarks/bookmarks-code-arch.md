@@ -7,9 +7,15 @@ date: 2018-11-15T00:00:00+08:00
 
 <!--more-->
 
-# 架构
+# Event
 
+* [Events As First-Class Citizens](https://hackernoon.com/events-as-first-class-citizens-8633e8479493)
 * [Event Sourcing - Martin Fowler](https://martinfowler.com/eaaDev/EventSourcing.html)
+
+
+# Concurrency
+
+* [Java Memory Model FAQ](http://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html)。比较浅显的介绍了什么是reording、synchroniztion、volatile、DCL以及它们的影响、作用以及要注意的地方。
 
 # AuthN
 
