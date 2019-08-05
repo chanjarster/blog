@@ -29,3 +29,7 @@ date: 2018-11-15T00:00:00+08:00
 * [Mechanical Sympathy: False Sharing && Java 7](http://mechanical-sympathy.blogspot.jp/2011/08/false-sharing-java-7.html)
 * [Mechanical Sympathy: False Sharing](http://mechanical-sympathy.blogspot.jp/2011/07/false-sharing.html)
 * [Mechanical Sympathy: Smart Batching](http://mechanical-sympathy.blogspot.jp/2011/10/smart-batching.html)
+
+# 算法
+
+* [Cracking the coding interview--问题与解答](http://hawstein.com/2013/03/14/ctci-solutions-contents/)
