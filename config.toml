@@ -29,7 +29,13 @@ canonifyurls = true
   weight = 15
   identifier = "bookmarks"
   url = "/tags/收藏夹/"
-  
+
+[[menu.main]]
+  name = "JVM"
+  weight = 16
+  identifier = "jvm"
+  url = "/post/jvm/jvm-index/"
+
 [params]
   author = "颇忒脱"
   avatar = "/img/avatar2.jpg"

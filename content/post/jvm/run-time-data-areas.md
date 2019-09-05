@@ -1,5 +1,5 @@
 ---
-title: "JVM运行时数据区域"
+title: "JVM - 运行时数据区域"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-T", "JVM"]
 date: 2019-02-17T20:18:35+08:00
