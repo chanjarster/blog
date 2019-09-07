@@ -17,7 +17,7 @@ date: 2019-09-05T08:50:08+08:00
 
 * [JVM - 对象已经死了吗？](../is-object-dead/)
 * [JVM - GC算法](../gc-algos/)
-* [JVM - 垃圾收集器笔记](../gc-collectors-notes/)
+* [JVM - 垃圾收集器](../gc-collectors/)
 
 ## ClassLoader
 
