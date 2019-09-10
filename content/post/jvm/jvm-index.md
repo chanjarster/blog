@@ -25,6 +25,9 @@ date: 2019-09-05T08:50:08+08:00
 * [JVM - 类加载时机](../class-loading-chance)
 * [JVM - 类加载过程](../class-loading-steps)
 * [JVM - 类加载器](../class-loading-classloader)
+* [JVM - Tomcat类加载器](../classloader-tomcat)
+* [JVM - OSGi类加载器](../classloader-osgi)
+* [JVM - 字节码生成及动态代理](../classloader-byte-gen-dynamic-proxy)
 
 以下是阅读JVM Spec时所整理的笔记，比较细：
 
