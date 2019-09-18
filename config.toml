@@ -36,6 +36,12 @@ canonifyurls = true
   identifier = "jvm"
   url = "/post/jvm/jvm-index/"
 
+[[menu.main]]
+  name = "并发编程"
+  weight = 17
+  identifier = "concurrent-programming"
+  url = "/post/concurrent-programming/concurrent-programming-index/"
+
 [params]
   author = "颇忒脱"
   avatar = "/img/avatar2.jpg"
