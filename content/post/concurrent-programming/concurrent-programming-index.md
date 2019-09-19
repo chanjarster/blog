@@ -9,9 +9,9 @@ date: 2019-09-18T20:20:08+08:00
 
 ## 并行与CPU利用率
 
-* [并行、延迟与吞吐量](../parallel-latency-throughput)
 * [如何估算吞吐量以及线程池大小](../throughput-and-thread-pool-size)
-* TODO Adamhal定律
+* [并行、延迟与吞吐量](../parallel-latency-throughput)
+* [Amdahl定律](../amdahls-law)
 
 ## Java并发编程
 
