@@ -44,6 +44,7 @@ Networking
   * [Kubernetes应用管理][rancher-5-1], [Q&A][rancher-5-2]
   * [Rancher 2.1新功能演示分享][rancher-6-1], [Q&A][rancher-6-2]
   * [PPT资料链接][rancher-7] 提取码：aqrf
+* [RancherLabs B站][rancher-b]
 
 [docker-1]: https://docs.docker.com/engine/docker-overview/#docker-architecture
 [docker-2]: https://learn.openshift.com/subsystems/container-internals-lab-2-0-part-1
@@ -74,5 +75,6 @@ Networking
 [rancher-5-1]: http://live.vhall.com/940973786
 [rancher-5-2]: https://shimo.im/docs/7pxWUZfcm3EDL3N7/
 [rancher-6-1]: http://live.vhall.com/881351242
-[rancher-6-2]: https://shimo.im/docs/oBHLuyh16CUznar6/ 
+[rancher-6-2]: https://shimo.im/docs/oBHLuyh16CUznar6/
 [rancher-7]: https://pan.baidu.com/s/15otnAU1LEXP8D2Au-Bfpvw
+[rancher-b]: https://space.bilibili.com/430496045/channel/index
