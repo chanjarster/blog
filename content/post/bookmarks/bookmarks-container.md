@@ -34,6 +34,7 @@ Networking
   * [K8S安全管理实训][k8s-7]
   * [K8S集群运维与安装配置实训][k8s-8]
   * [K8S问题排查实训][k8s-9]
+* [Configure RBAC In Your Kubernetes Cluster][k8s-10]，这篇文章写的很好，通俗易懂。
 
 # Rancher
 
@@ -64,7 +65,7 @@ Networking
 [k8s-7]: http://zhibo.huaweicloud.com/watch/2502438
 [k8s-8]: http://zhibo.huaweicloud.com/watch/2527955
 [k8s-9]: http://zhibo.huaweicloud.com/watch/2545023
-
+[k8s-10]: https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/
 [rancher-1]: https://mp.weixin.qq.com/s/CBQoVN4WVA-UBqHU_RsHNw
 [rancher-2-1]: http://live.vhall.com/375439580
 [rancher-2-2]: https://shimo.im/docs/LXVaR64WVDwRfcAA/
