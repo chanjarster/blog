@@ -156,7 +156,7 @@ public class ReaderThread extends Thread {
 }
 ```
 
-## 对付不响应中断2
+### 对付不响应中断2
 
 如果你是用Executor执行，则可以这样做提供自己的`ThreadPoolExecutor.newTaskFor`实现，并提供自己的`Future.cancel(boolean)`：
 
@@ -204,7 +204,7 @@ public abstract class SocketUsingTask<T> implements CancellableTask<T> {
 
 ## 停止基于线程的Service
 
-![](stoping-service.png)
+![](stopping-service.png)
 
 ### 利用ExecutorService
 
