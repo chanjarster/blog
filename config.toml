@@ -40,7 +40,7 @@ canonifyurls = true
   name = "并发编程"
   weight = 17
   identifier = "concurrent-programming"
-  url = "/post/concurrent-programming/concurrent-programming-index/"
+  url = "/post/concurrent-programming/index-page"
 
 [params]
   author = "颇忒脱"
