@@ -90,7 +90,7 @@ Ingress Controller Service的externalTrafficPolicy这个为Local（ACK初始化�
 
 关于这个问题又找了一些资料，不过看不太明白：
 
-* [[从service的externalTrafficPolicy到podAntiAffinity](https://segmentfault.com/a/1190000016033076)][art-1]
+* [从service的externalTrafficPolicy到podAntiAffinity][art-1]
 * [访问 externalTrafficPolicy 为 Local 的 Service 对应 LB 有时超时][art-2]
 
 另外注意到，用Rancher部署的K8S集群的Ingress Controller都是DaemonSet的。
