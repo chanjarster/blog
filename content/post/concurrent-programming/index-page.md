@@ -24,6 +24,7 @@ date: 2019-09-18T20:20:08+08:00
 * [运用线程池](../applying-thread-pools)
 * [Avoiding Liveness Hazards](../avoiding-liveness-hazards)
 * [Performance and scalability](../performance-and-scalability)
+* [Testing Concurrent Programs](../testing-concurrent-programs)
 * [Explicit Locks](../explicit-locks)
 * [Building Custom Synchronizers](../building-custom-synchronizers)
 
