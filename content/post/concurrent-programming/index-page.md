@@ -27,4 +27,5 @@ date: 2019-09-18T20:20:08+08:00
 * [Testing Concurrent Programs](../testing-concurrent-programs)
 * [Explicit Locks](../explicit-locks)
 * [Building Custom Synchronizers](../building-custom-synchronizers)
+* [Atomic Variables and Nonblocking Synchronization](../atomic-vars-and-nonblocking-synchronization)
 
