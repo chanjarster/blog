@@ -9,6 +9,21 @@ date: 2019-09-10T20:25:08+08:00
 
 ![](classloader-byte-gen-dynamic-proxy.png)
 
+## 大纲
+
+类库：
+
+* javaassist
+* ASM
+* CGLib
+* AOP框架等
+
+javac：用Java写的字节码生成工具
+
+动态代理：在还不知道原始类和原始接口的时候就写好代理类
+
+## 例子
+
 例子代码，在原始逻辑之前打印"welcome"：
 
 ```java
