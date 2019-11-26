@@ -28,4 +28,5 @@ date: 2019-09-18T20:20:08+08:00
 * [Explicit Locks](../explicit-locks)
 * [Building Custom Synchronizers](../building-custom-synchronizers)
 * [Atomic Variables and Nonblocking Synchronization](../atomic-vars-and-nonblocking-synchronization)
+* [The Java Memory Model](../jmm)
 
