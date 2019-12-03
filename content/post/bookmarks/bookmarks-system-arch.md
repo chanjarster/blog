@@ -34,6 +34,7 @@ date: 2019-04-15T15:21:38+08:00
 * [左耳听风 | 弹力设计篇之“补偿事务”](https://time.geekbang.org/column/article/4087)
 * [左耳听风 | 弹力设计篇之“重试设计”](https://time.geekbang.org/column/article/4121)
 * [左耳听风 | 弹力设计篇之“熔断设计”](https://time.geekbang.org/column/article/4241)
+  * [Netflix Hystrix笔记](../../hystrix-note)
 * [左耳听风 | 弹力设计篇之“降级设计”](https://time.geekbang.org/column/article/4252)
 * [左耳听风 | 弹力设计篇之“弹力设计总结”](https://time.geekbang.org/column/article/4253)
 
