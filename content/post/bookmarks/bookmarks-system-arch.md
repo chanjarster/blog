@@ -68,6 +68,13 @@ date: 2019-04-15T15:21:38+08:00
 * [左耳听风 | 性能设计篇之"秒杀"](https://time.geekbang.org/column/article/7047)
 * [左耳听风 | 性能设计篇之"边缘计算"](https://time.geekbang.org/column/article/7086)
 
+分布式架构资料
+
+* [分布式架构入门](https://time.geekbang.org/column/article/10603)
+* [分布式架构经典图书和论文](https://time.geekbang.org/column/article/10604)
+* [分布式架构工程设计](https://time.geekbang.org/column/article/11232)
+  * [一致性Hash笔记](../../consistent-hashing)
+
 ## 缓存
 
 * [The Three Types of Cache][cache-1]
