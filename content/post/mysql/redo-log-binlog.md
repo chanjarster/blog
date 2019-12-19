@@ -20,7 +20,7 @@ redo log属于InnoDB存储引擎。实际上就是WAL（Write-Ahead Log），在
 
 InnoDB的redo log大小是固定的，4个文件每个文件1G。逻辑上可以认为是一个环。write pos是当前写到的位置，checkpoint则是已经同步到数据库的位置，在write pos和checkpoint之间的空白的可写日志区域，checkpoint之后的则是还未同步到磁盘的内容，每次同步一点内容，checkpoint都会往后移动。
 
-![](redo-log.png)
+<img src="redo-log.png" style="zoom:50%;" />
 
 ## binlog
 

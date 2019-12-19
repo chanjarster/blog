@@ -71,7 +71,7 @@ PS. 大多数数据库的默认隔离级别是Read committed。
 
 * Dirty reads：A事务可以读到B事务还未提交的数据
 * Non-repeatable read：A事务读取一行数据，B事务后续修改了这行数据，A事务再次读取这行数据，结果得到的数据不同。
-* Phantom reads：A事务通过`SELECT ... WHERE`得到一些行，B事务插入新行或者更新已有的行使得这些行满足A事务的`WHERE`条件，A事务再次`SELECT ... WHERE`结果比上一次多了一些行。
+* Phantom reads：A事务通过`SELECT ... WHERE`得到一些行，B事务插入新行或者更新已有的行使得这些行满足A事务的`WHERE`条件，A事务再次`SELECT ... WHERE`结果比上一次少了一些或者多了一些行。
 
 大多数数据库在实现以上事务隔离级别（Read uncommitted除外）时采用的机制是锁。这也就是为什么经常说当应用程序里大量使用事务或者高并发情况下会出现性能低下、死锁的问题。
 
