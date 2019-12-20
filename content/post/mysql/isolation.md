@@ -79,3 +79,8 @@ commit;
 select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))>60
 ```
 
+## 避免长事务
+
+* 确保客户端设置了`autocommit=1`
+* 如果是只读事务（只有select），那么就不需要begin/commit
+* 设置`SET MAX_EXECUTION_TIME`控制单个语句（只针对Select）的最大执行时长
