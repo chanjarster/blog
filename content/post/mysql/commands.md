@@ -31,6 +31,8 @@ docker exec -it mysql8 mysql -u test -p test
 * 执行shell命令：`system ...`
 * 查询超过60秒的长事务：
   `select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))>60;`
+* 重建索引：`alter table T engine=InnoDB`
+* [`FLUSH TABLES WITH READ LOCK`][5]：全局读锁
 
 常见参数：
 
@@ -44,3 +46,5 @@ docker exec -it mysql8 mysql -u test -p test
 [2]: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_slow_query_log
 [3]: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_transaction_isolation
 [4]: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_execution_time
+[5]: https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock
+
