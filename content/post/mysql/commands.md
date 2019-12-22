@@ -41,10 +41,13 @@ docker exec -it mysql8 mysql -u test -p test
 * [`slow_query_log`][2]：是否开启慢日志查询
 * [`transaction_isolation`][3]，查看数据库隔离级别
 * [`max_execution_time`][4]，SELECT语句的最大执行时长
+* [`innodb_lock_wait_timeout`][6]，事务获得行锁的最大等待时间（秒）。默认50秒。
+* [`innodb_deadlock_detect`][7]，开启死锁检测。默认on。
 
 [1]: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_wait_timeout
 [2]: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_slow_query_log
 [3]: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_transaction_isolation
 [4]: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_execution_time
 [5]: https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock
-
+[6]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_lock_wait_timeout
+[7]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_deadlock_detect
