@@ -12,4 +12,4 @@ date: 2019-12-20T08:50:08+08:00
 * [redo log和binlog](../redo-log-binlog/)
 * [索引](../indices)
 * [锁](../locks)
-* [常用命令及参数](../commands)
+* [常用命令及参数](../commands-params)
