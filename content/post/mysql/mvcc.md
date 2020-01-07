@@ -1,5 +1,5 @@
 ---
-title: "MySQL - MVCC"
+title: "MySQL - MVCC和事务隔离"
 author: "颇忒脱"
 tags: ["mysql"]
 date: 2019-12-30T20:03:02+08:00
@@ -101,7 +101,7 @@ insert into t(id, k) values(1,1),(2,2);
 
 从而，事务B后面的select得到的是3。
 
-## 附录：开启事务的两种方式
+## 开启事务的两种方式
 
 前面已经看到了，可以使用`start transaction with consistent snapshot`来开启事务，同时它还会创建一个一致性视图。但是这个语句只有当事务隔离级别是RR的时候才有用，否则它和下面的`begin/start transaction`效果是一样的。
 
@@ -116,3 +116,95 @@ insert into t(id, k) values(1,1),(2,2);
 * A能够读到C提交的结果，2
 * B因为更新的时候当前读，所以得到结果3
 
+## 小节
+
+InnoDB 的行数据有多个版本，每个数据版本有自己的 row trx_id，每个事务或者语句有自己的一致性视图。普通查询语句是一致性读，一致性读会根据 row trx_id 和一致性视图确定数据版本的可见性。
+
+* 对于可重复读（RR），查询只承认在事务启动前就已经提交完成的数据；
+* 对于读提交（RC），查询只承认在语句启动前就已经提交完成的数据；而当前读，总是读取已经提交完成的最新版本。
+
+## 题目
+
+下面描述了一个场景：数据明明没有变，为何却无法更新。
+
+```sql
+mysql> CREATE TABLE `t` (
+  `id` int(11) NOT NULL,
+  `c` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+insert into t(id, c) values(1,1),(2,2),(3,3),(4,4);
+```
+
+
+
+```bash
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from t;
++----+------+
+| id | c    |
++----+------+
+| 1  | 1    |
+| 2  | 2    |
+| 3  | 3    |
+| 4  | 4    |
++----+------+
+4 rows in set (0.00 sec)
+
+mysql> update t set c=0 where id=c;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0 Changed: 0 Warnings: 0
+
+mysql> select * from t;
++----+------+
+| id | c    |
++----+------+
+| 1  | 1    |
+| 2  | 2    |
+| 3  | 3    |
+| 4  | 4    |
++----+------+
+4 rows in set (0.00 sec)
+```
+
+要怎样做才能产生这种情况呢？回顾这张图：
+
+<img src="hi-lo.png" style="zoom:50%;" />
+
+* 当row tx_id 在 红色区域里，对当前事务不可见
+* 当row tx_id 在 黄色区域里，且在数组中时，对当前事务不可见
+
+那么就有两种做法能够产生这个效果，第一种：
+
+|            事务A            |       事务B        |
+| :-------------------------: | :----------------: |
+|            begin            |                    |
+|       select * from t       |                    |
+|                             | update t set c=c+1 |
+| update t set c=0 where id=c |                    |
+|       select * from t       |                    |
+
+* 事务A的select产生transaction id 100
+* 事务B在事务A之后开始，transaction id 101，更新行，row trx_id=101
+* 事务A的update是当前读，所以没有行被更新
+* 事务A的select看row tx_id（101）是在红色区域，那么对当前事务不可见，所以得到的结果还是没变的
+
+第二种：
+
+|            事务A            |       事务B        |
+| :-------------------------: | :----------------: |
+|                             |       begin        |
+|            begin            | update t set c=c+1 |
+|       select * from t       |                    |
+|                             |       commit       |
+| update t set c=0 where id=c |                    |
+|       select * from t       |                    |
+
+* 事务B产生transaction id 100
+* 事务B update，row tx_id=100
+* 事务A产生transaction id 101，发现目前**活跃事务**100，形成数组[100, 101]
+* 事务B commit（如果没有commit，后面的事务A的操作会阻塞住的）
+* 事务A update，当前读，所以没有行被更新
+* 事务A select，发现row trx_id(101)在数组内，是活跃事务提交的，因此不可见，得到的结果还是没变的
