@@ -29,6 +29,8 @@ docker exec -it mysql8 mysql -u test -p test
   `select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))>60;`
 * 重建索引：`alter table T engine=InnoDB`
 * [`FLUSH TABLES WITH READ LOCK`][5]：全局读锁
+* `show index from <table>`，显示某表的索引
+* `show table status like '...'\G`，显示某表的统计信息
 
 系统参数：
 
@@ -48,6 +50,7 @@ InnoDB 参数：
 * [`innodb_page_size`][10]，数据页大小，默认16K
 * [`innodb_change_buffering`][11]，change buffer模式，默认all
 * [`innodb_change_buffer_max_size`][12]，change buffer占用buffer pool的比例
+* [`innodb_stats_persistent`][13]，控制analyze table统计结果存在哪里
 
 session参数：
 
@@ -66,3 +69,4 @@ session参数：
 [10]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_page_size
 [11]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_change_buffering
 [12]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_change_buffer_max_size
+[13]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_stats_persistent

@@ -14,4 +14,6 @@ date: 2019-12-20T08:50:08+08:00
 * [锁](../locks)
 * [MVCC和事务隔离](../mvcc)
 * [数据页、change buffer和索引](../page-change-buffer-index)
+* [数据库选错索引怎么办](../force-index)
+* [给字符串加索引](../index-for string)
 * [常用命令及参数](../commands-params)
