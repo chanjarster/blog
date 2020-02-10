@@ -14,6 +14,7 @@ Go和Java的区别（纯笔记，不系统）
 - Go的function可以返回多个值
 - Go的function没有overload
 - Go用defer实现try-finally和try-catch，可以运行时决定使用哪个
+- Go有function闭包，可以读写外部变量。Java的lambda有类似的，但是是基于匿名内部类的，且只能读外部变量：外部变量必须是final或者事实上是final的（即不会被修改）
 - Go没有线程，而是Goroutine，Goroutine是由Go运行时管理的task，所以Go没有线程池。Goroutine可以类似于Green threads？
 - Go的类型方法通过function上加receiver来实现
 - Go没有this
