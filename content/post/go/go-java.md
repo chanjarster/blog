@@ -10,6 +10,7 @@ Go和Java的区别（纯笔记，不系统）
 <!--more-->
 
 - Go更像C，Java更像C++
+- Go不允许存在声明但是没有使用的东西，比如声明了多余的变量，import了多余的包
 - Go对不同平台有不同的编译结果
 - Go的function可以返回多个值
 - Go的function没有overload
@@ -17,6 +18,7 @@ Go和Java的区别（纯笔记，不系统）
 - Go有function闭包，可以读写外部变量。Java的lambda有类似的，但是是基于匿名内部类的，且只能读外部变量：外部变量必须是final或者事实上是final的（即不会被修改）
 - Go没有线程，而是Goroutine，Goroutine是由Go运行时管理的task，所以Go没有线程池。Goroutine可以类似于Green threads？
 - Go的类型方法通过function上加receiver来实现
+- Go中struct首字母大写字段是public的，首字母小写字段是private的
 - Go没有this
 - Go没有显式的继承，而是嵌入，而且采用duck typing来判断A类型实例是否可以复制给B类型变量。
 - Go有指针，和值。Java里除了基本类型则都是引用
