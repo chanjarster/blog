@@ -21,6 +21,13 @@ date: 2018-11-15T00:00:00+08:00
 
 * [Java Memory Model FAQ](http://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html)。比较浅显的介绍了什么是reording、synchroniztion、volatile、DCL以及它们的影响、作用以及要注意的地方。
 
+## 缓存
+
+* [Design Of A Modern Cache](http://highscalability.com/blog/2016/1/25/design-of-a-modern-cache.html)，[Caffeine](https://github.com/ben-manes/caffeine)作者总结的现代进程内缓存的设计
+* [Design Of A Modern Cache—Part Deux](http://highscalability.com/blog/2019/2/25/design-of-a-modern-cachepart-deux.html)，上篇文章的续篇
+* [Apache Kafka, Purgatory, and Hierarchical Timing Wheels](https://www.confluent.io/blog/apache-kafka-purgatory-hierarchical-timing-wheels/)，Kafka使用层级时间轮子来处理大量定时任务
+* [Hierarchical Timing Wheels论文](http://www.cs.columbia.edu/~nahum/w6998/papers/sosp87-timing-wheels.pdf)
+
 ## AuthN
 
 * [The New RBAC: Resource-Based Access Control](https://stormpath.com/blog/new-rbac-resource-based-access-control)
@@ -37,3 +44,5 @@ date: 2018-11-15T00:00:00+08:00
 ## 算法
 
 * [Cracking the coding interview--问题与解答](http://hawstein.com/2013/03/14/ctci-solutions-contents/)
+* [Apache Kafka, Purgatory, and Hierarchical Timing Wheels](https://www.confluent.io/blog/apache-kafka-purgatory-hierarchical-timing-wheels/)，Kafka使用层级时间轮子来处理大量定时任务
+* [Hierarchical Timing Wheels论文](http://www.cs.columbia.edu/~nahum/w6998/papers/sosp87-timing-wheels.pdf)
