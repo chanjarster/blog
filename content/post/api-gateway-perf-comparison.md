@@ -10,7 +10,7 @@ date: 2019-04-11T17:37:22+08:00
 用于实现API网关的技术有很多，大致分为这么几类：
 
 * 通用反向代理：Nginx、Haproxy、……
-* 网络编程框架：Netty、Servlet、……
+* 网络编程框架：Netty、Servlet、Spring Webflux、Go net/http包、Go fasthttp包、……
 * API网关框架：Spring Cloud Gateway、Zuul、Zuul2、……
 
 API网关最基本的功能就是反向代理，所以在对API网关做技术选型的时候需要着重考察其性能表现，本文对Nginx、Haproxy、Netty、Spring Cloud Gateway、Zuul2做了性能测试，测试代码可以在[github][github]获得。
@@ -19,21 +19,23 @@ API网关最基本的功能就是反向代理，所以在对API网关做技术�
 
 * 准备了三台2CPU 4G内存的服务器，分别运行Tomcat、API Gateway、Gatling（压测工具）
 * 先对Tomcat做压测，取Tomcat充分预热后的压测结果作为基准。压的是Tomcat自带的example：`/examples/jsp/jsp2/simpletag/book.jsp`
-* 在对Netty、Zuul2、Spring Cloud Gateway做压测时候也是先压个几轮做预热。
+* 对Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Vert.x（7层）、Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）、Go fasthttp（7层）做了测试
+* 在对Netty、Zuul2、Spring Cloud Gateway做压测前先压了几轮做预热。
 * 被测的API网关都没有添加额外业务，只做反向代理
 
 ## 吞吐量
 
-下图是吞吐量的情况，可以看到Netty、Nginx、Haproxy均比直压Tomcat低一点点，而Spring Cloud Gateway和Zuul2则要低得多。
+下图是吞吐量的情况，可以看到Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层），只比直压Tomcat低一点点，而Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）则要低得多。
 
 ![](thrpt.png)
 
-下面这张图可以更明显的看到吞吐量比较，Tomcat为100%因为它是基准值，Netty、Nginx、Haproxy的只比基准值低8%，而Spring Cloud Gateway和Zuul2则只是基准值的35%和34%（难兄难弟）。
-![](thrpt-comp.png)
+下面这张图可以更明显的看到吞吐量比较，Tomcat为100%因为它是基准值，Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层）的只比基准值低10左右%，而Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）则只是基准值的30%多一点（难兄难弟）。
+
+![](thrpt-comp.png)
 
 ## 平均响应时间
 
-下图可以看到Netty、Nginx、Haproxy的平均响应时间与Tomcat差不多。但是Spring Cloud Gateway和Zuul2则是Tomcat的3倍多，不出所料。
+下图可以看到Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层）的平均响应时间与Tomcat差不多。但是Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）则是Tomcat的3倍左右，不出所料。
 
 ![](mean-resp-time.png)
 
@@ -56,26 +58,25 @@ API网关最基本的功能就是反向代理，所以在对API网关做技术�
 ![](resp-time.png)
 
 下面同样是把结果与Tomcat基准值做对比：
-![](resp-time-comp.png)
+
+![](resp-time-comp.png)
 
 可以看到几个很有趣的现象：
 
-* Haproxy、Nginx的P50、P90、P99、P99.9、Max都是逐渐递增的。
-* Netty的P50、P90、P99、P99.9是很平坦的，Max则为基准值的207%。
-* Spring Cloud Gateway和Zuul2则是相反的，它们的平面呈现下降趋势。Spring Cloud Gateway的Max甚至还比基准值低了一点点（94%），我相信这只是一个随机出现的数字，不要太在意。
+* Haproxy（7层）、Nginx（7层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层）的P50、P90、P99、P99.9、Max都是逐渐递增的。
+* Netty（4层）的P50、P90、P99、P99.9是很平坦的，Max则为基准值的207%。
+* Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）则是相反的，它们的平面呈现下降趋势。Spring Cloud Gateway的Max甚至还比基准值低了一点点（94%），我相信这只是一个随机出现的数字，不要太在意。
 
 ## 结论
 
-Nginx、Haproxy、Netty三者的表现均很不错，其对于吞吐量和响应时间的性能损耗很低，可以忽略不计。
+Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层）的表现均很不错，其对于吞吐量和响应时间的性能损耗很低，可以忽略不计。
 
 但是目前最为火热的Spring Cloud Gateway和Zuul2则表现得比较糟糕，因我没有写额外的业务逻辑这，可以推测这和它们的内置逻辑有关，那么大致有这么几种可能：
 
-1. 内置逻辑比较多
-1. 内置逻辑算法存在问题，占用了太多CPU时间
-1. 内置逻辑存在阻塞
-1. 内置逻辑没有用正确姿势使用Netty（两者皆基于Netty）
+1. 内置逻辑存在问题，把Netty的优化抵消掉了（两者都基于Netty）
+1. 内置逻辑存在阻塞（可能性不大）
 
-不管是上面的哪一种都需要再后续分析。
+另外，Vert.x则显得很独特，它的各种指标位于前面两派的中间。
 
 不过话说回来考虑选用那种作为API网关（的基础技术）不光要看性能，还要看：
 
