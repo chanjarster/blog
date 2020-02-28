@@ -1,7 +1,7 @@
 ---
 title: "关于同步/异步、阻塞/非阻塞IO的摘要"
 author: "颇忒脱"
-tags: ["kernel", "io"]
+tags: ["kernel", "io", "高并发"]
 date: 2019-04-04T14:04:26+08:00
 ---
 
