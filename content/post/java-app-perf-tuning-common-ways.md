@@ -39,7 +39,7 @@ date: 2020-03-05T18:02:16+08:00
 
 ### 保证CPU花在非GC上
 
-好了现在CPU用满了，那么我们要通过`jstat -gcutil`来观察JVM是否把CPU花在了GC上，你也可以添加`-XX:+PrintGC -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Xloggc:path/to/gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=20M` JVM参数得到更详细的GC日志。
+好了现在CPU用满了，那么我们要通过`jstat -gcutil`来观察JVM是否把CPU花在了GC上，你也可以添加`-XX:+PrintGC -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Xloggc:/path/to/gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=20M` JVM参数得到更详细的GC日志。
 
 重点关注Full GC的次数和占用时间，如果发现Full GC很频繁，有三个解决思路：
 
