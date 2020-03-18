@@ -15,7 +15,7 @@ Rancher中可以很方便的开启监控功能，其使用的是Prometheus Opera
 
 <img src="step-1.png" style="zoom:50%" />
 
-然后，开启项目的监控：
+然后，开启项目的监控（可选）：
 
 <img src="step-2.png" style="zoom:50%" />
 
@@ -76,6 +76,10 @@ spec:
 
 ## 添加ServiceMonitor
 
+### 利用项目Prometheus采集
+
+如果你前面开启了项目监控，并且想用项目Prometheus来收集数据，那么这么做：
+
 ServiceMonitor是Prometheus Operator定义的CRD：
 
 ```yaml
@@ -94,6 +98,29 @@ spec:
 ```
 
 这样Prometheus就能把同namespace下的所有`needMonitor: 'true'`的Service的JMX Exporter都采集到。
+
+### 利用集群Prometheus采集
+
+如果你想直接利用集群的Prometheus，那么你得把ServiceMonitor建在`cattle-prometheus`下，并且设置`namespaceSelector`属性：
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ...
+  namespace: cattle-prometheus
+spec:
+  selector:
+    matchLabels:
+      needMonitor: 'true'
+  endpoints:
+  - port: http-metrics
+    path: /metrics
+  namespaceSelector:
+    matchNames:
+    - namespace-1
+    - namespace-2
+```
 
 ## 给Grafana添加JVM Dashboard
 
