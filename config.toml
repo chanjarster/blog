@@ -1,7 +1,7 @@
 baseURL = "https://chanjarster.github.io/"
 languageCode = "zh-cn"
 title = "颇忒脱的技术博客"
-theme = "hugo-nuo"
+theme = "noteworthy"
 enableRobotsTXT = true
 PygmentsCodeFences = true
 canonifyurls = true
