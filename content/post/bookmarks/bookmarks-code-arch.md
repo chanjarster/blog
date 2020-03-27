@@ -16,6 +16,9 @@ date: 2018-11-15T00:00:00+08:00
 * [Events As First-Class Citizens](https://hackernoon.com/events-as-first-class-citizens-8633e8479493)
 * [Event Sourcing - Martin Fowler](https://martinfowler.com/eaaDev/EventSourcing.html)
 
+## GC
+
+* [Visualizing Garbage Collection Algorithms](https://spin.atomicobject.com/2014/09/03/visualizing-garbage-collection-algorithms/)，现代垃圾收集算法，不局限于特定语言。
 
 ## Concurrency
 
