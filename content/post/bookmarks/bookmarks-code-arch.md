@@ -18,7 +18,7 @@ date: 2018-11-15T00:00:00+08:00
 
 ## GC
 
-* [Visualizing Garbage Collection Algorithms](https://spin.atomicobject.com/2014/09/03/visualizing-garbage-collection-algorithms/)，现代垃圾收集算法，不局限于特定语言。
+* [Visualizing Garbage Collection Algorithms](https://spin.atomicobject.com/2014/09/03/visualizing-garbage-collection-algorithms/)，现代垃圾收集算法，不局限于特定语言。[阅读笔记在此](/post/article-review/visualizing-gc-algo/)。
 
 ## Concurrency
 
