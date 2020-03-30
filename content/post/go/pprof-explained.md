@@ -285,13 +285,14 @@ go tool pprof http://<user>:<password>@localhost:9090/debug/pprof/profile
 ## 参考资料
 
 * [Profiling Go Programs][1]
-
 * [runtime/pprof][3]
 * [net/http/pprof][4]
 * [HTTP BasicAuth][5]
+* [Debugging performance issues in Go programs][6]
 
-[1]:  https://blog.golang.org/profiling-go-programs
+[1]: https://blog.golang.org/profiling-go-programs
 [2]: https://rawgit.com/rsc/benchgraffiti/master/havlak/havlak1.html
 [3]: https://golang.org/pkg/runtime/pprof/#Profile
 [4]: https://golang.org/pkg/net/http/pprof/
 [5]: https://en.wikipedia.org/wiki/Basic_access_authentication
+[6]: https://github.com/golang/go/wiki/Performance
