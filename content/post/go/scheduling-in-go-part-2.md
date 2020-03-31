@@ -9,6 +9,8 @@ date: 2020-03-30T18:10:26+08:00
 
 原文：[Scheduling In Go : Part II - Go Scheduler][1]
 
+可以同步阅读：[Go's work-stealing scheduler](https://rakyll.org/scheduler/)，不过没有本文写的明白。
+
 ## 几个数字
 
 | operation      | cost                                               |
