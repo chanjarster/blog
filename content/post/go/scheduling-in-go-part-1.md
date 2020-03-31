@@ -9,6 +9,16 @@ date: 2020-03-30T14:10:26+08:00
 
 原文：[Scheduling In Go : Part I - OS Scheduler][1]
 
+## 几个数字
+
+| operation      | cost                                               |
+| -------------- | -------------------------------------------------- |
+| 1纳秒          | 可以执行12条指令                                   |
+| OS上下文切换   | ~1000到~1500 nanosecond，相当于~12k到~18k条指令。  |
+| Go程上下文切换 | ~200 nanoseconds，相当于~2.4k instructions条指令。 |
+| 访问主内存     | ~100到~300 clock cycles                            |
+| 访问CPU cache  | ~3到~40 clock cycles（根据不同的cache类型）        |
+
 ## 操作系统线程调度器
 
 你的程序实际上就是一系列需要执行的指令，而这些指令是跑线程里的。
@@ -22,6 +32,8 @@ date: 2020-03-30T14:10:26+08:00
 程序计数器（program counter，PC），有时也称为指令指针（instruction pointer，IP），用来告诉线程**下一个**要执行的指令（注意不是当前正在执行的指令）的位置。它是一种寄存器（register）。
 
 每次执行指令的时候都会更新PC，因此程序才能够顺序执行。
+
+{{< figure src="92_figure1.jpeg" width="100%">}}
 
 ## 线程状态
 
@@ -59,13 +71,13 @@ Linux、Mac和Windows使用的是抢占式调度器，所以：
 
 访问cache的数据延迟大概在 ~3到~40 clock cycles（根据不同的cache类型）。
 
-![](https://www.ardanlabs.com/images/goinggo/92_figure2.png)
+{{< figure src="92_figure2.png" width="100%">}}
 
 CPU会把数据从主内存中copy到cache中，以cache line为单位，每条cache line为64 bytes。所以多线程修改内存会造成性能损失。
 
 多个并行运行的线程访问同一个数据或者相邻的数据，那么它们可能就会访问同一条cache line。任何线程跑在任何core上都有一份自己的cache line copy。所以就有了False Sharing问题：
 
-![](https://www.ardanlabs.com/images/goinggo/92_figure3.png)
+{{< figure src="92_figure3.png" width="100%">}}
 
 只要一个线程操作了自己core上的某个cache line，那么这个cache line在其他core就会变脏（cache coherency），当一个线程访问一个脏cache line的时候，就要访问一下main memory（**~100到~300 clock cycles**）。当单处理器core变多的时候，以及当有多个处理器（处理器间通信）的时候，这个开销就变得很大了。
 
