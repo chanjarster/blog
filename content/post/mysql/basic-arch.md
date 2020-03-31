@@ -21,7 +21,7 @@ Server层：
 
 * 存储引擎：存储数据，提供读写接口。存储引擎有多种选择，比如InnoDB（默认）、MyISAM（旧）、Memory。各有各的特性。
 
-<img src="basic-arch.png" style="zoom:50%;" />
+{{< figure src="basic-arch.png" width="100%">}}
 
 ## 连接器
 

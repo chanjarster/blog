@@ -39,7 +39,7 @@ repeatable read的试用场景，你希望两次读得到的结果都一样，�
 
 假设一个值从 1 被按顺序改成了 2、3、4，在回滚日志里面就会有类似下面的记录。
 
-<img src="rollback-segment.png" style="zoom:50%;" />
+{{< figure src="rollback-segment.png" width="100%">}}
 
 从“read-view A、B、C”看到的值分别是1、2、4。**MySQL通过MVCC（多版本并发控制）来实现的**。read-view A得到的1实际上是从read-view C（当前值）一路回退得到的。
 

@@ -56,7 +56,7 @@ MySQL的锁不是可重入的，即加锁之后，当前连接/session也受制�
 
 **陷阱：MDL锁在语句开始时申请，但是要在事务提交之后才会释放。**所以下面语句会导致很多数据库操作被阻塞：
 
-<img src="mdl-phases.png" style="zoom:50%;" />
+{{< figure src="mdl-phases.png" width="100%">}}
 
 1. session A开启事务，查询，得到MDL读锁
 2. session B查询，得到MDL读锁

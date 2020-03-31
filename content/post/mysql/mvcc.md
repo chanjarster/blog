@@ -55,7 +55,7 @@ insert into t(id, k) values(1,1),(2,2);
 
 下面这张图就是一行有4个版本（read view）V1、V2、V3、V4，通过undo log U1、U2、U3能够得到它们，还有事务id。
 
-<img src="row-trx-id.png" style="zoom:50%;" />
+{{< figure src="row-trx-id.png" width="100%">}}
 
 ### InnoDB的实现
 
@@ -65,7 +65,7 @@ insert into t(id, k) values(1,1),(2,2);
 
 而数据版本的可见性规则，就是基于数据的 row trx_id 和这个一致性视图的对比结果得到的。
 
-<img src="hi-lo.png" style="zoom:50%;" />
+{{< figure src="hi-lo.png" width="100%">}}
 
 这样，对于当前事务的启动瞬间来说，一个数据版本的 row trx_id，有以下几种可能：
 
@@ -89,7 +89,7 @@ insert into t(id, k) values(1,1),(2,2);
 
 下面是时间线：
 
-<img src="tx-timeline.png" style="zoom:50%;" />
+{{< figure src="tx-timeline.png" width="100%">}}
 
 ### 查询逻辑
 
@@ -109,7 +109,7 @@ insert into t(id, k) values(1,1),(2,2);
 
 下面是RC（Read Commit）级别下的时间线：
 
-<img src="tx-timeline.png" style="zoom:50%;" />
+{{< figure src="tx-timeline.png" width="100%">}}
 
 考虑到执行第一条快照读语句时才会创建一致性视图（也就是那个数组），那么可得出：
 
@@ -171,7 +171,7 @@ mysql> select * from t;
 
 要怎样做才能产生这种情况呢？回顾这张图：
 
-<img src="hi-lo.png" style="zoom:50%;" />
+{{< figure src="hi-lo.png" width="100%">}}
 
 * 当row tx_id 在 红色区域里，对当前事务不可见
 * 当row tx_id 在 黄色区域里，且在数组中时，对当前事务不可见

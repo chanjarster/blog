@@ -47,7 +47,7 @@ call idata();
 mysql> explain select * from t where a between 10000 and 20000;
 ```
 
-<img src="explain-1.png" />
+{{< figure src="explain-1.png" width="100%">}}
 
 结果表明MySQL会选择索引**a**，并且预计扫描10001行，为什么是10001行而不是10000行？这是因为在扫描的时候要扫描到第一个不满足条件的数据为止，因此会多扫一行。
 
@@ -61,7 +61,7 @@ mysql> explain select * from t where a between 10000 and 20000;
 mysql> show index from t;
 ```
 
-<img src="cardinality.png" />
+{{< figure src="cardinality.png" width="100%">}}
 
 基数的值并非精确值而是一个估算值，InnoDB选取N个数据页统计不同值，计算基数平均值。当更新的行超过1/M时，重新计算基数。可以用`innodb_stats_persistent`来控制这个统计信息存在哪里。
 

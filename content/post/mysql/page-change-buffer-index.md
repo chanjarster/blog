@@ -20,7 +20,7 @@ date: 2020-01-07T13:03:02+08:00
 
 InnoDB的数据页默认大小是16K（由`innodb_page_size`控制），InnoDB不会只加载你想要的row，而是把附近的连带加载进来（有点像CPU的cache line）。下图中的第二行就是一个一个数据页：
 
-<img src="page.png" style="zoom:50%;" />
+{{< figure src="page.png" width="100%">}}
 
 那么问题来了，如果你每次更新的row所在的数据页不在内存中，那么每次都要从磁盘加载是极其低效的，因此change buffer来救你了。
 
@@ -68,7 +68,7 @@ mysql> insert into t(id,k) values(id1,k1),(id2,k2);
 
 我们假设当前 k 索引树的状态，查找到位置后，k1 所在的数据页在内存 (InnoDB buffer pool) 中，k2 所在的数据页不在内存中。下图 所示是带 change buffer 的更新状态图。
 
-<img src="change-buffer-update.png" style="zoom:50%;" />
+{{< figure src="change-buffer-update.png" width="100%">}}
 
 这条更新语句涉及了四个部分：内存、redo log（ib_log_fileX）、 数据表空间（t.ibd）、系统表空间（ibdata1）。
 
@@ -84,7 +84,7 @@ mysql> insert into t(id,k) values(id1,k1),(id2,k2);
 
 我们现在要执行 `select * from t where k in (k1, k2)`流程如下：
 
-<img src="change-buffer-read.png" style="zoom:50%;" />
+{{< figure src="change-buffer-read.png" width="100%">}}
 
 1. 读 Page 1 的时候，直接从内存返回。
 2. 要读 Page 2 的时候，需要把 Page 2 从磁盘读入内存中，然后应用 change buffer 里面的操作日志，生成一个正确的版本并返回结果。这个动作称为merge。

@@ -15,7 +15,7 @@ date: 2019-12-20T10:03:02+08:00
 
 有一张表两个字段ID和k，ID是主键，k则是普通列+索引，这张表的存储形式如下图：
 
-<img src="index-structure.png" style="zoom:50%;" />
+{{< figure src="index-structure.png" width="100%">}}
 
 * 索引中的数据都是有序存储的。根据索引字段的顺序比如`(a, b)`就等于`order by a, b`
 * 主键索引中存放的是ID的值+行。这种索引称为clustered index。

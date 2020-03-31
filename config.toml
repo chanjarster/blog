@@ -46,7 +46,8 @@ canonifyurls = true
   name = "MySQL"
   weight = 18
   identifier = "mysql"
-
+  url = "/post/mysql/index-page"
+  
 [[menu.main]]
   name = "Go"
   weight = 19

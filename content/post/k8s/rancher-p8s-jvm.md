@@ -13,11 +13,11 @@ Rancher中可以很方便的开启监控功能，其使用的是Prometheus Opera
 
 首先，开启集群的监控：
 
-<img src="step-1.png" style="zoom:50%" />
+{{< figure src="step-1.png" width="100%">}}
 
 然后，开启项目的监控（可选）：
 
-<img src="step-2.png" style="zoom:50%" />
+{{< figure src="step-2.png" width="100%">}}
 
 ## 应用配置JMX Exporter
 
@@ -126,7 +126,7 @@ spec:
 
 你需要给Grafana添加JVM Dashboard，在这之前你需要设置Grafana的admin密码，进入项目找到Grafana，进入其Shell：
 
-<img src="step-4.png" style="zoom:50%" />
+{{< figure src="step-4.png" width="100%">}}
 
 执行：
 
@@ -136,16 +136,16 @@ grafana-cli admin reset-admin-password <新密码>
 
 然后随便进入一个Deployment/StatefulSets，进入Grafana：
 
-<img src="step-5.png" style="zoom:50%" />
+{{< figure src="step-5.png" width="100%">}}
 
 用admin账号和你刚才设置的密码登录进去，进入管理页面导入Dashboard：
 
-<img src="step-6.png" style="zoom:50%" />
+{{< figure src="step-6.png" width="100%">}}
 
 到 https://grafana.com/orgs/chanjarster/dashboards 找到 [JVM dashboard (for Prometheus Operator)](https://grafana.com/grafana/dashboards/8878)，看到它的编号是8878。把这个编号填到导入页面：
 
-<img src="step-7.png" style="zoom:50%" />
+{{< figure src="step-7.png" width="100%">}}
 
 然后大功告成：
 
-<img src="step-8.png" style="zoom:50%" />
+{{< figure src="step-8.png" width="100%">}}
