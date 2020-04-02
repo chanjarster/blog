@@ -13,18 +13,6 @@ canonifyurls = true
   url = "/"
 
 [[menu.main]]
-  name = "Works"
-  weight = 20
-  identifier = "works"
-  url = "https://github.com/chanjarster"
-
-[[menu.main]]
-  name = "Tags"
-  weight = 30
-  identifier = "tags"
-  url = "/tags/"
-
-[[menu.main]]
   name = "Bookmarks"
   weight = 15
   identifier = "bookmarks"
@@ -51,8 +39,39 @@ canonifyurls = true
 [[menu.main]]
   name = "Go"
   weight = 19
-  identifier = "jvm"
+  identifier = "go"
   url = "/tags/go/"
+
+[[menu.main]]
+  name = "GC"
+  weight = 20
+  identifier = "gc"
+  url = "/tags/gc/"
+  
+[[menu.main]]
+  name = "Kernel"
+  weight = 21
+  identifier = "kernel"
+  url = "/tags/kernel/"
+
+[[menu.main]]
+  name = "Cheat sheet"
+  weight = 30
+  identifier = "cheat sheet"
+  url = "/tags/cheatsheet/"
+
+[[menu.main]]
+  name = "Works"
+  weight = 90
+  identifier = "works"
+  url = "https://github.com/chanjarster"
+
+[[menu.main]]
+  name = "Tags"
+  weight = 100
+  identifier = "tags"
+  url = "/tags/"
+
 
 [params]
   author = "颇忒脱"

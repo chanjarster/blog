@@ -1,13 +1,13 @@
 ---
 title: "JVM - 对象已经死了吗？"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "jvm"]
+tags: ["ARTS", "ARTS-T", "jvm", "gc"]
 date: 2019-09-04T20:55:08+08:00
 ---
 
 <!--more-->
 
-![](is-object-dead.png)
+<img src="is-object-dead.png" style="zoom:50%" />
 
 ## 判断垃圾的算法
 

@@ -15,7 +15,7 @@ date: 2020-03-27T11:39:29+08:00
 
 就是没有GC，程序在执行完一个任务后自己去释放内存。
 
-![](https://github.com/kenfox/gc-viz/raw/master/docs/NO_GC.gif)
+![](NO_GC.gif)
 
 动画黑色代表没有被使用的内存，闪烁的绿色和黄色代表内存被读或写，颜色变暗代表内存没有被使用（垃圾）。这个算法适合不需要考虑垃圾的程序。
 
@@ -30,7 +30,7 @@ date: 2020-03-27T11:39:29+08:00
 * 就算内存使用没有增加，也要做计数
 * 计数值要频繁从内存加载到CPU Cache，无法有效缓存，效率低
 
-![](https://github.com/kenfox/gc-viz/raw/master/docs/REF_COUNT_GC.gif)
+![](REF_COUNT_GC.gif)
 
 
 
@@ -42,7 +42,7 @@ date: 2020-03-27T11:39:29+08:00
 
 标记清理算法就是标记Live对象，然后把死掉的对象清理掉。
 
-![](https://github.com/kenfox/gc-viz/raw/master/docs/MARK_SWEEP_GC.gif)
+![](MARK_SWEEP_GC.gif)
 
 它放弃了立即清理垃圾，而是等到后面处理，所以动画中有一段时间没有红色闪烁（标记），然后突然一堆红色闪烁，然后一次性清理了垃圾。
 
@@ -57,9 +57,9 @@ date: 2020-03-27T11:39:29+08:00
 
 ## Mark-Compact Collector
 
-标记压紧算法，和标记清理算法差不多，只是清理之后把内存压紧了一下，去掉了内存碎片。Oracle JVM的Old区采用的是这个算法。
+标记整理算法，和标记清理算法差不多，只是清理之后把内存压紧了一下，去掉了内存碎片。Oracle JVM的Old区采用的是这个算法。
 
-![](https://spin.atomicobject.com/wp-content/uploads/MARK_COMPACT_GC.gif)
+![](MARK_COMPACT_GC.gif)
 
 优点：
 
@@ -77,7 +77,7 @@ Copy算法同样也能消除内存碎片，但不是通过移动，而是copy。
 
 通过对两个内存区域的来回Copy实现无碎片垃圾清理。实践中会有多个“代区”，比如JVM的Young区里的S0和S1，已经对象从Young区promote到Old区用的就是这个算法。
 
-![](https://github.com/kenfox/gc-viz/raw/master/docs/COPY_GC.gif)
+![](COPY_GC.gif)
 
 优点：
 
@@ -86,6 +86,7 @@ Copy算法同样也能消除内存碎片，但不是通过移动，而是copy。
 问题：
 
 1. 如果每次Copy没有垃圾可清理，那么这个回收就得不偿失了。所以你就需要tuning gc，使得每次GC的时候能够清理掉大部分对象。
+2. 一定要有空闲空间可供腾挪，否则就没法GC了。这也就意味着有一定的内存浪费，因此有算法尽量减少浪费。
 
 [1]: https://spin.atomicobject.com/2014/09/03/visualizing-garbage-collection-algorithms/
 [2]: /post/kernel/know-memory-cpu-cache/
