@@ -62,3 +62,9 @@ canonifyurls = true
   seotitle = "颇忒脱的技术博客"
   description = "颇忒脱的技术博客"
   paginate = 20
+
+[markup]
+  defaultMarkdownHandler = "goldmark"
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
