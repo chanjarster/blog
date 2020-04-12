@@ -1,7 +1,7 @@
 ---
 title: "Go Debug Cheatsheet"
 date: 2020-04-12T20:23:08+08:00
-tags: ["go"]
+tags: ["go", "cheatsheet"]
 author: "颇忒脱"
 ---
 
