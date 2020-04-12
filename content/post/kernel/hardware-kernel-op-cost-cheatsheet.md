@@ -1,5 +1,5 @@
 ---
-title: "硬件/内核操作代价Cheat sheet"
+title: "硬件/内核操作代价Cheatsheet"
 author: "颇忒脱"
 tags: ["kernel", "cheatsheet"]
 date: 2020-04-02T15:09:20+08:00
