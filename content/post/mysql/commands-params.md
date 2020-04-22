@@ -1,7 +1,7 @@
 ---
 title: "MySQL - 常见命令及参数"
 author: "颇忒脱"
-tags: ["mysql"]
+tags: ["mysql", "cheatsheet"]
 date: 2019-12-18T22:55:52+08:00
 ---
 
