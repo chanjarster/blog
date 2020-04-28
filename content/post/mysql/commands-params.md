@@ -44,6 +44,7 @@ docker exec -it mysql8 mysql -u test -p test
 * [`innodb_lock_wait_timeout`][6]，事务获得行锁的最大等待时间（秒）。默认50秒。
 * [`innodb_deadlock_detect`][7]，开启死锁检测。默认on。
 * [`binlog_expire_logs_seconds`][9]，binlog的保留时间（秒），默认30天。
+* [`join_buffer_size`][14]，在JOIN时用到的内存空间（byte）
 
 InnoDB 参数：
 
@@ -70,3 +71,4 @@ session参数：
 [11]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_change_buffering
 [12]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_change_buffer_max_size
 [13]: https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_stats_persistent
+[14]: https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_join_buffer_size
