@@ -94,6 +94,21 @@ select {
 
 * 当所有case都会阻塞时，执行default。如果没有default则整个select操作阻塞，直到某个case不阻塞。
 
+## for range channel
+
+从一个channel中接收：
+
+```go
+for v := range ch {
+}
+```
+
+规则：
+
+* 如果channel空了，则阻塞
+* 如果channel已关闭，则退出循环
+* 如果nil channel，永远阻塞
+
 ## 参考资料
 
 * [Channel types][1]
@@ -102,6 +117,7 @@ select {
 * [Making channel][4]
 * [Select statements][5]
 * [Close channel][6]
+* [For statement][7]
 
 [1]: https://golang.org/ref/spec#Channel_types
 [2]: https://golang.org/ref/spec#Send_statements
@@ -109,3 +125,4 @@ select {
 [4]: https://golang.org/ref/spec#Making_slices_maps_and_channels
 [5]: https://golang.org/ref/spec#Select_statements
 [6]: https://golang.org/ref/spec#Close
+[7]: https://golang.org/ref/spec#For_statements
