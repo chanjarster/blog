@@ -106,7 +106,7 @@ for v := range ch {
 规则：
 
 * 如果channel空了，则阻塞
-* 如果channel已关闭，则退出循环
+* 如果channel已关闭，把buffer中的值都取完后，退出循环
 * 如果nil channel，永远阻塞
 
 ## 参考资料
