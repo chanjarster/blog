@@ -35,7 +35,5 @@ date: 2019-09-18T20:20:08+08:00
 * [Scheduling In Go : Part I - OS Scheduler 阅读笔记](/post/go/scheduling-in-go-part-1/)
 * [Scheduling In Go : Part II - Go Scheduler 阅读笔记](/post/go/scheduling-in-go-part-2/)
 * [Scheduling In Go : Part III - Concurrency 阅读笔记](/post/go/scheduling-in-go-part-3/)
-
-
 * Google I/O 2012 - Go Concurrency Patterns, [video](https://www.youtube.com/watch?v=f6kdp27TYZs)
 * Rob Pike - 'Concurrency Is Not Parallelism', [video](https://www.youtube.com/watch?v=cN_DpYBzKso), [slides](https://talks.golang.org/2012/concurrency.slide#1)
