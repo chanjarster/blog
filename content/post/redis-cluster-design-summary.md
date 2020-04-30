@@ -10,10 +10,10 @@ draft: false
 
 ## 概览
 
-![](overview.png)
+<img src="overview.png" style="zoom:50%" />
 
 ## 设计思路探究
 
 用一系列问题和回答来探究Redis Cluster的设计思路，下图中绿色的是问题，蓝色的是回答，实现箭头代表由这个回答引申出新的问题，虚线尖头是两个回答之间存在关联。
 
-![](q-and-a.png)
+<img src="q-and-a.png" style="zoom:50%" />

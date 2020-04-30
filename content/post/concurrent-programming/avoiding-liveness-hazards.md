@@ -7,7 +7,7 @@ date: 2019-10-21T21:40:29+08:00
 
 <!--more-->
 
-![](avoiding-liveness-hazards.png)
+<img src="avoiding-liveness-hazards.png" style="zoom:50%" />
 
 ### Lock-ordering deadlocks
 

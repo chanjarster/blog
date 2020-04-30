@@ -121,7 +121,7 @@ private int partition(int[] a, int start, int end) {
 }
 ```
 
-![](../sort/quick-sort.png)
+<img src="../sort/quick-sort.png" style="zoom:50%" />
 
 [1]: https://time.geekbang.org/column/article/41913
 [merge-sort]: ../11-merge-sort

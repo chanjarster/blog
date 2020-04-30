@@ -50,4 +50,4 @@ date: 2019-09-04T19:55:08+08:00
 
 ## 脑图
 
-![](cases.png)
+<img src="cases.png" style="zoom:50%" />

@@ -7,11 +7,11 @@ date: 2019-10-29T21:40:29+08:00
 
 <!--more-->
 
-![](summary.png)
+<img src="summary.png" style="zoom:50%" />
 
 ## 测试正确性
 
-![](testing-correctness.png)
+<img src="testing-correctness.png" style="zoom:50%" />
 
 ### 测试阻塞方法
 
@@ -262,7 +262,7 @@ class TestingThreadFactory implements ThreadFactory {
 
 ## 测试性能
 
-![](testing-performance.png)
+<img src="testing-performance.png" style="zoom:50%" />
 
 ### Barrier-based timer
 
@@ -346,7 +346,7 @@ public class TimedPutTakeTest extends PutTakeTest {
 
 ## 避免性能测试陷阱
 
-![](avoiding-performance-testing-pitfalls.png)
+<img src="avoiding-performance-testing-pitfalls.png" style="zoom:50%" />
 
 ### 去除死代码
 
@@ -360,4 +360,4 @@ if (foo.x.hashCode() == System.nanoTime()) {
 
 ## 其他测试方法
 
-![](complementary-testing-approaches.png)
+<img src="complementary-testing-approaches.png" style="zoom:50%" />

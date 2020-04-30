@@ -27,21 +27,21 @@ API网关最基本的功能就是反向代理，所以在对API网关做技术�
 
 下图是吞吐量的情况，可以看到Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层），只比直压Tomcat低一点点，而Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）则要低得多。
 
-![](thrpt.png)
+<img src="thrpt.png" style="zoom:50%" />
 
 下面这张图可以更明显的看到吞吐量比较，Tomcat为100%因为它是基准值，Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层）的只比基准值低10左右%，而Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）则只是基准值的30%多一点（难兄难弟）。
 
-![](thrpt-comp.png)
+<img src="thrpt-comp.png" style="zoom:50%" />
 
 ## 平均响应时间
 
 下图可以看到Haproxy（7层）、Nginx（7层）、Netty（4层）、Netty（7层）、Reactor Netty（4层）、Go fasthttp（7层）的平均响应时间与Tomcat差不多。但是Spring Cloud Gateway（7层）、Zuul2（7层）、Go net/http（7层）则是Tomcat的3倍左右，不出所料。
 
-![](mean-resp-time.png)
+<img src="mean-resp-time.png" style="zoom:50%" />
 
 下图同样是以Tomcat作为基准值的比较：
 
-![](mean-resp-time-comp.png)
+<img src="mean-resp-time-comp.png" style="zoom:50%" />
 
 ## 响应时间分布
 
@@ -55,11 +55,11 @@ API网关最基本的功能就是反向代理，所以在对API网关做技术�
 > 
 > 关于如何正确压测系统可以看 [“How NOT to Measure Latency” by Gil Tene][youtube]
 
-![](resp-time.png)
+<img src="resp-time.png" style="zoom:50%" />
 
 下面同样是把结果与Tomcat基准值做对比：
 
-![](resp-time-comp.png)
+<img src="resp-time-comp.png" style="zoom:50%" />
 
 可以看到几个很有趣的现象：
 

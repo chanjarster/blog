@@ -7,4 +7,4 @@ date: 2019-09-17T09:25:08+08:00
 
 <!--more-->
 
-![](thread-safe.png)
+<img src="thread-safe.png" style="zoom:50%" />

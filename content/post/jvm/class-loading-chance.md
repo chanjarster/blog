@@ -7,7 +7,7 @@ date: 2019-09-09T16:55:08+08:00
 
 <!--more-->
 
-![](class-loading-chance.png)
+<img src="class-loading-chance.png" style="zoom:50%" />
 
 ### 7个阶段发生顺序
 

@@ -7,7 +7,7 @@ date: 2019-11-05T20:40:29+08:00
 
 <!--more-->
 
-![](explicit-locks.png)
+<img src="explicit-locks.png" style="zoom:50%" />
 
 ## Lock和ReentrantLock
 

@@ -10,6 +10,7 @@ date: 2019-02-13T21:40:01+08:00
 * [极客时间 - 数据结构与算法之美 - 11 | 排序（上）][1]
 
 ## 执行效率
+
 	
 * 最好、最坏、平均时间复杂度
 * 时间复杂度的系数、常数、低阶
@@ -33,6 +34,6 @@ date: 2019-02-13T21:40:01+08:00
 
 逆序度：逆序度 = 满序度 - 有序度
 
-![](../sort/analyze-sort.png)
+<img src="../sort/analyze-sort.png" style="zoom:50%" />
 
 [1]: https://time.geekbang.org/column/article/41802

@@ -7,11 +7,9 @@ date: 2019-10-13T13:40:29+08:00
 
 <!--more-->
 
-![](cancellation-and-shutdown.png)
-
 ## 任务取消
 
-![](task-cancellation.png)
+<img src="task-cancellation.png" style="zoom:50%" />
 
 一种做法是设置cancel flag，但是存在永远无法响应的风险：
 
@@ -204,7 +202,7 @@ public abstract class SocketUsingTask<T> implements CancellableTask<T> {
 
 ## 停止基于线程的Service
 
-![](stopping-service.png)
+<img src="stopping-service.png" style="zoom:50%" />
 
 ### 利用ExecutorService
 
@@ -268,7 +266,7 @@ public class TrackingExecutor extends AbstractExecutorService {
 
 ## 线程异常退出
 
-![](abnormal-termination.png)
+<img src="abnormal-termination.png" style="zoom:50%" />
 
 下面的代码在线程异常退出前告知框架它死了：
 
@@ -289,4 +287,4 @@ public void run() {
 
 ## JVM shutdown
 
-![](jvm-shutdown.png)
+<img src="jvm-shutdown.png" style="zoom:50%" />

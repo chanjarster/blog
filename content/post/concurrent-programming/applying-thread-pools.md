@@ -9,23 +9,23 @@ date: 2019-10-16T13:40:29+08:00
 
 ## 执行策略和任务的隐式耦合
 
-![](exec-policy-and-task.png)
+<img src="exec-policy-and-task.png" style="zoom:50%" />
 
 ## 认识基础组件
 
-![](basic-components.png)
+<img src="basic-components.png" style="zoom:50%" />
 
 ## 扩展线程池
 
-![](extends-thread-pool.png)
+<img src="extends-thread-pool.png" style="zoom:50%" />
 
 ## 配置线程池
 
-![](configure-thread-pool.png)
+<img src="configure-thread-pool.png" style="zoom:50%" />
 
 ## 递归算法平行化
 
-![](parallelize-algo.png)
+<img src="parallelize-algo.png" style="zoom:50%" />
 
 ### 循环平行化
 

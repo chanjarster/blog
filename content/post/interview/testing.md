@@ -7,4 +7,4 @@ date: 2019-09-02T20:35:46+08:00
 
 <!--more-->
 
-![](interview-skills.png)
+<img src="interview-skills.png" style="zoom:50%" />

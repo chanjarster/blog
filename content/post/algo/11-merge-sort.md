@@ -92,6 +92,6 @@ public void merge(int[] a, int start, int mid, int end) {
 }
 ```
 
-![](../sort/merge-sort.png)
+<img src="../sort/merge-sort.png" style="zoom:50%" />
 
 [1]: https://time.geekbang.org/column/article/41913

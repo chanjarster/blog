@@ -21,7 +21,7 @@ range query是非常常见的一种query，看看它有哪些参数：
 
 在Prometheus expression browser里看到的是这样的：
 
-![Expression Browser](expression-browser-overview.png)
+<img src="expression-browser-overview.png" alt="Expression Browser" style="zoom:50%" />
 
 注意到上图中的Res框里没有给值，没有给的话Prometheus会自动给一个值，这个值在图示右上角可以看到。
 
@@ -91,7 +91,7 @@ range vector select返回的是当前timestamp之前的`range duration`内的所
 
 大家都知道Grafana都是用来画图的，比如下面这张图Y轴是值，X轴则是时间线，因此在X轴方向的每个像素都代表了一个timestamp。
 
-![](grafana-graph.png)
+<img src="grafana-graph.png" style="zoom:50%" />
 
 `resolution`就是用来根据像素来计算`step`的一个参数。下面用6个像素以及它们的timestamp来说明：
 
@@ -111,7 +111,7 @@ x=1,ts=0; x=2,ts=5; x=3,ts=10; x=4,ts=15; x=5,ts=20; x=6,ts=25
 
 所以在Grafana发起的查询中`step`参数是动态的。其实这也是很合理的，因为只有这样才能够在Graph宽度小的时候绘图更粗糙（即`step`更大），Graph宽度大的时候绘图更精细（即`step`更小，但是不能小于`min step`）。实际发起的请求的`step`参数你可以在Graph的Query Inspector里看到：
 
-![](grafana-query-inspector.png)
+<img src="grafana-query-inspector.png" style="zoom:50%" />
 
 但是我们之前不说过了`rate()`的`range duration`不能小于`step`吗？那么把`range duration`给固定值的化就不太好了，怎么办呢？你可以使用Grafana提供的内置变量`$__interval`，它代表的Grafana就是计算出来的`step`的值。比如这样就能够将`range duration`和`step`保持一致了（更多内置变量可以见[这里][grafana-interval-var]）：
 

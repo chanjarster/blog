@@ -43,6 +43,6 @@ public void selectionSort(int[] a, int n) {
 }
 ```
 
-![](../sort/selection-sort.png)
+<img src="../sort/selection-sort.png" style="zoom:50%" />
 
 [1]: https://time.geekbang.org/column/article/41802

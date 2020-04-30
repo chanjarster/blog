@@ -7,6 +7,6 @@ date: 2019-09-10T19:25:08+08:00
 
 <!--more-->
 
-![](classloader-osgi-mind.png)
+<img src="classloader-osgi-mind.png" style="zoom:50%" />
 
-![](classloader-osgi.png)
+<img src="classloader-osgi.png" style="zoom:50%" />

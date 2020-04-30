@@ -7,4 +7,4 @@ date: 2019-09-16T17:25:08+08:00
 
 <!--more-->
 
-![](memory-model.png)
+<img src="memory-model.png" style="zoom:50%" />

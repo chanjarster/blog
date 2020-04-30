@@ -7,8 +7,8 @@ date: 2019-09-16T20:25:08+08:00
 
 <!--more-->
 
-![](thread.png)
+<img src="thread.png" style="zoom:50%" />
 
 
 
-![](thread-states.png)
+<img src="thread-states.png" style="zoom:50%" />

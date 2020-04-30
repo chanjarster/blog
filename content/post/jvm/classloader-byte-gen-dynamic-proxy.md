@@ -7,7 +7,7 @@ date: 2019-09-10T20:25:08+08:00
 
 <!--more-->
 
-![](classloader-byte-gen-dynamic-proxy.png)
+<img src="classloader-byte-gen-dynamic-proxy.png" style="zoom:50%" />
 
 ## 大纲
 

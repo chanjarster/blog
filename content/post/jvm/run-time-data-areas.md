@@ -9,7 +9,7 @@ date: 2019-02-17T20:18:35+08:00
 
 ## 概览
 
-![](area-relations.png)
+<img src="area-relations.png" style="zoom:50%" />
 
 ## 详细
 
@@ -135,7 +135,7 @@ date: 2019-02-17T20:18:35+08:00
 
 ### 脑图
 
-![](areas.png)
+<img src="areas.png" style="zoom:50%" />
 
 ## 参考资料
 

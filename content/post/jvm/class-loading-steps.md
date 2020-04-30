@@ -7,4 +7,4 @@ date: 2019-09-09T17:25:08+08:00
 
 <!--more-->
 
-![](class-loading-steps.png)
+<img src="class-loading-steps.png" style="zoom:50%" />

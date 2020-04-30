@@ -7,5 +7,5 @@ date: 2019-09-18T20:40:29+08:00
 
 <!--more-->
 
-![](thread-safety.png)
+<img src="thread-safety.png" style="zoom:50%" />
 

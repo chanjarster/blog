@@ -18,6 +18,7 @@ date: 2019-09-18T20:20:08+08:00
 * [线程安全](../thread-safety)
 * [共享对象](../sharing-objects)
 * [编写线程安全对象](../composing-objects)
+* [Applying Thread Pools](../applying-thread-pools)
 * [Building Blocks](../building-blocks)
 * [Task Execution](../task-execution)
 * [Cancellation and Shutdown](../cancellation-and-shutdown)

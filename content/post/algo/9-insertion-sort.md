@@ -42,6 +42,6 @@ public void insertionSort(int[] a, int n) {
 }
 ```
 
-![](../sort/insertion-sort.png)
+<img src="../sort/insertion-sort.png" style="zoom:50%" />
 
 [1]: https://time.geekbang.org/column/article/41802

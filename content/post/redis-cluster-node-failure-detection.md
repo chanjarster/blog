@@ -18,7 +18,7 @@ draft: false
 
 下面是状态转换图，例举的是Node A观察Node B的例子：
 
-![](failure-detection.png)
+<img src="failure-detection.png" style="zoom:50%" />
 
 
 

@@ -58,7 +58,7 @@ date: 2019-03-21T21:59:00+08:00
 
 可以看到不论是task如何拆分，吞吐量的峰值都是3 task/sec。在[如何估算吞吐量以及线程池大小][1]提到计算吞吐量的公式：
 
-![](../throughput-and-thread-pool-size/throughput-formula.png)
+<img src="../throughput-and-thread-pool-size/throughput-formula.png" style="zoom:50%" />
 
 在我们这个场景中，Tw=0，所以公式就变成了 C / Tc，我们的C=6，而Tc=2s，所以吞吐量就是3 tasks/sec。
 

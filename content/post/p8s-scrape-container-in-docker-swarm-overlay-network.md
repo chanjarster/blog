@@ -120,7 +120,7 @@ docker run -d \
 
 3) 访问 http://localhost:9090 看看Prometheus是否启动成功，在输入框里输入x然后执行，应该可以看到如下图的结果：
 
-![](prom.png)
+<img src="prom.png" style="zoom:50%" />
 
 其中3个instance是属于`tasks.mock`的，还有一个则是standalone container（如果没有看到4个instance，那么等一会儿再试）。
 

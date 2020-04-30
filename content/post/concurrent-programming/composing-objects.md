@@ -7,7 +7,7 @@ date: 2019-09-19T11:40:29+08:00
 
 <!--more-->
 
-![](composing-objects.png)
+<img src="composing-objects.png" style="zoom:50%" />
 
 ### 对象管制
 

@@ -7,7 +7,7 @@ date: 2019-09-19T13:40:29+08:00
 
 <!--more-->
 
-![](building-blocks.png)
+<img src="building-blocks.png" style="zoom:50%" />
 
 ## Synchronized集合
 
@@ -57,11 +57,11 @@ public class HiddentIterator {
 
 ## Concurrent集合
 
-![](concurrent-collections.png)
+<img src="concurrent-collections.png" style="zoom:50%" />
 
 ## 阻塞及可中断方法
 
-![](blocking-methods.png)
+<img src="blocking-methods.png" style="zoom:50%" />
 
 InterruptedException没法往上抛的处理例子：
 

@@ -7,7 +7,7 @@ date: 2019-10-08T13:40:29+08:00
 
 <!--more-->
 
-![](task-execution.png)
+<img src="task-execution.png" style="zoom:50%" />
 
 ## Executor框架
 

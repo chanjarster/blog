@@ -9,7 +9,7 @@ date: 2019-01-26T13:59:55+08:00
 
 ## 思维导图
 
-![](../classloader.png)
+<img src="../classloader.png" style="zoom:50%" />
 
 ## 参考资料
 

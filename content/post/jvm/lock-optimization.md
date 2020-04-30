@@ -7,5 +7,5 @@ date: 2019-09-17T10:25:08+08:00
 
 <!--more-->
 
-![](lock-optimization.png)
+<img src="lock-optimization.png" style="zoom:50%" />
 

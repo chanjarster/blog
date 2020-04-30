@@ -7,15 +7,15 @@ date: 2019-10-24T10:40:29+08:00
 
 <!--more-->
 
-![](performance-and-scalability.png)
+<img src="performance-and-scalability.png" style="zoom:50%" />
 
 ## 性能
 
-![](performance.png)
+<img src="performance.png" style="zoom:50%" />
 
 ## Amdahl's Law
 
-![](amdahls-law.png)
+<img src="amdahls-law.png" style="zoom:50%" />
 
 隐藏的serial点：
 
@@ -41,7 +41,7 @@ public class WorkerThread extends Thread {
 
 ## 线程的代价
 
-![](cost-of-thread.png)
+<img src="cost-of-thread.png" style="zoom:50%" />
 
 ### 优化非竞争性锁
 
@@ -68,7 +68,7 @@ public String getStoogeNames() {
 
 ## 优化竞争性锁
 
-![](reduce-locking-contention.png)
+<img src="reduce-locking-contention.png" style="zoom:50%" />
 
 ### 缩小锁的范围
 

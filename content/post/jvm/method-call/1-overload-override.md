@@ -161,7 +161,7 @@ class C extends A
 
 ## 思维导图
 
-![](../overload-override.png)
+<img src="../overload-override.png" style="zoom:50%" />
 
 ## 参考文档
 

@@ -109,7 +109,7 @@ docker run -d \
 
 3) 访问[http://localhost:9090](http://localhost:9090)看看Prometheus是否启动成功，在输入框里输入`jvm_info`然后执行，应该可以看到如下图的结果：
 
-![simple](prom.png)
+<img src="prom.png" alt="simple" style="zoom:50%" />
 
 如果没有看到三个instance，那么等一会儿再试。
 
@@ -125,7 +125,7 @@ docker run -d --name=grafana -p 3000:3000 grafana/grafana
 
 3) 添加Prometheus数据源，如下图所示到添加数据源页面：
 
-![](grafana-ds.png)
+<img src="grafana-ds.png" style="zoom:50%" />
 
 4) 配置数据源信息：
 
@@ -136,19 +136,19 @@ docker run -d --name=grafana -p 3000:3000 grafana/grafana
 
 5) 导入Dashboard。我们不需要重头自己做Dashboard，用现成的就行，按下图所示进入导入页面
 
-![](grafana-dashboard-import.png)
+<img src="grafana-dashboard-import.png" style="zoom:50%" />
 
 6) 使用我制作的[JVM Dashboard][grafana-jvm-dashboard]，页面右侧出现的ID号是`8563`，记住这个号，填在如下图所示的位置：
 
-![](grafana-dashboard-import-2.png)
+<img src="grafana-dashboard-import-2.png" style="zoom:50%" />
 
 7) 然后鼠标点击别处稍等一下，出现下图，选择一下数据源就可以了
 
-![](grafana-dashboard-import-3.png)
+<img src="grafana-dashboard-import-3.png" style="zoom:50%" />
 
 8) 最后打开刚刚导入的Dashboard，如下图：
 
-![](jvm-dashboard.png)
+<img src="jvm-dashboard.png" style="zoom:50%" />
 
 [prometheus]: https://prometheus.io/
 [grafana]: https://grafana.com

@@ -37,13 +37,13 @@ Redis Cluster中的Node通过Gossip协议传播自己的状态+自己所认为�
 
 下面是总结的在发生Slave Promotion时，Slave做的事情。
 
-![](slave-promotion.png)
+<img src="slave-promotion.png" style="zoom:50%" />
 
 ### Master的动作
 
 下面是总结的在发生Slave Promotion时，Master做的事情。
 
-![](master-voting.png)
+<img src="master-voting.png" style="zoom:50%" />
 
 ## 传播Slots的配置
 

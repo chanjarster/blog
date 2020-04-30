@@ -51,6 +51,6 @@ public void sort(int[] a) {
 }
 ```
 
-![](../sort/bubble-sort.png)
+<img src="../sort/bubble-sort.png" style="zoom:50%" />
 
 [1]: https://time.geekbang.org/column/article/41802
