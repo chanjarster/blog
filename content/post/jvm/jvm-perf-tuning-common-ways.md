@@ -1,7 +1,7 @@
 ---
 title: "Java应用性能调优套路"
 author: "颇忒脱"
-tags: ["jvm", "高并发"]
+tags: ["jvm", "高并发", "cheatsheet", "debug"]
 date: 2020-03-05T18:02:16+08:00
 ---
 

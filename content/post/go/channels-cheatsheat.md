@@ -1,5 +1,5 @@
 ---
-title: "Go Channels cheatsheet"
+title: "Go Channels Cheatsheet"
 date: 2020-04-28T08:59:19+08:00
 tags: ["go", "cheatsheet"]
 author: "颇忒脱"

@@ -55,7 +55,7 @@ canonifyurls = true
   url = "/tags/kernel/"
 
 [[menu.main]]
-  name = "Cheat sheet"
+  name = "Cheatsheet"
   weight = 30
   identifier = "cheat sheet"
   url = "/tags/cheatsheet/"

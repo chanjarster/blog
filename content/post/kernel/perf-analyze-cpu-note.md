@@ -1,7 +1,7 @@
 ---
 title: "Perf分析CPU性能问题笔记"
 author: "颇忒脱"
-tags: ["kernel", "java", "运维", "troubleshooting"]
+tags: ["kernel", "java", "运维", "troubleshooting", "cheatsheet", "debug"]
 date: 2019-04-12T15:35:55+08:00
 ---
 

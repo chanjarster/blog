@@ -1,7 +1,7 @@
 ---
 title: "解读pprof报告"
 author: "颇忒脱"
-tags: ["go"]
+tags: ["go", "debug", "cheatsheet"]
 date: 2020-03-17T14:10:26+08:00
 ---
 
