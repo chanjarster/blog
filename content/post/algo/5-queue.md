@@ -39,7 +39,7 @@ public class CircularQueue {
 
   // 申请一个大小为 capacity 的数组
   public CircularQueue(int capacity) {
-    items = new String[capacity];
+    items = new String[capacity + 1];
     n = capacity;
   }
 
