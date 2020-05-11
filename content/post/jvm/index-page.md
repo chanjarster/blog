@@ -39,6 +39,7 @@ date: 2019-09-05T08:50:08+08:00
 ## 字节码指令
 
 * [JVM执行方法调用（一）- 重载与重写](../method-call/1-overload-override/)
+* [JVM执行方法调用（二）- 指令](../method-call/2-instrucions/)
 
 ## 内存模型与线程
 
