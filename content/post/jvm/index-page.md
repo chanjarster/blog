@@ -48,6 +48,11 @@ date: 2019-09-05T08:50:08+08:00
 * [JVM - 线程安全](../thread-safe)
 * [JVM - 锁优化](../lock-optimization)
 
+## 其他
+
+* [JVM - 对象的内存布局](../object-layout)
+* [JVM - 指针压缩原理](../oop-compress)
+
 ## 实战
 
 * [Java应用性能调优套路](../jvm-perf-tuning-common-ways)
