@@ -44,3 +44,4 @@ JVM启用指针压缩后（默认开启），指针大小从8字节变成了4字
 ## 参考资料
 
 * [JVM之压缩指针（CompressedOops）](https://juejin.im/post/5c4c8ad9f265da6179752b03)
+* [CompressedOops](https://wiki.openjdk.java.net/display/HotSpot/CompressedOops)
