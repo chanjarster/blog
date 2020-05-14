@@ -1,7 +1,7 @@
 ---
 title: "Nginx Ingress的Cookie粘滞策略"
 author: "颇忒脱"
-tags: ["k8s"]
+tags: ["k8s","ingress"]
 date: 2019-12-03T15:16:23+08:00
 ---
 
