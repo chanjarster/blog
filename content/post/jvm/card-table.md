@@ -1,5 +1,5 @@
 ---
-title: "JVM - Card Table和Write Barriers"
+title: "JVM - Card Table和Post-Write Barriers"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-T", "jvm"]
 date: 2020-05-15T09:18:08+08:00
@@ -33,16 +33,13 @@ G1中的每个Region都有一个Remember Set，Remeber Set存在3种粒度形式
 
 ## Card Table结构
 
-实际上Card Table是一个bitmap，每个bit代表着一块区域，那么这块区域到底多大呢？这个似乎也不重要，网上有说是512 byte的，有说是4K的。下面是一张图，图中的Gen1可以看作是老年代（因为是从.Net中抄的图）：
+实际上Card Table是一个bitmap，每个bit代表着一个Card，一个Card代表了一块内存区域，那么Card到底多大呢？这个不重要，网上有说是512 byte的，有说是4K的。下面是一张图，图中的Gen1可以看作是老年代（因为是从.Net中抄的图）：
 
 ![](https://msdnshared.blob.core.windows.net/media/TNBlogsFS/BlogFileStorage/blogs_msdn/abhinaba/WindowsLiveWriter/BackToBasicsGenerationalGarbageCollectio_115F4/image_18.png)
 
-## 什么是Write Barrier
+## Post-Write Barrier
 
-Writer Barrier就是编译器在你更新引用的地方插入的一小段代码：
-
-* Pre Write Barrier，个人理解和并发标记算法有关，用来解决在并发标记的同时new出来的非垃圾对象不被误认为垃圾的问题。
-* Post Write Barrier，用来更新Card Table的，更新old -> old 和 old -> young的信息
+Post-Writer Barrier就是编译器在你更新引用的地方插入的一小段代码，用来更新Card Table的，更新old -> old 和 old -> young的信息。
 
 ## 参考资料
 

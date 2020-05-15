@@ -21,7 +21,8 @@ date: 2019-09-05T08:50:08+08:00
 * [JVM - 垃圾收集器](../gc-collectors/)
 * [JVM - 内存分配与回收策略](../memory-alloc-and-reclaim/)
 * [JVM - G1垃圾收集器](../g1)
-* [JVM - Card Table和Write Barriers](../card-table)
+* [JVM - Card Table和Post-Write Barriers](../card-table)
+* [JVM - 并发标记之三色标记法和Pre-Write Barriers](../tri-color)
 
 ## ClassLoader
 
