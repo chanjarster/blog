@@ -17,6 +17,7 @@ date: 2019-09-05T08:50:08+08:00
 
 * [Visualizing Garbage Collection Algorithms](https://spin.atomicobject.com/2014/09/03/visualizing-garbage-collection-algorithms/)，现代垃圾收集算法（语言无关）
 * [JVM - 对象已经死了吗？](../is-object-dead/)
+  * [JVM -强软弱虚引用以及Reachability Fence](../reference-types-reachability-fence)
 * [JVM - GC算法](../gc-algos/)
 * [JVM - 垃圾收集器](../gc-collectors/)
 * [JVM - 内存分配与回收策略](../memory-alloc-and-reclaim/)
