@@ -304,6 +304,14 @@ example.com
 * `informers`：Informer接收来自服务器的CRD的变更事件
 * `listers`：Lister提供只读的cache layer for GET和LIST请求
 
+## 关于Controller
+
+controller代码可以看项目的[main.go][7]。
+
+本例子里controller读取环境变量`KUBECONFIG`来启动Clientset以及和K8S通行，这个也符合[k8s.io/client-go out-of-cluster example][8]。在实际生产环境中，可以参考[k8s.io/client-go in-cluster example][9]。
+
+如果你想要更灵活的做法，比如当提供了`--kubeconfig`的时候采用out-of-cluster模式，否则则尝试in-cluster模式（看`/var/run/secrets/kubernetes.io/serviceaccount`），可以参考[prometheus-operator k8sutil.go][10]的做法
+
 ## 参考文档
 
 * [Kubernetes Deep Dive: Code Generation for CustomResources][2]
@@ -318,3 +326,7 @@ example.com
 [4]: https://github.com/kubernetes/sample-controller
 [5]: https://github.com/kubernetes/code-generator
 [6]: https://github.com/kubernetes/client-go
+[7]: https://github.com/chanjarster/k8s-code-gen-how-to/blob/master/main.go
+[8]: https://github.com/kubernetes/client-go/blob/master/examples/out-of-cluster-client-configuration
+[9]: https://github.com/kubernetes/client-go/blob/master/examples/in-cluster-client-configuration
+[10]: https://github.com/coreos/prometheus-operator/blob/v0.40.0/pkg/k8sutil/k8sutil.go#L61-L95
