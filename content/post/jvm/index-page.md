@@ -56,6 +56,7 @@ date: 2019-09-05T08:50:08+08:00
 
 * [JVM - 对象的内存布局](../object-layout)
 * [JVM - 指针压缩原理](../oop-compress)
+* [JVM - String对象在Java 9中的变化](../string-in-9)
 
 ## 实战
 
