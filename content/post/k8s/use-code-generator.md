@@ -190,7 +190,7 @@ set -o pipefail
 # corresponding to go mod init <module>
 MODULE=example.com/foo-controller
 # api package
-API_PKG=api
+APIS_PKG=api
 # generated output package
 OUTPUT_PKG=generated
 # group-version such as foo:v1alpha1
@@ -204,7 +204,7 @@ CODEGEN_PKG=${CODEGEN_PKG:-$(cd "${SCRIPT_ROOT}"; ls -d -1 ./vendor/k8s.io/code-
 #                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
 bash "${CODEGEN_PKG}"/generate-groups.sh "all" \
-  ${MODULE}/${OUTPUT_PKG} ${MODULE}/${API_PKG} \
+  ${MODULE}/${OUTPUT_PKG} ${MODULE}/${APIS_PKG} \
   ${GROUP_VERSION} \
   --go-header-file "${SCRIPT_ROOT}"/hack/boilerplate.go.txt \
   --output-base "$(dirname "${BASH_SOURCE[0]}")/.."
@@ -223,10 +223,13 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+OUTPUT_PKG=generated
+MODULE=example.com/foo-controller
+
 SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 
-DIFFROOT="${SCRIPT_ROOT}/pkg"
-TMP_DIFFROOT="${SCRIPT_ROOT}/_tmp/pkg"
+DIFFROOT="${SCRIPT_ROOT}/${OUTPUT_PKG}"
+TMP_DIFFROOT="${SCRIPT_ROOT}/_tmp/${OUTPUT_PKG}"
 _tmp="${SCRIPT_ROOT}/_tmp"
 
 cleanup() {
@@ -240,6 +243,9 @@ mkdir -p "${TMP_DIFFROOT}"
 cp -a "${DIFFROOT}"/* "${TMP_DIFFROOT}"
 
 "${SCRIPT_ROOT}/hack/update-codegen.sh"
+echo "copying generated ${SCRIPT_ROOT}/${MODULE}/${OUTPUT_PKG} to ${DIFFROOT}"
+cp -r "${SCRIPT_ROOT}/${MODULE}/${OUTPUT_PKG}"/* "${DIFFROOT}"
+
 echo "diffing ${DIFFROOT} against freshly generated codegen"
 ret=0
 diff -Naupr "${DIFFROOT}" "${TMP_DIFFROOT}" || ret=$?
@@ -308,7 +314,7 @@ example.com
 
 controller代码可以看项目的[main.go][7]。
 
-本例子里controller读取环境变量`KUBECONFIG`来启动Clientset以及和K8S通行，这个也符合[k8s.io/client-go out-of-cluster example][8]。在实际生产环境中，可以参考[k8s.io/client-go in-cluster example][9]。
+本例子里controller读取环境变量`KUBECONFIG`来启动Clientset以及和K8S通信，这个也符合[k8s.io/client-go out-of-cluster example][8]。在实际生产环境中，可以参考[k8s.io/client-go in-cluster example][9]。
 
 如果你想要更灵活的做法，比如当提供了`--kubeconfig`的时候采用out-of-cluster模式，否则则尝试in-cluster模式（看`/var/run/secrets/kubernetes.io/serviceaccount`），可以参考[prometheus-operator k8sutil.go][10]的做法
 
