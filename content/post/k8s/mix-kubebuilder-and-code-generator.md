@@ -1,16 +1,15 @@
 ---
-title: "使用kubebuilder+code generator编写CRD"
+title: "混合kubebuilder与code generator编写CRD"
 date: 2020-07-01T15:35:11+08:00
 tags: ["k8s"]
 author: "颇忒脱"
-draft: true
 ---
-
-使用[Kubebuilder][1]+[k8s.io/code-generator][3]编写CRD。
 
 <!--more-->
 
-本项目代码在 [TODO][2]
+使用[Kubebuilder][1]+[k8s.io/code-generator][3]编写CRD。
+
+本项目代码在 [这里][2]。
 
 ## 概览
 
@@ -146,8 +145,8 @@ import _ "k8s.io/code-generator"
 
 * `MODULE`和`go.mod`保持一致
 * `API_PKG=apis`，和`apis`目录保持一致
-* ``OUTPUT_PKG=generated/webapp`，生成Resource时指定的group一样
-* `GROUP_VERSION=webapp.v1`和生成Resource时指定的group version对应
+* `OUTPUT_PKG=generated/webapp`，生成Resource时指定的group一样
+* `GROUP_VERSION=webapp:v1`和生成Resource时指定的group version对应
 
 ```bash
 #!/usr/bin/env bash
@@ -183,6 +182,8 @@ bash "${CODEGEN_PKG}"/generate-groups.sh "all" \
 #   --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
 ```
 
+新建`hack/verify-codegen.sh`（文件内容请看github项目）。
+
 ### 2）下载code-generator
 
 先把[code-generator][3]下载下来，注意这里的K8S版本号，得和`go.mod`里的`k8s.io/client-go`的版本一致：
@@ -199,7 +200,54 @@ go mod vendor
 chmod +x vendor/k8s.io/code-generator/generate-groups.sh
 ```
 
-### 3）生成代码
+### 3）更新依赖版本
+
+因为code-generator用的是v0.18.5，因此要把其他的k8s库也更新到这个版本：
+
+```bash
+K8S_VERSION=v0.18.5
+go get k8s.io/client-go@$K8S_VERSION
+go get k8s.io/apimachinery@$K8S_VERSION
+go get sigs.k8s.io/controller-runtime@v0.6.0
+go mod vendor
+```
+
+### 4）生成代码
+
+你需要修改`guestbook_types.go`文件，添加上tag `// +genclient`：
+
+```go
+// +genclient
+// +kubebuilder:object:root=true
+
+// Guestbook is the Schema for the guestbooks API
+type Guestbook struct {
+```
+
+新建`apis/webapp/v1/doc.go`，注意`// +groupName=webapp.example.com`：
+
+```go
+// +groupName=webapp.example.com
+
+package v1
+```
+
+新建`apis/webapp/v1/register.go`，code generator生成的代码需要用到它：
+
+```go
+package v1
+
+import (
+	"k8s.io/apimachinery/pkg/runtime/schema"
+)
+
+// SchemeGroupVersion is group version used to register these objects.
+var SchemeGroupVersion = GroupVersion
+
+func Resource(resource string) schema.GroupResource {
+	return SchemeGroupVersion.WithResource(resource).GroupResource()
+}
+```
 
 执行`hack/update-codegen.sh`：
 
@@ -207,20 +255,49 @@ chmod +x vendor/k8s.io/code-generator/generate-groups.sh
 ./hack/update-codegen.sh
 ```
 
+会得到`example.com/foo-controller`目录：
 
+```txt
+example.com
+└── foo-controller
+    └── generated
+        └── webapp
+            ├── clientset
+            ├── informers
+            └── listers
+```
+
+移动文件：
+
+* `example.com/foo-controller/generated`直接移出来，放到项目根下面`generated`
+
+## 例子程序
+
+先apply manifests yaml：
+
+```bash
+kubectl apply -f config/crd/bases/webapp.example.com_guestbooks.yaml
+kubectl apply -f config/samples/webapp_v1_guestbook.yaml
+```
+
+然后执行项目的[main.go][8]。
 
 ## 参考资料
 
 * [code-generator client-gen tag references][6]
-* [kubebuilder references][7]
+* [kubebuilder tag references][7]
+* [Kubernetes Deep Dive: Code Generation for CustomResources][9]
 
 
 
 [1]: https://github.com/kubernetes-sigs/kubebuilder
-[2]: TODO
+[2]: https://github.com/chanjarster/kubebuilder-mix-codegen-how-to
 [3]: https://github.com/kubernetes/code-generator
 [4]: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md
-
 [5]: https://book.kubebuilder.io/quick-start.html#installation
 [6]: https://github.com/kubernetes/code-generator/tree/master/cmd/client-gen
 [7]: https://book.kubebuilder.io/reference/reference.html
+[8]: https://github.com/chanjarster/kubebuilder-mix-codegen-how-to/blob/master/main.go
+[9]: https://www.openshift.com/blog/kubernetes-deep-dive-code-generation-customresources
+[11]: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md
+
