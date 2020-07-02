@@ -11,9 +11,11 @@ date: 2019-12-03T15:16:23+08:00
 
 默认的Ingress的配置也是轮询的，但是你可以启用基于Cookie的粘滞策略，当用户第一次访问的时候会得到一个Cookie，该Cookie记录了所访问的Pod，再下一次访问的时候Nginx Ingress Controller会将请求转发到同一个Pod上，从而实现Session粘滞。
 
-关键的两个Annotation：
+关键的三个Annotation：
 
 * `nginx.ingress.kubernetes.io/affinity: cookie`
 * `nginx.ingress.kubernetes.io/affinity-mode: persistent`
+* `nginx.ingress.kubernetes.io/session-cookie-name: <name>`，一定要设置cookie name，避免不同ingress使用相同的cookie name导致冲突。
 
-更多参考[Session Affinity](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#session-affinity)。
+更多参考[Session Affinity](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#session-affinity)和[Sticky Sessions](https://kubernetes.github.io/ingress-nginx/examples/affinity/cookie/)。
+

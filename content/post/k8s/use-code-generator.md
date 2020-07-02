@@ -1,13 +1,19 @@
 ---
-title: "使用k8s.io/code-generator编写自定义K8S API"
+title: "使用code-generator编写CRD"
 date: 2020-06-30T08:57:26+08:00
 tags: ["k8s"]
 author: "颇忒脱"
 ---
 
+使用[k8s.io/code-generator][5]编写CRD。
+
 <!--more-->
 
 本项目代码在 https://github.com/chanjarster/k8s-code-gen-how-to
+
+## 概览
+
+[k8s.io/code-generator][5]是一个代码生成工具，用于为你的CRD生成[kubernetes-style API][11]实现，这样你就可以管理K8S上你的自定义CRD资源了。
 
 ## 第一步：初始化项目
 
@@ -22,12 +28,12 @@ go mod init $MODULE
 
 ```bash
 .
-├── api
+└── api
     └── foo
-        └── v1alpha1
-            ├── doc.go
-            ├── register.go
-            └── types.go
+    └── v1alpha1
+        ├── doc.go
+        ├── register.go
+        └── types.go
 ```
 
 执行命令：
@@ -178,7 +184,11 @@ package tools
 import _ "k8s.io/code-generator"
 ```
 
-新建`hack/update-codegen.sh`，注意修改几个变量`MODULE`、`API_PKG`、`OUTPUT_PKG`、`GROUP_VERSION`。注意`GROUP_VERSION`参数，它是`foo.v1alpha1`而不是`foo.example.com:v1alpha1`，因为code generator会读取我们之前写的`api/<group>/<version>`下的代码，因此得要对应上这个路径：
+新建`hack/update-codegen.sh`，注意修改几个变量：
+* `MODULE`和`go.mod`保持一致
+* `API_PKG=api`，和我们的目录保持一致
+* `OUTPUT_PKG`
+* `GROUP_VERSION=foo.v1alpha1`而不是`foo.example.com:v1alpha1`，因为code generator会读取我们之前写的`api/<group>/<version>`下的代码，因此得要对应上这个路径：
 
 ```bash
 #!/usr/bin/env bash
@@ -325,6 +335,7 @@ controller代码可以看项目的[main.go][7]。
 * [Sample Controller][4]
 * [code-generator][5]
 * [client-go][6]
+* [client-gen tag docs][12]
 
 [1]: https://pkg.go.dev/mod/k8s.io/code-generator?tab=overview
 [2]: https://www.openshift.com/blog/kubernetes-deep-dive-code-generation-customresources
@@ -336,3 +347,5 @@ controller代码可以看项目的[main.go][7]。
 [8]: https://github.com/kubernetes/client-go/blob/master/examples/out-of-cluster-client-configuration
 [9]: https://github.com/kubernetes/client-go/blob/master/examples/in-cluster-client-configuration
 [10]: https://github.com/coreos/prometheus-operator/blob/v0.40.0/pkg/k8sutil/k8sutil.go#L61-L95
+[11]: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md
+[12]: https://github.com/kubernetes/code-generator/tree/master/cmd/client-gen
