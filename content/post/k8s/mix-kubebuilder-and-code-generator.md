@@ -287,6 +287,7 @@ kubectl apply -f config/samples/webapp_v1_guestbook.yaml
 * [code-generator client-gen tag references][6]
 * [kubebuilder tag references][7]
 * [Kubernetes Deep Dive: Code Generation for CustomResources][9]
+* [kubebuilder sample project][12]
 
 
 
@@ -300,4 +301,4 @@ kubectl apply -f config/samples/webapp_v1_guestbook.yaml
 [8]: https://github.com/chanjarster/kubebuilder-mix-codegen-how-to/blob/master/main.go
 [9]: https://www.openshift.com/blog/kubernetes-deep-dive-code-generation-customresources
 [11]: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md
-
+[12]: https://github.com/kubernetes-sigs/kubebuilder/tree/master/docs/book/src/cronjob-tutorial/testdata/project
