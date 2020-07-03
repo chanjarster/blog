@@ -60,7 +60,7 @@ kubebuilder edit --multigroup=true
 └── main.go
 ```
 
-## 第二步：生成Resource和CRD manifests
+## 第二步：生成Resource和manifests
 
 ```bash
 kubebuilder create api --group webapp --version v1 --kind Guestbook
@@ -94,6 +94,15 @@ n
         └── webapp_v1_guestbook.yaml
 ```
 
+添加文件`apis/webapp/v1/rbac.go`，这个文件用生成RBAC manifests：
+
+```go
+// +kubebuilder:rbac:groups=webapp.example.com,resources=guestbooks,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=webapp.example.com,resources=guestbooks/status,verbs=get;update;patch
+
+package v1
+```
+
 然后生成CRD manifests：
 
 ```bash
@@ -103,11 +112,12 @@ make manifests
 得到：
 
 ```yaml
-.
-├── config
-    └── crd
-        └── bases
-            └── webapp.example.com_guestbooks.yaml
+config
+├── crd
+│   └── bases
+│       └── webapp.example.com_guestbooks.yaml
+└── rbac
+    └── role.yaml
 ```
 
 **注意：**
