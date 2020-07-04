@@ -19,6 +19,45 @@ Rancher中可以很方便的开启监控功能，其使用的是Prometheus Opera
 
 {{< figure src="step-2.png" width="100%">}}
 
+### RBAC
+
+给prometheus-operator的service account配置RBAC：
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: prometheus-all-ns
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - services
+  - endpoints
+  - pods
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources:
+  - configmaps
+  verbs: ["get"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-all-ns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-all-ns
+subjects:
+- kind: ServiceAccount
+  name: prometheus-k8s
+  namespace: monitoring
+```
+
+
 ## 应用配置JMX Exporter
 
 你的Java应用的镜像得配置JMX Exporter，配置方法见[使用Prometheus+Grafana监控JVM](../../prom-grafana-jvm)，我在这里选择将JMX Exporter端口设置为6060。
@@ -149,3 +188,4 @@ grafana-cli admin reset-admin-password <新密码>
 然后大功告成：
 
 {{< figure src="step-8.png" width="100%">}}
+
