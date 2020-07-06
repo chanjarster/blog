@@ -179,6 +179,7 @@ touch hack/boilerplate.go.txt
 
 ```go
 // +build tools
+
 package tools
 
 import _ "k8s.io/code-generator"
