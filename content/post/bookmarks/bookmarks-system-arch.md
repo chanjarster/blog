@@ -11,6 +11,7 @@ date: 2019-04-15T15:21:38+08:00
 
 * [The Log: What every software engineer should know about real-time data's unifying abstraction](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
 讲了Log/Event/Stream与Table是同一件事情的两个面，为流处理应用，分布式存储系统的建设提供了高屋建瓴的指导。
+* [上文中文版](https://www.kancloud.cn/kancloud/log-real-time-datas-unifying/58708)
 
 # 分布式架构
 
