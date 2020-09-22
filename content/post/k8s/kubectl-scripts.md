@@ -26,3 +26,18 @@ NAMESPACE: {{ $ns }} POD: {{ $pod }}
 {{- end }}'
 ```
 
+## 查找运行在某个Host上的Pod
+
+替换下面脚本的IP：
+
+```bash
+kubectl get --all-namespaces pods -o go-template='
+{{ range .items -}}
+{{ $pod := .metadata.name -}}
+{{ $ns := .metadata.namespace -}}
+{{- if eq .status.hostIP "IP" }}
+NAMESPACE: {{ $ns }} POD: {{ $pod }}
+{{- end }}
+{{- end }}'
+```
+
