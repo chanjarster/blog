@@ -1,7 +1,7 @@
 msg="rebuilding site `date`"
 
 site:
-	hugo -t hugo-nuo
+	hugo -t noteworthy
 
 deploy: site
 	# Go To Public folder
