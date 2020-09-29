@@ -1,5 +1,5 @@
 ---
-title: "解决Rancher自带监控CPU和内存显示用量为实际用量的2倍的方法："
+title: "解决Rancher自带监控CPU和内存显示用量为实际用量的2倍的方法"
 date: 2020-09-29T10:44:26+08:00
 tags: ["k8s", "prometheus", "rancher"]
 author: "颇忒脱"
