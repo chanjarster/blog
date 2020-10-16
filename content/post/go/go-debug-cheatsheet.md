@@ -126,8 +126,8 @@ go tool pprof用来分析profile文件的
 ```bash
 # 读取profile，cli交互式
 # source可以是文件，比如cpu-profile.out，也可以是一个url，看下面“程序中内嵌profile server”
-# url例子：http://localhost:6060/debug/pprof/memory 见下面http程序中内嵌profile
-# 如果url启用了http basic auth，那么 http://user:pass@localhost:6060/debug/pprof/memory
+# url例子：http://localhost:6060/debug/pprof/heap 见下面http程序中内嵌profile
+# 如果url启用了http basic auth，那么 http://user:pass@localhost:6060/debug/pprof/heap
 go tool pprof <source>
 # 读取profile，并在http://localhost:1234 提供web ui供你查看
 go tool pprof -http=:1234 <profile file>
