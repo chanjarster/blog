@@ -78,19 +78,65 @@ PS. 8472/udp还是一个[著名端口][4]
 
 ## 解决办法2
 
-也可以在rke创建k8s集群的时候修改flannel的端口，例如在cluster.yml中添加：
+也可以在rke创建k8s集群的时候修改flannel的端口，需要修改cluster.yml（[参考文档][5]）。
+
+如果你用的是canal网络插件（默认）：
 
 ```yaml
+...
 network:
   plugin: canal
   options:
-    canal_flannel_backend_port: 8872
+    canal_flannel_backend_type: vxlan
+    canal_flannel_backend_port: "8872"
+  ...
 ```
 
-[参考文档][5]
+如果用的是flannel网络插件：
+
+```yaml
+...
+network:
+  plugin: flannel
+  options:
+    flannel_backend_type: vxlan
+    flannel_backend_port: "8872"
+  ...
+```
+
+
+
+在Rancher中创建自定义集群的时候，需要自定义集群参数来修改端口（[参考文档][6]）。
+
+如果用的是canal网络插件（默认）：
+
+```yaml
+rancher_kubernetes_engine_config:
+  ...
+  network:
+    options:
+      flannel_backend_type: vxlan
+      flannel_backend_port: "8872"
+    plugin: canal
+```
+
+如果用的是flannel网络插件：
+
+```yaml
+rancher_kubernetes_engine_config:
+  ...
+  network:
+    options:
+      flannel_backend_type: vxlan
+      flannel_backend_port: "8872"
+    plugin: flannel
+```
+
+
 
 [1]: https://docs.rancher.cn/docs/rancher2/troubleshooting/networking/_index/#%E6%A3%80%E6%9F%A5-overlay-%E7%BD%91%E7%BB%9C%E6%98%AF%E5%90%A6%E6%AD%A3%E5%B8%B8%E8%BF%90%E8%A1%8C
 [2]: https://docs.rancher.cn/docs/rancher2/installation/requirements/ports/_index
 [3]: https://superuser.com/a/925332/1239120
 [4]: https://www.speedguide.net/port.php?port=8472
 [5]: https://docs.rancher.cn/docs/rke/config-options/add-ons/network-plugins/_index#canal-%E6%8F%92%E4%BB%B6%E9%80%89%E9%A1%B9
+[6]: https://docs.rancher.cn/docs/rancher2/cluster-provisioning/rke-clusters/options/_index
