@@ -1,7 +1,7 @@
 ---
 title: "Kubectl 实用小脚本"
 date: 2020-09-10T10:24:45+08:00
-tags: ["k8s"]
+tags: ["k8s", "cheatsheet"]
 author: "颇忒脱"
 ---
 
@@ -39,5 +39,11 @@ kubectl get --all-namespaces pods -o go-template='
 NAMESPACE: {{ $ns }} POD: {{ $pod }}
 {{- end }}
 {{- end }}'
+```
+
+## 查找运行在某个Node上的pod
+
+```bash
+kubectl get --all-namespaces pods --field-selector=spec.nodeName=<node name>
 ```
 
