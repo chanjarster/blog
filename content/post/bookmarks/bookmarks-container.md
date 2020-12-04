@@ -25,6 +25,9 @@ Networking
 
 # K8S
 
+* Troubleshooting
+  * [深入浅出Kubernetes 实践篇 （一）：节点就绪问题之一][k8s-t-1]
+  * [深入浅出Kubernetes 实践篇 （二）：节点就绪问题之二][k8s-t-2]
 * [华为K8S视频培训（免费）][k8s-1]
   * [CKA考纲与K8S基础概念解读][k8s-2]
   * [K8S调度管理实训][k8s-3]
@@ -79,3 +82,5 @@ Networking
 [rancher-6-2]: https://shimo.im/docs/oBHLuyh16CUznar6/
 [rancher-7]: https://pan.baidu.com/s/15otnAU1LEXP8D2Au-Bfpvw
 [rancher-b]: https://space.bilibili.com/430496045/channel/index
+[k8s-t-1]: https://www.infoq.cn/article/AS0WWPb1MD7EAVb6gKzk
+[k8s-t-2]: https://www.infoq.cn/article/vQFqtXzSZHUeY7slSUlA
