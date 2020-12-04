@@ -1,6 +1,6 @@
 ---
 title: "docker/K8S故障排查Cheatsheet"
-date: 2020-12-4T14:24:45+08:00
+date: 2020-12-04T14:24:45+08:00
 tags: ["k8s", "docker", "cheatsheet"]
 author: "颇忒脱"
 ---
