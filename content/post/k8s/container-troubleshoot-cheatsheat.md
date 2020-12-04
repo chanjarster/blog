@@ -11,7 +11,7 @@ author: "颇忒脱"
 
 ### 拿到dockerd的thread dump
 
-执行下列命令（不会kill掉dockerd）：
+执行下列命令（不会kill掉进程）：
 
 ```bash
 kill -SIGUSR1 $(pidof dockerd)
@@ -28,6 +28,8 @@ Dec 04 07:08:11 docker-learn-5 dockerd[2090]: time="2020-12-04T07:08:11.36205558
 ## containerd
 
 ### 拿到thread dump
+
+执行下列命令（不会kill掉进程）：
 
 ```bash
 kill -SIGUSR1 $(pidof containerd)
@@ -49,15 +51,31 @@ kill -SIGUSR1 $(pidof containerd-shim)
 
 ### 拿到kubelet的thread dump
 
-1. pprof, it will keep kubelet running
+**方法一（不会kill进程）：**
 
-   - install go on node-x
-   - run `kubectl proxy` in one terminal
-   - curl http://localhost:8001/api/v1/proxy/nodes/node-x/debug/pprof/goroutine?debug=2
+在一个终端执行：
 
-2. send signal to kubelet which caused kubelet to exit with a stack dump
+```bash
+kubectl proxy
+```
 
-   `kill -SIGABRT`
+如果是rancher，则使用直接连接到某台master的context配置。
+
+在另一个终端执行：
+
+```bash
+curl 'http://localhost:8001/api/v1/nodes/<node name>/proxy/debug/pprof/goroutine?debug=2'
+```
+
+实际上这个方法就是go的pprof，你可以利用这个做很多事情。
+
+
+
+**方法二（会kill进程）：**
+
+```bash
+kill -SIGABRT $(pidof kubelet)
+```
 
 [参考文档](https://stackoverflow.com/a/56648851/1287790)
 
