@@ -61,4 +61,5 @@ date: 2019-09-05T08:50:08+08:00
 ## 实战
 
 * [Java应用性能调优套路](../jvm-perf-tuning-common-ways)
+* [JVM参数](https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html)
 
