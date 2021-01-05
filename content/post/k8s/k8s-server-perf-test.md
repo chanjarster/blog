@@ -49,18 +49,18 @@ fio -filename=/var/test.file -direct=1 \
 
 ## 网络带宽
 
-使用[iperf](https://iperf.fr/)测试服务器间的网络带宽。
+使用[iperf3](https://iperf.fr/)测试服务器间的网络带宽。
 
 现在要测试A到B的网络带宽，先在B启动iperf服务端
 
 ```bash
-iperf -s
+iperf3 -s
 ```
 
 再到A上启动iperf客户端：
 
 ```bash
-iperf -c <ip-to-b>
+iperf3 -c <ip-to-b>
 ```
 
 ## 参考资料
