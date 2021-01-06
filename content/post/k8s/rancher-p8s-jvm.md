@@ -1,7 +1,7 @@
 ---
 title: "利用Rancher中的Prometheus采集JVM数据"
 author: "颇忒脱"
-tags: ["k8s", "prometheus"]
+tags: ["k8s", "prometheus", "rancher"]
 date: 2020-01-17T10:59:27+08:00
 ---
 
