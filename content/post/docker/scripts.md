@@ -7,6 +7,14 @@ date: 2021-01-07T10:08:22+08:00
 
 <!--more-->
 
+## grep docker log
+
+```bash
+docker logs nginx 2>&1 | grep "127." 
+
+# ref: http://stackoverflow.com/questions/34724980/finding-a-string-in-docker-logs-of-container
+```
+
 ## 返回json
 
 给docker命令添加 `--format '{{ json .}}'`参数，能够使得返回结果变成JSON。，比如：
