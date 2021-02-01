@@ -5,8 +5,6 @@ tags: ["k8s", "cheatsheet"]
 author: "颇忒脱"
 ---
 
-`kubectl`实用小脚本集锦
-
 <!--more-->
 
 ## 查找没有设置Resources Quota(Limits)的Pod
@@ -21,6 +19,23 @@ kubectl get --all-namespaces pods -o go-template='
 NAMESPACE: {{ $ns }} POD: {{ $pod }}
   Container: {{ .name }}
   Resources: {{ .resources }}
+{{ end }}
+{{- end }}
+{{- end }}'
+```
+
+## 查找设置了Requests CPU的Pod
+
+```bash
+kubectl get --all-namespaces pods -o go-template='
+{{ range .items -}}
+{{ $pod := .metadata.name -}}
+{{ $ns := .metadata.namespace -}}
+{{- range .spec.containers }}
+{{- if and (.resources) (.resources.requests) (.resources.requests.cpu) }}
+NAMESPACE: {{ $ns }} POD: {{ $pod }}
+  Container: {{ .name }}
+  Requests CPU: {{ .resources.requests.cpu }}
 {{ end }}
 {{- end }}
 {{- end }}'
