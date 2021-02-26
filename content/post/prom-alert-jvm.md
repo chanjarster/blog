@@ -229,7 +229,7 @@ docker run -d \
 
 4) 访问[http://localhost:9090/alerts](http://localhost:9090/alerts)应该能看到之前配置的告警规则：
 
-![prom-alerts](prom-alerts.png)
+<img src="prom-alerts.png" style="zoom:50%" />
 
 如果没有看到三个instance，那么等一会儿再试。
 
@@ -346,7 +346,7 @@ docker run -d \
 
 4) 访问[http://localhost:9093](http://localhost:9093)，看看有没有收到Prometheus发送过来的告警(如果没有看到稍等一下)：
 
-![alertmanager](alertmanager.png)
+<img src="alertmanager.png" style="zoom:50%" />
 
 ## 第五步：等待邮件
 
