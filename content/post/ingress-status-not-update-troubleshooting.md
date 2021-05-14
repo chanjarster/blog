@@ -221,12 +221,25 @@ metadata:
 
 所有Ingress上的status字段状态都更新了。
 
+## 排查游离在K8S集群之外的节点
+
+现在可以推断存在游离在K8S集群之外，但是可以和K8S通信的服务器，后来果然在一台不在集群范围内的机器上找到了：
+
+```bash
+$ docker ps -a|grep ingress
+...
+f4c861555842        a80ffa0b898e                         "/usr/bin/dumb-init â€¦"   5 months ago        Up 5 months                                     k8s_nginx-ingress-controller_nginx-ingress-controller-qxlt8_ingress-nginx_40487677-32c0-4936-bd1a-3e3cb99fbfa1_0
+...
+```
+
+印证了之前的推断。
+
 ## 总结
 
 本次排查发现三个问题：
 
 1. Ingress对象的status字段不更新的问题。
 
-2. 问题1产生的原因可能是，存在游离在K8S集群之外，但是可以和K8S通信的服务器，这个需要后面排查，如果不彻底解决，问题1以后可能还会出现。
+2. 问题1产生的原因可能是，存在游离在K8S集群之外，但是可以和K8S通信的服务器。
 
 3. 集群的nginx接入点疑似收到攻击。
