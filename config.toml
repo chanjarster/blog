@@ -60,6 +60,13 @@ canonifyurls = true
   identifier = "cheat sheet"
   url = "/tags/cheatsheet/"
 
+
+[[menu.main]]
+  name = "排障实战记录"
+  weight = 40
+  identifier = "toubleshooting"
+  url = "/tags/troubleshooting/"
+  
 [[menu.main]]
   name = "Works"
   weight = 90
