@@ -23,18 +23,18 @@ date: 2021-05-31T12:55:10+08:00
 
 下面是一个参数参考列表
 
-| 参数                                 | 说明                        | 参考值          |
-| ------------------------------------ | --------------------------- | --------------- |
-| grafana.enabled                      | 是否安装Grafana             | true            |
-| grafana.ingress.enabled              | Grafana是否部署Ingress      |                 |
-| grafana.ingress.hosts                | Grafana Ingress域名         | grafana.xxx.com |
-| grafana.persistence.enabled          | Grafana是否启用持久卷       | true            |
-| grafana.persistence.storageClassName | Grafana持久卷的StorageClass |                 |
-| loki.persistence.enabled             | Loki是否启用持久卷          | true            |
-| loki.persistence.size                | Loki持久卷的大小            | 5Gi             |
-| loki.persistence.storageClassName    | Loki持久卷的StorageClass    |                 |
-| prometheus.enabled                   | 是否安装Prometheus          | false           |
-| prometheus.alertmanager.enabled      | 是否安装Alertmanager        | false           |
+| 参数                                 | 说明                        | 参考值            |
+| ------------------------------------ | --------------------------- | ----------------- |
+| grafana.enabled                      | 是否安装Grafana             | true              |
+| grafana.ingress.enabled              | Grafana是否部署Ingress      | true              |
+| grafana.ingress.hosts                | Grafana Ingress域名         | {grafana.xxx.com} |
+| grafana.persistence.enabled          | Grafana是否启用持久卷       | true              |
+| grafana.persistence.storageClassName | Grafana持久卷的StorageClass |                   |
+| loki.persistence.enabled             | Loki是否启用持久卷          | true              |
+| loki.persistence.size                | Loki持久卷的大小            | 5Gi               |
+| loki.persistence.storageClassName    | Loki持久卷的StorageClass    |                   |
+| prometheus.enabled                   | 是否安装Prometheus          | false             |
+| prometheus.alertmanager.enabled      | 是否安装Alertmanager        | false             |
 
 
 
