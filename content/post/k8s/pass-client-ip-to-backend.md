@@ -44,9 +44,8 @@ date: 2019-10-25T14:26:23+08:00
 
 ### 坑
 
-如果前端Nginx和后端Nginx要么同时开启PROXY protocol那么同时关闭，否则会无法访问。
-
-不要修改Rancher自己的Nginx Ingress的配置，因为你一旦修改了就完了，kubectl会无法使用。
+* 前端Nginx和后端Nginx要么同时开启PROXY protocol那么同时关闭，否则会无法访问。
+* 不要修改Rancher自己的Nginx Ingress的配置，一旦修改你就完了，kubectl会无法使用。
 
 ### 参考资料
 
