@@ -51,19 +51,19 @@ docker load --input <name>.tar.gz
 ### 得到容器的PID
 
 ```bash
-docker inspect --format '{{.State.Pid}}' <container-name/id>
+$ docker inspect --format '{{.State.Pid}}' <container-name/id>
 ```
 
 ### 列出所有容器的PID
 
 ```bash
-docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Name}}'
+$ docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Name}}'
 ```
 
 ### 列出容器暴露的端口
 
 ```bash
-docker inspect --format '
+$ docker inspect --format '
 {{- range $port, $hostPorts := .NetworkSettings.Ports }}
 container port: {{ $port }}, host ports: {{json $hostPorts}}
 {{- end -}}' <container-name/id>
@@ -72,10 +72,35 @@ container port: {{ $port }}, host ports: {{json $hostPorts}}
 ### 列出所有容器暴露的端口
 
 ```bash
-docker ps -q | xargs docker inspect --format '
+$ docker ps -q | xargs docker inspect --format '
 Pid:{{.State.Pid}}, Name:{{ .Name }}
 {{- range $port, $hostPorts := .NetworkSettings.Ports }}
 container port: {{ $port }}, host ports: {{json $hostPorts}}
 {{- end -}}'
 ```
 
+### 观察网络命名空间
+
+docker使用linux network namespace来隔离网络设备，下面将你怎么在host上debug容器网络命名空间。
+
+```bash
+# 得到容器进程id
+$ container_id=<container_id>
+$ pid=$(docker inspect -f '{{.State.Pid}}' ${container_id})
+
+# 创建 netns 目录
+$ mkdir -p /var/run/netns/
+
+# 创建命名空间软连接
+$ ln -sfT /proc/$pid/ns/net /var/run/netns/${container_id}
+
+# 运行ip netns命令访问这个命名空间
+$ ip netns exec ${container_id} ip a
+
+# 运行 nsenter 进入命名空间，用 netstat 命令查看容器进程的tcp/udp连接情况
+$ nsenter -t $pid -n netstat -antpl
+```
+
+参考文档：[How to Access Docker Container’s Network Namespace from Host][1]
+
+[1]: https://www.thegeekdiary.com/how-to-access-docker-containers-network-namespace-from-host/
