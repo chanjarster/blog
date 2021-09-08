@@ -17,6 +17,6 @@ author: "颇忒脱"
 
 查了Google后得到，如果Node变成NotReady、Unkonwn等非正常情况，但是Pod没有正确的从这些Node移除迁移到其他Node，这是一个K8S的Bug。
 这个Bug在 v1.19.9及以后, v1.20.5及以后，v1.21.0 及以后才被修复。
-现在西工大的K8S版本是 v1.17.3 。
+现在的K8S版本是 v1.17.3 。
 
 相关issue：https://github.com/kubernetes/kubernetes/issues/55713
