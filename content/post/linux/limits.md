@@ -1,5 +1,5 @@
 ---
-title: "Linux调整Limits"
+title: "Linux内核参数/Limits调整方法"
 author: "颇忒脱"
 tags: ["linux", "cheatsheet"]
 date: 2021-09-07T08:00:22+08:00
