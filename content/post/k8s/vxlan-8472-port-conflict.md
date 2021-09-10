@@ -1,7 +1,7 @@
 ---
 title: "记一次K8S VXLAN Overlay网络8472端口冲突问题的排查"
 date: 2020-11-10T08:49:44+08:00
-tags: ["k8s", "rancher"]
+tags: ["k8s", "rancher", "troubleshooting"]
 author: "颇忒脱"
 ---
 
