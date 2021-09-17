@@ -1,7 +1,7 @@
 ---
 title: "K8S服务器性能测试"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "k8s"]
+tags: ["ARTS", "ARTS-T", "k8s", "troubleshooting"]
 date: 2020-12-14T09:03:06+08:00
 ---
 
