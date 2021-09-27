@@ -1,7 +1,7 @@
 ---
 title: "某次压力测试中对Nginx的排障"
 author: "颇忒脱"
-tags: ["nginx", "troubleshooting"]
+tags: ["nginx", "troubleshooting", "性能调优"]
 date: 2021-09-07T08:02:45+08:00
 ---
 

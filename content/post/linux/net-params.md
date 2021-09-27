@@ -1,7 +1,7 @@
 ---
 title: "常用网络内核参数优化"
 author: "颇忒脱"
-tags: ["linux", "cheatsheet", "network"]
+tags: ["linux", "cheatsheet", "network", "性能调优"]
 date: 2021-09-08T14:33:22+08:00
 ---
 

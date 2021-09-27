@@ -1,7 +1,7 @@
 ---
 title: "Chrome隐私模式网页加载速度更快"
 date: 2021-07-13T09:24:00+08:00
-tags: ["troubleshooting", "network", "chrome"]
+tags: ["troubleshooting", "network", "chrome", "性能调优"]
 author: "颇忒脱"
 draft: false
 ---

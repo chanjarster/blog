@@ -1,7 +1,7 @@
 ---
 title: "PC磁盘性能地下导致访问网站很慢问题排查记录"
 author: "破忒脱"
-tags: ["troubleshooting"]
+tags: ["troubleshooting", "性能调优"]
 date: 2021-07-13T11:40:25+08:00
 ---
 

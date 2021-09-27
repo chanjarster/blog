@@ -1,7 +1,7 @@
 ---
 title: "慢磁盘导致etcd不健康问题排查"
 author: "颇忒脱"
-tags: ["k8s", "etcd", "troubleshooting"]
+tags: ["k8s", "etcd", "troubleshooting", "性能调优"]
 date: 2021-05-14T13:10:20+08:00
 ---
 
