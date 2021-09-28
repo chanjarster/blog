@@ -1,8 +1,8 @@
 ---
-title: "SQL优化案例(1)"
+title: "SQL优化:一个含有JOIN+LIMIT+ORDER BY的SQL"
 author: "颇忒脱"
 tags: ["mysql", "性能调优"]
-date: 2021-09-24T11:39:00+08:00
+date: 2021-09-27T11:39:00+08:00
 ---
 
 <!--more-->
@@ -62,6 +62,16 @@ where 1 = 1
   and account.ACCOUNT_NAME like '%user%'
 ORDER BY length(account.ACCOUNT_NAME), account.ACCOUNT_NAME
 limit 20;
+```
+
+在优化之前先刷新相关表的统计数据：
+
+```SQL
+ANALYZE TABLE TB_B_ACCOUNT;
+ANALYZE TABLE TB_B_ORGANIZATION;
+ANALYZE TABLE TB_B_IDENTITY_TYPE;
+ANALYZE TABLE TB_B_DICTIONARY;
+ANALYZE TABLE TB_B_USER;
 ```
 
 ## 1）排除ORDER BY和LIMIT
@@ -308,7 +318,7 @@ LIMIT 20;
 
 `filesort_priority_queue_optimization`启用意味着MySQL采用了优先级队列（堆）来从结果集中取最小的N个元素。
 
-## 考虑limit
+## 3）考虑limit
 
 在业务场景下，大部分分页每页20条，极少超过10页，因此这里不考虑深分页问题，所以加上`LIMIT 200, 220`看看：
 
