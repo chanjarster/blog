@@ -1,5 +1,5 @@
 ---
-title: "SQL优化:一个含有JOIN+LIMIT+ORDER BY的SQL"
+title: "SQL优化:一个含有JOIN+LIMIT+ORDER BY的SQL(上)"
 author: "颇忒脱"
 tags: ["mysql", "性能调优"]
 date: 2021-09-27T11:39:00+08:00
@@ -208,7 +208,7 @@ EXPLAIN结果：
 方法二的公式解释：
 
 * 和前面一样。
-* 14w * log2(20)，一个大小为20的堆（LIMIT 20），插入数据的复杂度是 log2(20)，14w条件数据全部都过一把。
+* 14w * log2(20)，一个大小为20的堆（LIMIT 20），插入数据的复杂度是 log2(20)，14w行全部都过一把。
 
 方法三的公式解释：
 
