@@ -67,7 +67,7 @@ ORDER BY length(account.ACCOUNT_NAME), account.ACCOUNT_NAME
 limit 20;
 ```
 
-优化版本v1 SQL，先查出ACCOUNT_NAME，然后再查出详细信息：
+优化版本v1 SQL，先查出ACCOUNT_NAME，然后再查出详细信息，可能会根据条件选择合适索引：
 
 ```sql
 select account.ACCOUNT_NAME
@@ -78,7 +78,7 @@ ORDER BY length(account.ACCOUNT_NAME), account.ACCOUNT_NAME
 LIMIT 20;
 ```
 
-优化版本v2 SQL，先查出ACCOUNT_NAME，然后再查出详细信息：
+优化版本v2 SQL，先查出ACCOUNT_NAME，然后再查出详细信息，会使用`ACCOUNT_NAME_PAD`索引：
 
 ```sql
 select account.ACCOUNT_NAME
@@ -227,12 +227,12 @@ Index lookup on account using ORGANIZATION_ID (ORGANIZATION_ID=accountOrganizati
 
 压测结果
 
-| 查询参数/吞吐量              | 未优化 | v1         | v2         |
-| ---------------------------- | ------ | ---------- | ---------- |
-| `LIKE 20%` ，预估140,000行   |        | 84.71 QPS  | 67.61 QPS  |
-| `LIKE 202%` ，预估26,000行   |        | 96.93 QPS  | 5.76 QPS   |
-| `LIKE 2021%` ，预估12,000 行 |        | 96.98 QPS  | 5.18 QPS   |
-| `LIKE 20211%`，预估1,200行   |        | 585.31 QPS | 456.99 QPS |
+| 查询参数/吞吐量              | v1         | v2         |
+| ---------------------------- | ---------- | ---------- |
+| `LIKE 20%` ，预估140,000行   | 84.71 QPS  | 67.61 QPS  |
+| `LIKE 202%` ，预估26,000行   | 96.93 QPS  | 5.76 QPS   |
+| `LIKE 2021%` ，预估12,000 行 | 96.98 QPS  | 5.18 QPS   |
+| `LIKE 20211%`，预估1,200行   | 585.31 QPS | 456.99 QPS |
 
 #### 为何v2突然又行了？
 
@@ -247,6 +247,8 @@ v2的 `LIKE 202%`和`LIKE 2021%`比`LIKE 20%`吞吐量低这个在之前已经�
 也就是说，当条件的预期结果集很少的时候，就会优先使用索引，而且还使用了[Index Merge 优化][3]。
 
 那么为何在where clause 1中没有启用Index Merge 优化？这是因为当查询语句复杂的时候，MySQL不会启用该优化。
+
+事实上你在优化版本v1也能看到同样的结果（Index Merge优化）。
 
 ## 优化方向
 
@@ -302,10 +304,10 @@ LIMIT 20
 
 所以针对不同的情况有三种形式：
 
-* 无条件时，ORDER BY ACCOUNT_NAME_PAD，这样可以走 ACCOUNT_NAME_PAD 索引：
+* 无条件时，ORDER BY ACCOUNT_NAME_PAD，这样就会利用 ACCOUNT_NAME_PAD 索引：
 
 ```sql
-select account.ACCOUNT_NAME
+select LTRIM(account.ACCOUNT_NAME_PAD)
 from TB_B_ACCOUNT account
 ORDER BY account.ACCOUNT_NAME_PAD
 LIMIT 20
@@ -438,6 +440,16 @@ limit 20
 | `LIKE 202%` ，预估26,000行   | 97.43 QPS   |
 | `LIKE 2021%` ，预估12,000 行 | 238.63 QPS  |
 | `LIKE 20211%`，预估1,200行   | 1638.49 QPS |
+
+## 参考资料
+
+* [MySQL EXPLAIN解读](https://dev.mysql.com/doc/refman/8.0/en/explain-output.html)
+* [MySQL LIMIT 优化](https://dev.mysql.com/doc/refman/8.0/en/limit-optimization.html)
+* [MySQL ORDER BY 优化](https://dev.mysql.com/doc/refman/8.0/en/order-by-optimization.html)
+* [MySQL filesort with small LIMIT optimization](http://mysql.taobao.org/monthly/2014/11/10/)
+* [MySQL 优化器跟踪](https://dev.mysql.com/doc/internals/en/optimizer-tracing.html)
+
+
 
 [2]: ../sql-opt-join-limit-order-by-2
 [3]: https://dev.mysql.com/doc/refman/8.0/en/index-merge-optimization.html

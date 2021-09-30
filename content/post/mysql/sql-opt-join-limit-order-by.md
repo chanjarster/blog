@@ -187,39 +187,73 @@ EXPLAIN结果：
 * Using temporary意思是为了排序，使用了临时表hold住结果。
 * Using filesort意思是无法使用索引直接得到排好序的数据，需要利用内存或者磁盘文件排序。
 
-对于这个SQL有三种做法的：
+### 三种方案评估
 
-1. 当前方案，`accountOrganization`做驱动表（500行），`account`是被驱动表（14w行），对结果做普通排序。
-2. 优化方案一，`accountOrganization`做驱动表（500行），`account`是被驱动表（14w行），配合LIMIT，利用堆取结果的前20个（LIMIT 20），见[filesort with small LIMIT optimization](http://mysql.taobao.org/monthly/2014/11/10/)，前提是数据能够在`sort_buffer_size`里放得下。
-3. 优化方案二，`account`是驱动表（14w行），`accountOrganization`是被驱动表（500行），在`account`表新建字段`ACCOUNT_NAME_LEN`，并建立索引`ACCOUNT_NAME_LEN,ACCOUNT_NAME`，驱动表查询走`ACCOUNT_LEN_NAME`索引从而达避免排序。
+那么对于这个SQL有三种做法，下面分析它们的复杂度。
 
-这三个方法的算法复杂度可以预估的：
+先汇总一下基本情况：
 
-* 方法一：500 + 500 * 2 * log2(14w) + 14w * log2(14w) = 2,523,590
-* 方法二：500 + 500 * 2 * log2(14w) + 14w * log2(20) = 622,390
-* 方法三：14w + 14w * log2(500) = 1,394,400
+* A表 `accountOrganization`表有N行
 
-方法一的公式解释：
+* B表 `account`表有M行
+* JOIN条件`A.ID = B.ORGANIZATION_ID`
+* `B.ORGANIZATION`上有索引。
 
-* 500，`accountOrganization`表行数。
-* 500 * 2 * log2(14w) ，拿着前一步的每一行，利用索引`ORGANIZATION_ID`到`account`表查一次数据的复杂度，一共查了500次，乘以2是因为多了一次回表到主键索引中找`ACCOUNT_NAME`字段。
-* 14w * log2(14w)，排序复杂度 nlog(n)，这里还涉及到磁盘IO。
+列出基本算法复杂度
 
-方法二的公式解释：
+* B+树查找复杂度 Log2(n)
+* 排序复杂度是 n * Log2(n)
+* 堆插入复杂度 Log2(n)
 
-* 和前面一样。
-* 14w * log2(20)，一个大小为20的堆（LIMIT 20），插入数据的复杂度是 log2(20)，14w行全部都过一把。
+#### 原方案
 
-方法三的公式解释：
+A做驱动表 N=500，B是被驱动表 M=14w，对结果做普通排序。
 
-* 14w，14w行`account`数据。
-* 14w * log2(500)，拿着前一步的每一行，利用`accountOrganization`表的`PRIMARY`索引查找一次数据的复杂度，一样查了14w次。
+算法复杂度分析：
 
-可以看到，方案二是最佳方案。
+扫描A表 + A表每一行利用B表索引查找 + B表每条记录查找主键索引（回表） + B表记录的排序。
 
-### 分析当前方法
+```bash
+  N + N * Log2(M) + M * Log2(M) + M * Log2(M)
+= 500 + 500 * Log2(14w) + 14w * Log2(14w) + 14w * Log2(14w)
+= 4,372,745
+```
 
-filesort是可以在内存中发生了，我们需要跟踪优化器来查看SQL执行情况：
+#### 优化方案一
+
+A做驱动表 N=500，B是被驱动表 M=14w，利用[filesort with small LIMIT optimization](http://mysql.taobao.org/monthly/2014/11/10/)优化，即利用一个尺寸20的堆（LIMIT 20）来取前20条数据，前提是数据能够在`sort_buffer_size`里放得下。
+
+算法复杂度分析：
+
+扫描A表 + A表每一行利用B表索引查找 + B表每行查找主键索引（回表） + B表每行过一遍堆。
+
+```bash
+  N + N * Log2(M) + M * Log2(M) + M * Log2(20)
+= 500 + 500 * Log2(14w) + 14w * Log2(14w) + 14w * Log2(20)
+= 2,612,945
+```
+
+#### 优化方案二
+
+B做驱动表 M=14w，A是被驱动表 N=500，在B表新建字段`ACCOUNT_NAME_LEN`，并建立索引`ACCOUNT_NAME_LEN,ACCOUNT_NAME`，查询时**强制**走`ACCOUNT_LEN_NAME`索引从而达避免排序。
+
+算法复杂度分析：
+
+扫描B表索引 + B表每一行利用A表主键查找。
+
+```bash
+  M + M * Log2(N)
+= 14w + 14w * Log2(500)
+= 1,394,400
+```
+
+#### 方案抉择
+
+虽然从分析结果看，方案二更好，但是方案二强制使用了某个索引。而方案一看上去不好，但是MySQL可能会根据查询条件使用合适的索引来过滤数据避免全表扫描，所以选择方案一。
+
+### 实现优化方案一
+
+实现优化方案一的关键是让filesort在内存中发生，然后配合LIMIT，我们需要跟踪优化器来查看原始SQL执行情况：
 
 ```SQL
 SET optimizer_trace="enabled=on";
@@ -255,11 +289,7 @@ SET optimizer_trace="enabled=off";
 
 可以看到`num_initial_chunks_spilled_to_disk:141`，写了141个临时文件。
 
-### 分析方案二
-
-优化的重点在于避免filesort时写磁盘，让其在内存中完成。
-
-MySQL相关的系统参数有：
+让filesort在内存中发生的相关系统参数有：
 
 * [sort_buffer_size](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_sort_buffer_size)，规定了用于排序的缓存大小（字节），默认262144=256K。如果排序的数据在此buffer中能hold住，那么就会避免写磁盘。
 * [`max_sort_length`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_sort_length)，规定了排序时，每行最多取前多少个字节，如果行的尺寸超出该值，MySQL也就只会使用前多少个字节进行比较，该参数默认1024=1K。
@@ -318,8 +348,6 @@ LIMIT 20;
 
 `filesort_priority_queue_optimization`启用意味着MySQL采用了优先级队列（堆）来从结果集中取最小的N个元素。
 
-## 3）考虑limit
-
 在业务场景下，大部分分页每页20条，极少超过10页，因此这里不考虑深分页问题，所以加上`LIMIT 200, 220`看看：
 
 ```sql
@@ -373,7 +401,7 @@ LIMIT 200, 220;
 * 避免`JOIN`，分两次查询，第一次先查`ACCOUNT_NAME`，第二次根据`ACCOUNT_NAME`查询想要的数据。
 * 增加`sort_buffer_size`，避免`filesort`排序时写磁盘，并且利用堆+LIMIT来优化排序。
 
-参考资料：
+## 参考资料
 
 * [MySQL EXPLAIN解读](https://dev.mysql.com/doc/refman/8.0/en/explain-output.html)
 * [MySQL LIMIT 优化](https://dev.mysql.com/doc/refman/8.0/en/limit-optimization.html)

@@ -237,5 +237,15 @@ EXPLAIN：
 - 尽一切可能去掉`JOIN`，这样可以让MySQL选择被查表上的索引。
 - 预期结果集小的时候，MySQL会选择索引匹配查询条件，然后filesort。这个时候要确保`sort_buffer_size`足够，避免`filesort`排序时写磁盘，并且利用堆+LIMIT来优化排序。
 - 预期结果集大的时候，MySQL会选择全表扫描，此时就要在排序字段上添加索引，这样就会用排序字段索引全表扫描，避免了filesort。
+- 虽然取消了filesort，但是却走了全表扫描，这样会更快吗？请看[下一篇文章分析](../sql-opt-join-limit-order-by-3)。
+
+## 参考资料
+
+* [MySQL EXPLAIN解读](https://dev.mysql.com/doc/refman/8.0/en/explain-output.html)
+* [MySQL LIMIT 优化](https://dev.mysql.com/doc/refman/8.0/en/limit-optimization.html)
+* [MySQL ORDER BY 优化](https://dev.mysql.com/doc/refman/8.0/en/order-by-optimization.html)
+* [MySQL filesort with small LIMIT optimization](http://mysql.taobao.org/monthly/2014/11/10/)
+* [MySQL 优化器跟踪](https://dev.mysql.com/doc/internals/en/optimizer-tracing.html)
 
 [1]: ../sql-opt-join-limit-order-by
+
