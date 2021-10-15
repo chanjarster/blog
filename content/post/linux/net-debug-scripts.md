@@ -129,3 +129,63 @@ INET	    143       77        66
 FRAG	    0         0         0
 ```
 
+## hping3
+
+测试网络延迟Round-Trip Time：
+
+```bash
+
+# -c表示发送3次请求，-S表示设置TCP SYN，-p表示端口号为80
+$ hping3 -c 3 -S -p 80 baidu.com
+HPING baidu.com (eth0 123.125.115.110): S set, 40 headers + 0 data bytes
+len=46 ip=123.125.115.110 ttl=51 id=47908 sport=80 flags=SA seq=0 win=8192 rtt=20.9 ms
+len=46 ip=123.125.115.110 ttl=51 id=6788  sport=80 flags=SA seq=1 win=8192 rtt=20.9 ms
+len=46 ip=123.125.115.110 ttl=51 id=37699 sport=80 flags=SA seq=2 win=8192 rtt=20.9 ms
+
+--- baidu.com hping statistic ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 20.9/20.9/20.9 ms
+```
+
+## traceroute
+
+```bash
+# --tcp表示使用TCP协议，-p表示端口号，-n表示不对结果中的IP地址执行反向域名解析
+$ traceroute --tcp -p 80 -n baidu.com
+traceroute to baidu.com (123.125.115.110), 30 hops max, 60 byte packets
+ 1  * * *
+ 2  * * *
+ 3  * * *
+ 4  * * *
+ 5  * * *
+ 6  * * *
+ 7  * * *
+ 8  * * *
+ 9  * * *
+10  * * *
+11  * * *
+12  * * *
+13  * * *
+14  123.125.115.110  20.684 ms *  20.798 ms
+```
+
+traceroute 会在路由的每一跳发送三个包，并在收到响应后，输出往返延时。如果无响应或者响应超时（默认 5s），就会输出一个星号。
+
+## sar
+
+安装：
+
+```bash
+yum install -y sysstat
+```
+
+观察 PPS（每秒收发的报文数）和BPS（每秒收发的字节数）：
+
+```bash
+$ sar -n DEV 1
+08:55:49        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+08:55:50      docker0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+08:55:50         eth0  22274.00    629.00   1174.64     37.78      0.00      0.00      0.00      0.02
+08:55:50           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+```
+
