@@ -126,9 +126,14 @@ next-key lock的加锁过程是先加间隙锁再加行锁，这不是一个原�
 
 ### 案例分析
 
-案例分析见 [极客时间 - 为什么我只改一行的语句，锁这么多？][4]
+案例分析见：
+
+*  [极客时间 - 为什么我只改一行的语句，锁这么多？][4]
+* [用动态的观点看加锁][5]
 
 [1]: https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_gap_lock
 [2]: https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_next_key_lock
 [3]: https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html
 [4]: https://time.geekbang.org/column/article/75659
+[5]: https://time.geekbang.org/column/article/78427
+
