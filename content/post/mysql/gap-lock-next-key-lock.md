@@ -103,11 +103,11 @@ next-key lock的加锁过程是先加间隙锁再加行锁，这不是一个原�
 
 分析一下过程：
 
-1. session A 启动事务后执行查询语句加 lock in share mode，在索引 c 上加了 next-key lock(5,10] 和间隙锁 (10,15)；
-2. session B 的 update 语句也要在索引 c 上加 next-key lock(5,10] ，但是只有间隙锁(5, 10]加成功了，行锁[10]进入锁等待；
+1. session A 启动事务后执行查询语句加 lock in share mode，在索引 c 上加了 next-key lock (5,10] 和间隙锁 (10,15)；
+2. session B 的 update 语句也要在索引 c 上加 next-key lock(5,10] ，但是只有间隙锁(5, 10) 加成功了，行锁[10]进入锁等待；
 3. 然后 session A 要再插入 (8,8,8) 这一行，被 session B 的间隙锁锁住。由于出现了死锁，InnoDB 让 session B 回滚。
 
-##间隙锁和next-key lock的加锁规则
+## 间隙锁和next-key lock的加锁规则
 
 两个原则：
 
