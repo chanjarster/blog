@@ -7,6 +7,8 @@ date: 2020-01-07T13:03:02+08:00
 
 <!--more-->
 
+原文：[09 | 普通索引和唯一索引，应该怎么选择？](https://time.geekbang.org/column/article/70848)
+
 ## 数据页
 
 在[redo log和binlog —— 日志的2PC](../redo-log-binlog)里提到过：
