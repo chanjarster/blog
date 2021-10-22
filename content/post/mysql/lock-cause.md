@@ -129,3 +129,37 @@ show engine innodb status
 1. 由于锁是一个个加的，要避免死锁，对同一组资源，要按照尽量相同的顺序访问；
 2. 在发生死锁的时刻，for update 这条语句占有的资源更多，回滚成本更大，所以 InnoDB 选择了回滚成本更小的 lock in share mode 语句，来回滚。
 
+## 快捷SQL
+
+查慢SQL（慢于5秒）：
+
+```sql
+select COMMAND, TIME, STATE, substr(INFO, 1, 100), length(INFO) from information_schema.processlist 
+where 
+  COMMAND<>'Sleep' 
+  and db='<db>' 
+  and TIME >= 5
+order by TIME desc limit 10;
+```
+
+查行锁：
+
+```sql
+select * from sys.innodb_lock_waits where locked_table like '`<db>`.%';
+```
+
+查行锁+Block Pid正在执行的SQL：
+
+```sql
+select 
+  w.wait_started, w.wait_age_secs, w.locked_table, w.locked_index, w.locked_type,
+  w.waiting_pid, substr(wp.INFO, 1, 100) waiting_query,
+  w.blocking_pid, w.blocking_query, w.blocking_trx_started, w.blocking_trx_age,
+  substr(bp.INFO, 1, 100) blocking_query
+from sys.innodb_lock_waits w 
+join information_schema.processlist bp on bp.ID=w.blocking_pid
+join information_schema.processlist wp on wp.ID=w.waiting_pid
+where 
+  w.locked_table like '`<db>`.%';
+```
+
