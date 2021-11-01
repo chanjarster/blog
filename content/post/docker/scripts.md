@@ -60,6 +60,12 @@ $ docker inspect --format '{{.State.Pid}}' <container-name/id>
 $ docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Name}}'
 ```
 
+### 列出所有关闭的容器
+
+```bash
+docker ps -a --format 'Container: {{ .Names }} Status: {{ json .Status }}' | grep 'Exited'
+```
+
 ### 列出容器暴露的端口
 
 ```bash
@@ -103,11 +109,6 @@ $ nsenter -t $pid -n netstat -antpl
 
 参考文档：[How to Access Docker Container’s Network Namespace from Host][1]
 
-### 列出关闭的容器
-
-```bash
-docker ps -a --format 'Container: {{ .Names }} Status: {{ json .Status }}' | grep 'Exited'
-```
 
 ## overlay2 storage driver
 
