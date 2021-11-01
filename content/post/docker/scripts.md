@@ -103,4 +103,34 @@ $ nsenter -t $pid -n netstat -antpl
 
 参考文档：[How to Access Docker Container’s Network Namespace from Host][1]
 
+### 列出关闭的容器
+
+```bash
+docker ps -a --format 'Container: {{ .Names }} Status: {{ json .Status }}' | grep 'Exited'
+```
+
+## overlay2 storage driver
+
+### 根据overlay目录反查容器
+
+假设你在`/var/lib/docker/overlay2`下看到了某个目录（比如：`608b180efc64419c27e5e54ca79511d1066475b3636535f5e2134a9f6187c35b`），那么你想知道这个目录所属哪个容器：
+
+```bash
+docker ps -a --format '{{ .Names }}' \
+| xargs -n1 -I{} docker inspect {} --format 'Container: {{ .Name }} Dir: {{ .GraphDriver.Data.LowerDir }}' \
+| grep '608b180efc64419c27e5e54ca79511d1066475b3636535f5e2134a9f6187c35b'
+```
+
+有时候会得到多个结果，这是因为多个容器所使用的镜像共享了同一个层。
+
+### 根据overlay目录反查镜像
+
+在上面的结果里找到了多个结果后，想要找一个这个层从哪一个镜像引入的，可以这样：
+
+```bash
+docker image ls --format '{{ .ID }}' \
+| xargs -n1 -I{} docker image inspect {} --format 'Image: {{ .RepoTags }} Dir: {{ .GraphDriver.Data.LowerDir }}' \
+| grep '608b180efc64419c27e5e54ca79511d1066475b3636535f5e2134a9f6187c35b'
+```
+
 [1]: https://www.thegeekdiary.com/how-to-access-docker-containers-network-namespace-from-host/
