@@ -98,7 +98,7 @@ jstack和jmap命令使用的是[Dynamic Attach Mechanism][b]。
 
 ### jmap
 
-jmap的机制和jstack一摸一样，不做赘述
+jmap的机制和jstack一摸一样，不做赘述。
 
 
 ## 参考资料
