@@ -28,6 +28,30 @@ jps和jstat命令使用的是[Jvmstat Performance Counters][a]。
 - [PerfDataFile.java][7] 规定了PID文件的匹配模式，[tmpDirName][8] 属性是平台相关的
 - [VMSupport.c][9] -> [jvm.h][10] -> [jvm.cpp][11] 规定了 `JVM_GetTemporaryDirectory`的返回值
 
+所以说，如果你把别的机器的`/tmp/hsperfdata_<usr>/<pid>` 复制到你本地，jps也是能够返回结果的。
+
+**但是**，前提是PID得在你的机器上存在，比如别的机器上PID是2121，那么你的机器上也必须有PID=2121的进程，无论这个进程是什么。否则jps会返回` -- process information unavailable` 这样的信息。
+
+如果你这样执行jps（其实所有命令都可以这样执行），可以看到异常：
+
+```bash
+java -cp $JAVA_HOME/lib/tools.jar -Djps.debug=true -Djps.printStackTrace=true sun.tools.jps.Jps
+
+sun.jvmstat.monitor.MonitorException: 2121 not found
+        at sun.jvmstat.perfdata.monitor.protocol.local.PerfDataBuffer.<init>(PerfDataBuffer.java:84)
+        at sun.jvmstat.perfdata.monitor.protocol.local.LocalMonitoredVm.<init>(LocalMonitoredVm.java:68)
+        at sun.jvmstat.perfdata.monitor.protocol.local.MonitoredHostProvider.getMonitoredVm(MonitoredHostProvider.java:77)
+        at sun.tools.jps.Jps.main(Jps.java:92)
+Caused by: java.lang.IllegalArgumentException: Process not found
+        at sun.misc.Perf.attach(Native Method)
+        at sun.misc.Perf.attachImpl(Perf.java:270)
+        at sun.misc.Perf.attach(Perf.java:200)
+        at sun.jvmstat.perfdata.monitor.protocol.local.PerfDataBuffer.<init>(PerfDataBuffer.java:64)
+        ... 3 more
+```
+
+顺着这个错误分析[PerfDataBuffer.java][12]，可以发现解决的办法就是创建一个`/tmp/hsperfdata_<pid>`的文件。
+
 [2]: https://github.com/openjdk/jdk8u-dev/blob/master/jdk/src/share/classes/sun/tools/jps/Jps.java#L58
 [3]: https://github.com/openjdk/jdk8u-dev/blob/master/jdk/src/share/classes/sun/jvmstat/monitor/MonitoredHost.java
 [4]: http://openjdk.java.net/groups/serviceability/jvmstat/sun/jvmstat/monitor/MonitoredHost.html
@@ -38,6 +62,7 @@ jps和jstat命令使用的是[Jvmstat Performance Counters][a]。
 [9]: https://github.com/openjdk/jdk8u-dev/blob/master/jdk/src/share/native/sun/misc/VMSupport.c#L59
 [10]: https://github.com/openjdk/jdk8u-dev/blob/master/jdk/src/share/javavm/export/jvm.h#L1359
 [11]: https://github.com/openjdk/jdk8u-dev/blob/master/hotspot/src/share/vm/prims/jvm.cpp#L424
+[12]: https://github.com/openjdk/jdk8u-dev/blob/master/jdk/src/share/classes/sun/jvmstat/perfdata/monitor/protocol/local/PerfDataBuffer.java
 
 ## jstat
 
