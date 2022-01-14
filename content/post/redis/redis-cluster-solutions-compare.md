@@ -68,6 +68,7 @@ Redis集群的方案基本上由以下组件构成：
 | [Redis Cluster Proxy][5] | | Y | 停止 | 官方搞的，处于alpha状态，不推荐生产使用 |
 | [envoy][10]     | ? | Y | 活跃 | sidecar形式的proxy, redis只是其中一项功能 |
 | [camellia-redis-proxy][11] | Y | Y | 活跃 | 网易 |
+| [bilibili-overlord][15] | Y | Y | 不活跃 | B站 |
 
 
 ### Client
@@ -125,3 +126,4 @@ simple （傻瓜式）client没什么好谈的，就是最简单的客户端，�
 [12]: https://github.com/CodisLabs/codis
 [13]: https://github.com/redis/jedis
 [14]: https://lettuce.io/docs/
+[15]: https://github.com/bilibili/overlord
