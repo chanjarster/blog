@@ -24,6 +24,7 @@ date: 2019-09-05T08:50:08+08:00
 * [JVM - G1垃圾收集器](../g1)
 * [JVM - Card Table和Post-Write Barriers](../card-table)
 * [JVM - 并发标记之三色标记法和Pre-Write Barriers](../tri-color)
+* [JVM - GC日志参数](../gc-log-options)
 
 ## ClassLoader
 
