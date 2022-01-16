@@ -1,7 +1,7 @@
 ---
 title: "虚函数表（vtable/virtual table/virtual method table）"
 author: "颇忒脱"
-tags: ["ARTS-T", "vtable"]
+tags: ["vtable", "jvm", "kernel"]
 date: 2019-02-25T21:55:10+08:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "JVM - 字节码生成及动态代理"
 author: "颇忒脱"
-tags: ["ARTS-T", "jvm"]
+tags: ["jvm"]
 date: 2019-09-10T20:25:08+08:00
 ---
 

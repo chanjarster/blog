@@ -1,7 +1,7 @@
 ---
 title: "Performance and scalability"
 author: "颇忒脱"
-tags: ["ARTS-T", "并发编程"]
+tags: ["并发编程"]
 date: 2019-10-24T10:40:29+08:00
 ---
 

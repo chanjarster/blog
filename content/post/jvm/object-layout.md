@@ -1,7 +1,7 @@
 ---
 title: "JVM - 对象内存布局"
 author: "颇忒脱"
-tags: ["ARTS-T", "jvm"]
+tags: ["jvm"]
 date: 2020-05-11T20:55:08+08:00
 ---
 

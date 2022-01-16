@@ -1,7 +1,7 @@
 ---
 title: "容器打印日志到控制台阻塞的排障"
 author: "颇忒脱"
-tags: ["ARTS-T", "docker", "troubleshooting"]
+tags: ["docker", "troubleshooting"]
 date: 2019-02-17T09:42:34+08:00
 ---
 

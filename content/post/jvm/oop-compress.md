@@ -1,7 +1,7 @@
 ---
 title: "JVM - 指针压缩"
 author: "颇忒脱"
-tags: ["ARTS-T", "jvm"]
+tags: ["jvm"]
 date: 2020-05-11T22:18:08+08:00
 ---
 

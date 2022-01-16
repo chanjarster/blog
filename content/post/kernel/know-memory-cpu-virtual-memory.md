@@ -1,7 +1,7 @@
 ---
 title: "What every programmer should know about memory, Part 3: Virtual Memory"
 author: "颇忒脱"
-tags: ["ARTS-T", "kernel"]
+tags: ["kernel"]
 date: 2019-03-10T22:20:48+08:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Kublet PLEG不健康问题排障"
 author: "颇忒脱"
-tags: ["ARTS-T", "k8s", "troubleshooting"]
+tags: ["k8s", "troubleshooting"]
 date: 2019-02-18T09:30:06+08:00
 ---
 

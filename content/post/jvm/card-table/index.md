@@ -1,7 +1,7 @@
 ---
 title: "JVM - Card Table和Post-Write Barriers"
 author: "颇忒脱"
-tags: ["ARTS-T", "jvm"]
+tags: ["jvm"]
 date: 2020-05-15T09:18:08+08:00
 ---
 

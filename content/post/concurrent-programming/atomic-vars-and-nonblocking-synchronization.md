@@ -1,7 +1,7 @@
 ---
 title: "Atomic Variables and Nonblocking Synchronization"
 author: "颇忒脱"
-tags: ["ARTS-T", "并发编程"]
+tags: ["并发编程"]
 date: 2019-11-24T22:06:29+08:00
 ---
 

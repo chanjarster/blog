@@ -1,7 +1,7 @@
 ---
 title: "ClassLoader - 总结及参考"
 author: "颇忒脱"
-tags: ["JVM", "ClassLoader", "ARTS-T"]
+tags: ["JVM", "ClassLoader"]
 date: 2019-01-26T13:59:55+08:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "What every programmer should know about memory, Part 4: NUMA support"
 author: "颇忒脱"
-tags: ["ARTS-T", "kernel"]
+tags: ["kernel"]
 date: 2019-03-12T21:20:48+08:00
 ---
 

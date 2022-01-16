@@ -1,7 +1,7 @@
 ---
 title: "Building Blocks"
 author: "颇忒脱"
-tags: ["ARTS-T", "并发编程"]
+tags: ["并发编程"]
 date: 2019-09-19T13:40:29+08:00
 ---
 

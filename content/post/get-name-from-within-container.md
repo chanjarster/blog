@@ -1,7 +1,7 @@
 ---
 title: "Docker容器如何获得自己的名字"
 author: "颇忒脱"
-tags: ["ARTS-T", "docker"]
+tags: ["docker"]
 date: 2019-02-20T10:38:28+08:00
 ---
 

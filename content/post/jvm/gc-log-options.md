@@ -1,7 +1,7 @@
 ---
 title: "JVM - GC日志参数"
 author: "颇忒脱"
-tags: ["ARTS-T", "jvm", "gc"]
+tags: ["jvm", "gc"]
 date: 2022-01-15T18:18:08+08:00
 ---
 

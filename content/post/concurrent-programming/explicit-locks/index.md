@@ -1,7 +1,7 @@
 ---
 title: "Explicit Locks"
 author: "颇忒脱"
-tags: ["ARTS-T", "并发编程"]
+tags: ["并发编程"]
 date: 2019-11-05T20:40:29+08:00
 ---
 

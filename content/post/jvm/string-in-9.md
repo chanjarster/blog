@@ -1,7 +1,7 @@
 ---
 title: "JVM - String对象在Java 9中的变化"
 author: "颇忒脱"
-tags: ["ARTS-T", "jvm"]
+tags: ["jvm"]
 date: 2020-05-21T08:55:08+08:00
 ---
 
