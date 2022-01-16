@@ -1,7 +1,7 @@
 ---
 title: "Another Reason Why Your Docker Containers May Be Slow"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-R", "docker", "linux"]
+tags: ["ARTS-R", "docker", "linux"]
 date: 2019-02-23T09:56:08+08:00
 ---
 

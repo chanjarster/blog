@@ -1,7 +1,7 @@
 ---
 title: "JVM - String Interning"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "jvm"]
+tags: ["ARTS-T", "jvm"]
 date: 2019-02-24T19:55:08+08:00
 ---
 

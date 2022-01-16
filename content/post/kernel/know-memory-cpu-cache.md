@@ -1,7 +1,7 @@
 ---
 title: "What every programmer should know about memory, Part 2: CPU caches"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "kernel"]
+tags: ["ARTS-T", "kernel"]
 date: 2019-03-05T21:22:12+08:00
 ---
 

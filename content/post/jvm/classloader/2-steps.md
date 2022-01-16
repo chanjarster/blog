@@ -1,7 +1,7 @@
 ---
 title: "ClassLoader（二）- 加载过程"
 author: "颇忒脱"
-tags: ["ClassLoader", "JVM", "ARTS", "ARTS-T"]
+tags: ["ClassLoader", "JVM", "ARTS-T"]
 date: 2019-01-25T21:36:01+08:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "算法 - 插入排序（Insertion sort）"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-13T22:00:01+08:00
 ---
 

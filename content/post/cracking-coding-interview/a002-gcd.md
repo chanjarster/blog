@@ -1,7 +1,7 @@
 ---
 title: "算法题 - 最大公约数"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2020-05-11T17:01:11+08:00
 ---
 

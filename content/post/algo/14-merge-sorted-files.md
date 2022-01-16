@@ -1,7 +1,7 @@
 ---
 title: "算法 - 合并若干有序文件"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-25T11:25:10+08:00
 ---
 

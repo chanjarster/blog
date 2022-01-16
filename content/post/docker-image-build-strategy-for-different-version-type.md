@@ -1,7 +1,7 @@
 ---
 title: "稳定与非稳定版本软件的Docker Image构建策略"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "docker", "CI_CD"]
+tags: ["ARTS-T", "docker", "CI_CD"]
 date: 2019-02-27T09:11:04+08:00
 ---
 

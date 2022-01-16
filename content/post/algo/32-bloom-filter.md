@@ -1,7 +1,7 @@
 ---
 title: "算法 - 布隆过滤器"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2020-05-12T22:11:10+08:00
 ---
 

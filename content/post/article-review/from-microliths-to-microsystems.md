@@ -1,7 +1,7 @@
 ---
 title: "From Microliths to Microsystems"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-R", "微服务"]
+tags: ["ARTS-R", "微服务"]
 date: 2019-02-10T18:24:55+08:00
 ---
 

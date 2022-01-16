@@ -1,7 +1,7 @@
 ---
 title: "算法 - 如何实现短网址服务"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2020-05-12T20:25:10+08:00
 ---
 

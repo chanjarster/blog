@@ -1,7 +1,7 @@
 ---
 title: "JVM - 垃圾收集器笔记"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "jvm", "gc"]
+tags: ["ARTS-T", "jvm", "gc"]
 date: 2019-09-07T11:00:00+08:00
 ---
 

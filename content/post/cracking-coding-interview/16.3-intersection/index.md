@@ -1,7 +1,7 @@
 ---
 title: "Cracking Coding Interview - 16.3 Intersection"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-09-02T21:57:11+08:00
 ---
 

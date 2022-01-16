@@ -1,7 +1,7 @@
 ---
 title: "The Java Memory Model"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "并发编程"]
+tags: ["ARTS-T", "并发编程"]
 date: 2019-11-26T20:56:29+08:00
 ---
 

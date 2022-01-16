@@ -1,7 +1,7 @@
 ---
 title: "操作系统Kernel mode和User mode"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "kernel"]
+tags: ["ARTS-T", "kernel"]
 date: 2019-02-27T21:11:56+08:00
 ---
 

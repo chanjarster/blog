@@ -1,7 +1,7 @@
 ---
 title: "算法 - 查找第K大数字"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-25T10:21:10+08:00
 ---
 

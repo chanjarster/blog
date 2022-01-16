@@ -1,7 +1,7 @@
 ---
 title: "JVM - 并发标记之三色标记法和Pre-Write Barriers"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "jvm"]
+tags: ["ARTS-T", "jvm"]
 date: 2020-05-15T14:18:08+08:00
 ---
 

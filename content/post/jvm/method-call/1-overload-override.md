@@ -1,7 +1,7 @@
 ---
 title: "JVM执行方法调用（一）- 重载与重写"
 author: "颇忒脱"
-tags: ["JVM", "ARTS", "ARTS-T"]
+tags: ["JVM", "ARTS-T"]
 date: 2019-02-08T10:28:52+08:00
 ---
 

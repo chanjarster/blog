@@ -1,7 +1,7 @@
 ---
 title: "Cracking Coding Interview - 4.10 Check Subtree"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-08-15T18:15:11+08:00
 ---
 

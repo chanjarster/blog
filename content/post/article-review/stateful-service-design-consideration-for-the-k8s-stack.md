@@ -1,7 +1,7 @@
 ---
 title: "Stateful Service Design Consideration for the Kubernetes Stack"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-R", "Akka", "微服务", "k8s"]
+tags: ["ARTS-R", "Akka", "微服务", "k8s"]
 date: 2019-01-30T20:43:08+08:00
 ---
 

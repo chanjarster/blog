@@ -1,7 +1,7 @@
 ---
 title: "Cracking Coding Interview - 4.11 Random Node"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-08-16T10:15:11+08:00
 ---
 

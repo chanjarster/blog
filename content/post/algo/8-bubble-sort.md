@@ -1,7 +1,7 @@
 ---
 title: "算法 - 冒泡排序（Bubble sort）"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-13T21:50:01+08:00
 ---
 

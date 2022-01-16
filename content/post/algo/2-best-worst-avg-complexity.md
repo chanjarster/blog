@@ -1,7 +1,7 @@
 ---
 title: "算法 - 最好、最坏、平均复杂度"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-13T20:24:48+08:00
 ---
 

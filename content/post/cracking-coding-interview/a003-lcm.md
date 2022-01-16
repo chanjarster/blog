@@ -1,7 +1,7 @@
 ---
 title: "算法题 - 最小公倍数"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2020-05-11T17:40:11+08:00
 ---
 

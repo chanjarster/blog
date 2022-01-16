@@ -1,7 +1,7 @@
 ---
 title: "算法 - 队列"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-13T21:10:33+08:00
 ---
 

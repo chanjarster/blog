@@ -1,7 +1,7 @@
 ---
 title: "JVM - 强软弱虚引用以及Reachability Fence"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "jvm"]
+tags: ["ARTS-T", "jvm"]
 date: 2020-05-19T14:18:08+08:00
 ---
 

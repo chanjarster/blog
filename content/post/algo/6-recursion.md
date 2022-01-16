@@ -1,7 +1,7 @@
 ---
 title: "算法 - 递归"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-13T21:19:01+08:00
 ---
 

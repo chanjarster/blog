@@ -1,7 +1,7 @@
 ---
 title: "算法 - 进制转换"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2020-05-12T20:46:10+08:00
 ---
 

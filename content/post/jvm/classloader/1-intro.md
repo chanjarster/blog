@@ -1,7 +1,7 @@
 ---
 title: "ClassLoader（一）- 介绍"
 author: "颇忒脱"
-tags: ["ClassLoader", "JVM", "ARTS", "ARTS-T"]
+tags: ["ClassLoader", "JVM", "ARTS-T"]
 date: 2019-01-24T20:25:52+08:00
 ---
 

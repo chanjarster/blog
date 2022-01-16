@@ -1,7 +1,7 @@
 ---
 title: "Visualizing Garbage Collection Algorithms阅读笔记"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-R", "gc"]
+tags: ["ARTS-R", "gc"]
 date: 2020-03-27T11:39:29+08:00
 ---
 

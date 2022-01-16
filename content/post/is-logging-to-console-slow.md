@@ -1,7 +1,7 @@
 ---
 title: "为何把日志打印到控制台很慢？"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "linux", "java", "日志", "docker"]
+tags: ["ARTS-T", "linux", "java", "日志", "docker"]
 date: 2019-02-22T15:42:48+08:00
 ---
 

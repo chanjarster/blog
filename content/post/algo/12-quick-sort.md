@@ -1,7 +1,7 @@
 ---
 title: "算法 - 快速排序（Quick sort）"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-A"]
+tags: ["ARTS-A"]
 date: 2019-02-14T21:40:01+08:00
 ---
 

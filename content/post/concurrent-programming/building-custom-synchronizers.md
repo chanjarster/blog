@@ -1,7 +1,7 @@
 ---
 title: "Building Custom Synchronizers"
 author: "颇忒脱"
-tags: ["ARTS", "ARTS-T", "并发编程"]
+tags: ["ARTS-T", "并发编程"]
 date: 2019-11-21T20:40:29+08:00
 ---
 
