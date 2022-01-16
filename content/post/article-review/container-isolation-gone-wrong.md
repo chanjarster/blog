@@ -1,7 +1,7 @@
 ---
 title: "Container Isolation Gone Wrong"
 author: "颇忒脱"
-tags: ["ARTS-R", "linux", "docker", "troubleshooting"]
+tags: ["linux", "docker", "troubleshooting"]
 date: 2019-02-23T16:31:04+08:00
 ---
 

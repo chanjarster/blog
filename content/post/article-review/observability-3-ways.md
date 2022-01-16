@@ -1,7 +1,7 @@
 ---
 title: "Logging, Metrics & Tracing"
 author: "颇忒脱"
-tags: ["ARTS-R", "日志", "监控", "调用链追踪"]
+tags: ["日志", "监控", "调用链追踪"]
 date: 2019-02-21T20:10:27+08:00
 ---
 
