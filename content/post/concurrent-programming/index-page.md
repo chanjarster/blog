@@ -1,8 +1,9 @@
 ---
-title: "并发编程 - 目录"
+title: "并发编程系列"
 author: "颇忒脱"
 tags: ["并发编程"]
 date: 2019-09-18T20:20:08+08:00
+featured: true
 ---
 
 <!--more-->

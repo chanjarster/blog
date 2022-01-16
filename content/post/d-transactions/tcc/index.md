@@ -55,7 +55,7 @@ TCC于BASE相比，增加了业务检查和撤销事务的功能。
 
 以下是TCC的状态图：
 
-![TCC的状态][2]
+![TCC的状态](tcc-state-machine.png)
 
 下面是流程步骤（你会发现和2PC很像）：
 
@@ -134,4 +134,3 @@ TCC对于ACID的保证：
 
 
 [1]: https://github.com/chanjarster/transactions
-[2]: /img/bV564S

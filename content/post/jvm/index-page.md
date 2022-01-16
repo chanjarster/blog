@@ -1,8 +1,9 @@
 ---
-title: "JVM - 目录"
+title: "JVM系列"
 author: "颇忒脱"
 tags: ["jvm"]
 date: 2019-09-05T08:50:08+08:00
+featured: true
 ---
 
 <!--more-->

@@ -1,8 +1,9 @@
 ---
-title: "MySQL - 目录"
+title: "MySQL系列"
 author: "颇忒脱"
 tags: ["mysql"]
 date: 2019-12-20T08:50:08+08:00
+featured: true
 ---
 
 <!--more-->

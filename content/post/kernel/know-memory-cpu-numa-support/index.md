@@ -48,7 +48,7 @@ Figure 2.3是最简单的NUMA形式，处理器可以有自己的本地内存，
 
 在Section 6.2.1会介绍查询各个cache尺寸的接口。在这里我们关注cache的拓扑结构。上述每个目录都有一堆`index*`子目录对应不同的cache，里面有`type`、`level`、`shared_cpu_map`这些文件。下面是Intel Core 2 QX6700的信息：
 
-![](../cpu-memory/table-5.1.png)
+![](table-5.1.png)
 
 **Table 5.1: sysfs Information for Core 2 CPU Caches**
 
@@ -60,7 +60,7 @@ Figure 2.3是最简单的NUMA形式，处理器可以有自己的本地内存，
 
 下面是一个four-socket, dual-core Opteron机器的cache信息：
 
-![](../cpu-memory/table-5.2.png)
+![](table-5.2.png)
 
 **Table 5.2: sysfs Information for Opteron CPU Caches**
 
@@ -70,7 +70,7 @@ Figure 2.3是最简单的NUMA形式，处理器可以有自己的本地内存，
 
 下表是SMP Opteron的处理器拓扑结构：
 
-![](../cpu-memory/table-5.3.png)
+![](table-5.3.png)
 
 **Table 5.3: sysfs Information for Opteron CPU Topology**
 
@@ -78,7 +78,7 @@ Figure 2.3是最简单的NUMA形式，处理器可以有自己的本地内存，
 
 任何SMP Opteron机器都是一个NUMA机器，我们来看看NUMA信息`/sys/devices/system/node`。每个NUMA节点都有对应的子目录，子目录里有一些文件。下面是前面提到的机器的结果：
 
-![](../cpu-memory/table-5.4.png)
+![](table-5.4.png)
 
 **Table 5.4: `sysfs` Information for Opteron Nodes**
 

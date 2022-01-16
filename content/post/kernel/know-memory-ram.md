@@ -1,6 +1,5 @@
 ---
-title: "What every programmer should know about memory, Part 1
-, RAM"
+title: "What every programmer should know about memory, Part 1, RAM"
 author: "颇忒脱"
 tags: ["ARTS", "ARTS-T", "kernel"]
 date: 2019-03-03T15:30:40+08:00
