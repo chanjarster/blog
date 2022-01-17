@@ -17,6 +17,7 @@ date: 2022-01-15T18:18:08+08:00
 -XX:+PrintGCDetails
 -Xloggc:/path/to/gc.log
 -XX:+UseGCLogFileRotation
+-XX:GCLogFileSize=1M
 -XX:NumberOfGCLogFiles=5
 ```
 
