@@ -129,7 +129,7 @@ echo $FOO > foo-2.txt
 
 ## 测试脚本
 
-测试脚本在：https://github.com/chanjarster/bash-5_1_8_long_var_corrupt/tree/pre-digging
+测试脚本在[这里][script-1]。
 
 因为这个问题出现存在一定概率，因此写一个测试脚本循环跑以下几个测试：
 
@@ -252,7 +252,7 @@ md5sum: WARNING: 1 of 1 computed checksums did NOT match
 
 现在有了一个强有力的推测：在bash脚本中给一个变量赋值一个很长的包含中文的值，就会有概率出错。
 
-那么就新写一个测试脚本：https://github.com/chanjarster/bash-5_1_8_long_var_corrupt
+那么就新写一个测试脚本，[这里][script-2]。
 
 也不需要`gojq`了，直接把一个文件的内容赋值给一个变量：
 
@@ -312,3 +312,5 @@ failed
 [bug-1]: https://savannah.gnu.org/patch/?10035
 [bug-2]: https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-014
 [bug-3]: https://lists.gnu.org/archive/html/bug-bash/2022-01/msg00009.html
+[script-1]: https://github.com/chanjarster/bash-5_1_8_long_var_corrupt/tree/pre-digging
+[script-2]: https://github.com/chanjarster/bash-5_1_8_long_var_corrupt
