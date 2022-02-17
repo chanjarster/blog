@@ -298,6 +298,7 @@ failed
 
 * [Corrupted multibyte characters in command substitutions][3]，符合我们遇到的问题，[提到][5]在 5.1.16 版本里修复了这个问题
 * [Long variable value get corrupted sometimes][4]，我这里也提了一个issue（提之前没有好好搜索）
+* 关于这个 BUG 的 patch 见 [这里][bug-1]、[这里][bug-2] 和 [这里][bug-3]
 * 我在 Alpine Linux 提议更新 Bash 版本，见 [issue][6]
 * 我在 Debian 邮件列表 提议更新 Bash 版本，见[这里][7]
 
@@ -308,3 +309,6 @@ failed
 [5]: https://lists.gnu.org/archive/html/bug-bash/2022-01/msg00020.html
 [6]: https://gitlab.alpinelinux.org/alpine/aports/-/issues/13526
 [7]: https://lists.debian.org/debian-user/2022/02/msg00573.html
+[bug-1]: https://savannah.gnu.org/patch/?10035
+[bug-2]: https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-014
+[bug-3]: https://lists.gnu.org/archive/html/bug-bash/2022-01/msg00009.html
