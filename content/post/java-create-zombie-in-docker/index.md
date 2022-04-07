@@ -46,7 +46,7 @@ systemd,1 maybe-ubiquity
           |-(docker,401)
 ```
 
-然后阅读代码后发现，这个 Java 程序使用以下两种方式执行 shell 脚本：
+结果中的容器 ID `4a720871cfb7fdbce7a33eb89cb723acec09bdc61f73a2de8ea81e20973f57d1` 找到对应程序镜像。然后阅读代码后发现，这个 Java 程序使用以下两种方式执行 shell 脚本：
 
 ```java
 Process p = Runtime.getRuntime().exec(new String["<cmd>"]);
