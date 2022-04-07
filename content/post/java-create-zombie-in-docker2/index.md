@@ -4,6 +4,8 @@ date: 2022-04-07T13:46:31+08:00
 tags: ["java", "docker", "troubleshooting"]
 ---
 
+<!--more-->
+
 在[前一篇文章][1]里，提到了 Java 程序容器产生大量僵尸进程的问题。今天又碰到了，不过是另一种情况。
 
 产生僵尸进程的也是 bash 脚本，不过这个脚本是在 K8S readinessProbe 和 livenessProbe 里执行的，并不是 java 程序自己执行的。
