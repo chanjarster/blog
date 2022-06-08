@@ -196,7 +196,7 @@ ts = 2022-06-08 14:55:49.201768 +0800
 }
 ```
 
-收到 Inactive 的消息，Alertmanager 发给 webhook 的消息如下，可以看到 status=resolved，当前时间戳比 endsAt 晚一些，startsAt 则保持不变：
+收到 Inactive 的消息（`endsAt` <= 当前时间），Alertmanager 发给 webhook 的消息如下，可以看到 status=resolved，当前时间戳比 endsAt 晚一些，startsAt 则保持不变：
 
 ```json
 ts = 2022-06-08 14:56:19.201334 +0800 
@@ -225,6 +225,8 @@ ts = 2022-06-08 14:56:19.201334 +0800
   "truncatedAlerts": 0
 }
 ```
+
+**注意：Alertmanager 里必须有 Inactive 消息所对应的告警，否则是会被忽略的**。换句话说如果一个告警在 Alertmanager 里已经解除了，再发同样的 Inactive 消息，Alertmanager 是不会发给 webhook 的。
 
 Prometheus 需要 **持续** 的将 Firing 告警发送给 Alertmanager，遇到以下一种情况，Alertmanager 会认为告警已经解决，发送一个 resolved：
 
