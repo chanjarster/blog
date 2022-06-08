@@ -102,10 +102,171 @@ Alert 发送之后会更新 `LastSentAt` 和 `ValidUntil` 字段：
 
 ```go
 Alert.LastSentAt = ts
-Alert.ValidUntil = max([check_interval], [resend_delay]) * 4
+Alert.ValidUntil = ts + max([check_interval], [resend_delay]) * 4
 ```
 
-其实你可以看到，在 Prometheus 层面，告警消息是会重复发送给 Alertmanager 的，而 Alermanager 则通过 `route.repeat_interval` ([文档][2]) 来避免重复发送给 Receiver。 
+`ValidUntil` 字段是一个预估的告警有效时间，超过这个时间点告警会被认为已经解除，具体逻辑见下文。
+
+#### Prometheus -> Alertmanager 机制
+
+当告警变成 `Firing` 时，发送给 Alertmanager 的消息如下，可以看到 `startsAt` 就是当前时间，而 `endsAt` 则是 `ValidUntil`：
+
+```json
+ts = 2022-06-08 14:41:14.199515 +0800 
+[
+  {
+    "annotations": { ... },
+    "startsAt": "2022-06-08T06:41:14.185Z",
+    "endsAt": "2022-06-08T06:45:14.185Z",
+    "generatorURL": "...",
+    "labels": { ... }
+  }
+]
+```
+
+当告警 Inactive 后，发送给 Alertmanager 的消息如下， `endsAt` 就是当前时间，而 `startsAt` 和原来一样：
+
+```json
+ts = 2022-06-08 14:41:29.195836 +0800 
+[
+  {
+    "annotations": { ... },
+    "startsAt": "2022-06-08T06:41:14.185Z",
+    "endsAt": "2022-06-08T06:41:29.185Z",
+    "generatorURL": "...",
+    "labels": { ... }
+  }
+]
+```
+
+如果告警一直 Firing，那么 Prometheus 会在 `resend_dealy` 的间隔重复发送，而 `startsAt` 保持不变， `endsAt` 跟着 `ValidUntil` 变：
+
+```json
+ts = 2022-06-08 14:48:34.197001 +0800
+[
+  {
+    "annotations": { ... },
+    "startsAt": "2022-06-08T06:48:34.185Z",
+    "endsAt": "2022-06-08T06:52:34.185Z",
+    "generatorURL": "...",
+    "labels": { ... }
+  }
+]
+ts = 2022-06-08 14:49:39.195611 +0800 
+[
+  {
+    "annotations": { ... },
+    "startsAt": "2022-06-08T06:48:34.185Z",
+    "endsAt": "2022-06-08T06:53:39.185Z",
+    "generatorURL": "...",
+    "labels": { ... }
+  }
+]
+```
+
+#### Alertmanager -> webhook 机制
+
+第一次收到 Firing 的告警消息，Alertmanager 发给 webhook 的消息如下，则可以看到 status=firing，当前时间戳比 startsAt 晚一些，endsAt 没有提供（忽略了 Prometheus 提供的信息）：
+
+```json
+ts = 2022-06-08 14:55:49.201768 +0800 
+{
+  "receiver": "webhook",
+  "status": "firing",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": { ... },
+      "annotations": { ... },
+      "startsAt": "2022-06-08T06:55:44.185Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "...",
+      "fingerprint": "3ec2d9fb9c4f7f1a"
+    }
+  ],
+  "groupLabels": {
+    "alertname": "mock2"
+  },
+  "commonLabels": { alerts 数组里的共同 label },
+  "commonAnnotations": { alerts 数组里的共同 annotation },
+  "externalURL": "...",
+  "version": "4",
+  "groupKey": "{}:{alertname=\"mock2\"}",
+  "truncatedAlerts": 0
+}
+```
+
+收到 Inactive 的消息，Alertmanager 发给 webhook 的消息如下，可以看到 status=resolved，当前时间戳比 endsAt 晚一些，startsAt 则保持不变：
+
+```json
+ts = 2022-06-08 14:56:19.201334 +0800 
+{
+  "receiver": "webhook",
+  "status": "resolved",
+  "alerts": [
+    {
+      "status": "resolved",
+      "labels": { ... },
+      "annotations": { ... },
+      "startsAt": "2022-06-08T06:55:44.185Z",
+      "endsAt": "2022-06-08T06:56:04.185Z",
+      "generatorURL": "...",
+      "fingerprint": "3ec2d9fb9c4f7f1a"
+    }
+  ],
+  "groupLabels": {
+    "alertname": "mock2"
+  },
+  "commonLabels": { alerts 数组里的共同 label },
+  "commonAnnotations": { alerts 数组里的共同 annotation },
+  "externalURL": "<alertmanager 的URL>",
+  "version": "4",
+  "groupKey": "{}:{alertname=\"mock2\"}",
+  "truncatedAlerts": 0
+}
+```
+
+Prometheus 需要 **持续** 的将 Firing 告警发送给 Alertmanager，遇到以下一种情况，Alertmanager 会认为告警已经解决，发送一个 resolved：
+
+1. Prometheus 发送了 Inactive 的消息给 Alertmanager，即 `endsAt=当前时间` 
+2. Prometheus 在上一次消息的 `endsAt` 之前，一直没有发送任何消息给 Alertmanager
+
+不用担心 Alertmanager 会将告警消息重复发送给 webhook，`route.repeat_interval` ([文档][2]) 会避免这个问题。
+
+对于第二种情况，Alertmanager 发送给 webhook 的消息如下，status=resolved，当前时间戳比 endsAt 稍晚一些，startsAt 则保持不变：：
+
+```json
+ts = 2022-06-08 15:34:27.167246 +0800 
+{
+  "receiver": "webhook",
+  "status": "resolved",
+  "alerts": [
+    {
+      "status": "resolved",
+      "labels": { ... },
+      "annotations": { ... },
+      "startsAt": "2022-06-08T07:25:58Z",
+      "endsAt": "2022-06-08T07:34:00Z",
+      "generatorURL": "...",
+      "fingerprint": "3ec2d9fb9c4f7f1a"
+    }
+  ],
+  "groupLabels": {
+    "alertname": "mock2"
+  },
+  "commonLabels": { alerts 数组里的共同 label },
+  "commonAnnotations": { alerts 数组里的共同 annotation },
+  "externalURL": "<alertmanager 的URL>",
+  "version": "4",
+  "groupKey": "{}:{alertname=\"mock2\"}",
+  "truncatedAlerts": 0
+}
+```
+
+另外两个细节：
+
+* 如果 `startsAt` 没有提供，则自动等于当前时间
+* 如果 `endsAt` 没有提供，则自动等于 `startsAt + resolve_timeout(默认 5m)`
 
 ### 更新AlertingRule规则
 
