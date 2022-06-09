@@ -139,7 +139,7 @@ ts = 2022-06-08 14:41:29.195836 +0800
 ]
 ```
 
-如果告警一直 Firing，那么 Prometheus 会在 `resend_dealy` 的间隔重复发送，而 `startsAt` 保持不变， `endsAt` 跟着 `ValidUntil` 变：
+如果告警一直 Firing，那么 Prometheus 会在 `resend_delay` 的间隔重复发送，而 `startsAt` 保持不变， `endsAt` 跟着 `ValidUntil` 变：
 
 ```json
 ts = 2022-06-08 14:48:34.197001 +0800
@@ -228,7 +228,7 @@ ts = 2022-06-08 14:56:19.201334 +0800
 
 **注意：Alertmanager 里必须有 Inactive 消息所对应的告警，否则是会被忽略的**。换句话说如果一个告警在 Alertmanager 里已经解除了，再发同样的 Inactive 消息，Alertmanager 是不会发给 webhook 的。
 
-Prometheus 需要 **持续** 的将 Firing 告警发送给 Alertmanager，遇到以下一种情况，Alertmanager 会认为告警已经解决，发送一个 resolved：
+Prometheus 需要 **持续** 地将 Firing 告警发送给 Alertmanager，遇到以下一种情况，Alertmanager 会认为告警已经解决，发送一个 resolved：
 
 1. Prometheus 发送了 Inactive 的消息给 Alertmanager，即 `endsAt=当前时间` 
 2. Prometheus 在上一次消息的 `endsAt` 之前，一直没有发送任何消息给 Alertmanager
