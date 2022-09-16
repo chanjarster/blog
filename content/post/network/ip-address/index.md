@@ -2,7 +2,7 @@
 title: "IP地址"
 author: "颇忒脱"
 tags: ["network"]
-date: 2021-09-12T08:50:08+08:00
+date: 2021-09-12T08:50:05+08:00
 ---
 
 <!--more-->
@@ -65,4 +65,4 @@ IP地址是分类型的，有：
 * [NetworKing CCNA: IP Address V4 AM][networking-ccna-ipv4-am]
 
 [networking-ccna-ipv4-am]: https://www.youtube.com/watch?v=TMjo-Iphjyo
-[network-model-and-devices]: network-model-and-devices.md
+[network-model-and-devices]: ../network-model-and-devices

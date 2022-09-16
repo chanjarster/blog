@@ -2,7 +2,7 @@
 title: "子网分割"
 author: "颇忒脱"
 tags: ["network"]
-date: 2021-09-12T08:50:08+08:00
+date: 2021-09-12T08:50:15+08:00
 ---
 
 <!--more-->
@@ -125,7 +125,7 @@ subnet6: network id=10.11.64.0   broadcast addr=10.11.127.255
 * [NetworKing CCNA: IP Address V4 PM][networking-ccna-ipv4-pm]
 * [NetworKing CCNA: IP Address V4 LN][networking-ccna-ipv4-ln]
 
-[ip-address]: ip-address.md
+[ip-address]: ../ip-address/
 [cidr]: https://zh.wikipedia.org/wiki/%E6%97%A0%E7%B1%BB%E5%88%AB%E5%9F%9F%E9%97%B4%E8%B7%AF%E7%94%B1
 [networking-ccna-ipv4-pm]: https://www.youtube.com/watch?v=Ct4PU6CyvTQ
 [networking-ccna-ipv4-ln]: https://www.youtube.com/watch?v=-e3e9w1GmBw
