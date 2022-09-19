@@ -1,7 +1,7 @@
 baseURL = "https://chanjarster.github.io/"
 title = "颇忒脱的技术博客"
 theme = "hugo-theme-bootstrap"
-copyright = "Copyright © 2016-{year} Razon Yang. All Rights Reserved."
+copyright = "Copyright © 2010-{year} Daniel Qian. All Rights Reserved."
 
 # Multilingual mode
 defaultContentLanguage = "zh-cn"
