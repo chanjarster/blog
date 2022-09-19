@@ -13,8 +13,5 @@ featured: true
 1. [网络模型及网络设备](../network-model-and-devices)
 2. [IP地址](../ip-address)
 3. [子网分割](../subnetting)
-4. [IP Forwarding](../ip-forwarding)
-
-[network-model-and-devices]: network-model-and-devices
-[ip-address]: ip-address
-[subnetting]: subnetting
+4. [IP Forwarding 的安全问题](../ip-forwarding)
+5. [IP Forwarding 在K8S中的安全问题](../ip-forwarding-k8s)
