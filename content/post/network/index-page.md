@@ -8,11 +8,13 @@ featured: true
 
 <!--more-->
 
-本系列文章旨在向程序员分享一些网络基本知识，让程序员具备基本的网络常识，以便与网络工程师沟通。本系列文章不会涉及如何配置交换机、路由器等网络设备的内容，所以不适合想考CCNA/HCNA证书的人士。
+本系列文章旨在向分享一些网络基本知识。
 
 1. [网络模型及网络设备](../network-model-and-devices)
 2. [IP地址](../ip-address)
 3. [子网分割](../subnetting)
 4. [IP Forwarding 的安全问题](../ip-forwarding)
 5. [IP Forwarding 在K8S中的安全问题](../ip-forwarding-k8s)
-6. [iptables 简介](../iptables-intro)
+7. [iptables 简介](../iptables-intro)
+6. [排查 IP Forwarding](../ip-forwarding-trbst)
+9. [IP Forwarding, Masquerading 和 NAT](../ip-forwarding-masq-nat)

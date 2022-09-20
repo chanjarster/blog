@@ -75,8 +75,8 @@ iptables 的执行依赖于一系列规则，结构是：Table > Chain > Rule > 
 ## 参考资料
 
 * [iptables man][ipt-man]
+* [Netfilter - Linux 2.4 Packet Filtering HOWTO][nf-pf-howto]
 * [Understanding Iptables][und-ipt]
-* [Linux 2.4 Packet Filtering HOWTO][nf-pf-howto]
 
 [nf-site]: https://www.netfilter.org/
 [ipt]: https://www.netfilter.org/projects/iptables/index.html
