@@ -18,3 +18,4 @@ featured: true
 7. [iptables 简介](../iptables-intro)
 6. [排查 IP Forwarding](../ip-forwarding-trbst)
 9. [IP Forwarding, Masquerading 和 NAT](../ip-forwarding-masq-nat)
+10. [nftables 简介](../nftables-intro)

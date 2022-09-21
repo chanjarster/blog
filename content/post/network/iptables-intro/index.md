@@ -1,13 +1,13 @@
 ---
 title: "iptables 简介"
 author: "颇忒脱"
-tags: ["network"]
+tags: ["network", "linux"]
 date: 2022-09-20T10:50:00+08:00
 ---
 
 <!--more-->
 
-[iptables][ipt] 是 [netfilter][nf-site] 的一个子项目，在 Linux 内核 3.13 之后 [nftables][nft] 作为 iptables 的继任者出现。
+[iptables][ipt] 是 [netfilter][nf-site] 的一个子项目，在 Linux 内核 3.13 之后 推出了 [nftables][nft] 作为 iptables 的后继项目。
 
 在较新的 RHEL 发行版中，iptables 依然存在，只不过其 backend 已经切换成了 nftable：
 
