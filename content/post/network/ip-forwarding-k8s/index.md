@@ -39,7 +39,7 @@ PING 10.42.2.56 (10.42.2.56) 56(84) bytes of data.
 
 > 可以利用任意 K8S 节点，通过 Cluster IP 访问到 K8S 集群内的 Pod。
 
-事实上也的确如此，找一台同子网但不是 K8S 节点的服务器，设置路由规则，你会发现可以 ping 通：
+事实上也的确如此，找一台同子网但不是 K8S 节点的服务器，设置路由规则，你会发现可以 ping 通 Pod 的 Cluster IP：
 
 ```shell
 > ip route add 10.42.0.0/16 via 192.168.10.1
@@ -52,7 +52,7 @@ PING 10.42.2.56 (10.42.2.56) 56(84) bytes of data.
 所以结论是：
 
 * 可以利用任意 K8S 节点，通过 Cluster IP 访问到 K8S 集群内的 Pod。
-* 因此，K8S 的节点防火墙需要配置入站规则，严格规定哪些 IP 可以访问。
+* 因此 K8S 的节点需要配置防火墙规则，见这[此文](../ip-forwarding-k8s)。
 
 
 [k8s-install-net]: https://kubernetes.io/docs/setup/production-environment/container-runtimes/#forwarding-ipv4-and-letting-iptables-see-bridged-traffic
