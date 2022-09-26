@@ -58,7 +58,7 @@ num  target     prot opt source               destination
 因此决定插入在 `11` 之后 `12` 这个之前是一个比较好的选择：
 
 ```shell
-sudo iptables -t filter -I FORWARD 12 -i ens18 -m set ! --match-set cluster_nodes src -j REJECT
+sudo iptables -t filter -I FORWARD 12 -i ens18 -m set ! --match-set cluster_nodes src -m comment --comment "路由转发保护" -j REJECT
 ```
 
 这条命令的意思是，把一条规则插入在 `12` 之前，而这个规则的意思是：凡是来自于网卡 `ens18` 的 IP 转发包，如果其来源 IP 不在 ipset `cluster_nodes` 范围内，那么就拒绝。
@@ -133,7 +133,7 @@ sudo ipset list cluster_nodes
 如果集群工作异常，那么用下面命令删除这条规则：
 
 ```shell
-sudo iptables -t filter -D FORWARD -i ens18 -m set ! --match-set cluster_nodes src -j REJECT
+sudo iptables -t filter -D FORWARD -i ens18 -m set ! --match-set cluster_nodes src -m comment --comment "路由转发保护" -j REJECT
 ```
 
 注意：删除的规则时，规则定义必须和你增加规则时的定义完全一样，否则会出现下面这种结果：

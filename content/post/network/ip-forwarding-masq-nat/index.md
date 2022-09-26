@@ -90,6 +90,3 @@ iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 \
 [dep-ip-for-masq]: https://flylib.com/books/en/3.100.1.37/1/
 [nf-nat-how-to]: https://www.netfilter.org/documentation/HOWTO/NAT-HOWTO.html
 [nf-iptables-mix-nat]: https://www.netfilter.org/documentation/HOWTO/packet-filtering-HOWTO-9.html
-
-包含检查 ip forwarding 是否正常工作的例子
-http://www.microhowto.info/howto/enable_forwarding_of_ipv4_packets.html#idp18000
