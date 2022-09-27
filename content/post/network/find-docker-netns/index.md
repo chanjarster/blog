@@ -2,7 +2,7 @@
 title: "找到 Docker 的 netns"
 author: "颇忒脱"
 tags: ["network", "docker"]
-date: 2021-09-27T15:50:05+08:00
+date: 2022-09-27T15:50:05+08:00
 ---
 
 <!--more-->
