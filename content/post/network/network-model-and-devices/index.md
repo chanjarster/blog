@@ -25,6 +25,10 @@ date: 2021-09-12T08:50:00+08:00
 2. L3：Network，PDU：Packet，包含：源IP地址、目标IP地址
 3. L4：Transport，PDU：Segment，包含：源端口、目标端口
 
+见下图：
+
+![](anatomy-of-a-packet.svg)
+
 ## 网络设备
 
 用于建网的网络设备一般有交换机（Switch）和路由器（Router）。其中交换机工作在OSI模型第二层，所以也被称为二层设备（L2 Device），路由器工作在OSI模型第三层，所以也称为三层设备（L3 Device）。
@@ -106,6 +110,7 @@ MAC地址是网卡的物理地址，该地址理论上是全世界唯一的，�
 ## 参考资料
 
 * [OSI模型][osi]
+* [Calico - About Networking][calico]
 * [NetworKing CCNA: OSI - TCP/IP Model][networking-ccna-osi-tcp-ip-model]
 * [ARP协议][arp-protocol]
 * [Address Resolution Protocol (ARP) in less than 5 minutes][arp-youtube]
@@ -113,6 +118,7 @@ MAC地址是网卡的物理地址，该地址理论上是全世界唯一的，�
 * [鳥哥的Linux私房菜 - 基礎網路概念][vbird-network-basics]
 
 [osi]: https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B
+[calico]: https://projectcalico.docs.tigera.io/about/about-networking
 [networking-ccna-osi-tcp-ip-model]: https://www.youtube.com/watch?v=l_OPR2yh2co
 [arp-protocol]: https://zh.wikipedia.org/wiki/%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE
 [dns]: dns.md

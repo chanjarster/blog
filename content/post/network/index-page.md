@@ -19,7 +19,8 @@ featured: true
 * [IP Forwarding, Masquerading 和 NAT](../ip-forwarding-masq-nat)
 * [nftables 简介](../nftables-intro)
 
-K8S 网络：
+容器网络：
 
+* [容器网络原理](../container-networking)
 * [IP Forwarding 在K8S中的安全问题](../ip-forwarding-k8s)
 * [保护 K8S IP Forwarding 的安全](../ip-forwarding-k8s-2)
