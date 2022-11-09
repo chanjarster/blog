@@ -1,7 +1,7 @@
 ---
 title: "Ingress 代理 HTTPS Backend 的方法"
 date: 2022-07-13T08:57:26+08:00
-tags: ["k8s", "ingres"]
+tags: ["k8s", "ingress"]
 author: "颇忒脱"
 ---
 

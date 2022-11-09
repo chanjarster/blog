@@ -1,7 +1,7 @@
 ---
 title: "传递Client Ip到Ingress后端"
 author: "颇忒脱"
-tags: ["k8s"]
+tags: ["k8s","ingress"]
 date: 2019-10-25T14:26:23+08:00
 ---
 
