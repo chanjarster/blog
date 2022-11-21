@@ -78,6 +78,8 @@ PS. 8472/udp还是一个[著名端口][4]
 
 ## 解决办法2
 
+> 此方法在 Rancher官方文档里已经删除，不要参考。
+
 也可以在rke创建k8s集群的时候修改flannel的端口，需要修改cluster.yml（[参考文档][5]）。
 
 如果你用的是canal网络插件（默认）：
@@ -132,7 +134,45 @@ rancher_kubernetes_engine_config:
     plugin: flannel
 ```
 
+## 解决办法3
 
+修改 `kube-system` 命名空间下，`kube-flannel-cfg` ConfigMap，修改 `net-conf.json` Key，在Backend里加,和"Port": 8475：
+
+```yaml
+net-conf.json: |
+    {
+      "Network": "172.27.0.0/16",
+      "Backend": {
+        "Type": "vxlan",
+        "Port": 8475
+      }
+    }
+```
+
+如果是 Rancher，则修改 `canal-config` ConfigMap，对 `net-conf.json` 做出相同的修改。
+
+完成之后在每个服务器上执行 `netstat -anupl | grep 8475` 看看是否启动了 8475 UDP 端口监听。
+
+参考资料：[Flannel Backends][7]
+
+## 解决办法4
+
+> 这个方法未经实验，仅供参考
+
+也可以修改 Flannel VXLAN 的 VNI 属性，把它从 1 改成其他值：
+
+```yaml
+net-conf.json: |
+    {
+      "Network": "172.27.0.0/16",
+      "Backend": {
+        "Type": "vxlan",
+        "VNI": 10
+      }
+    }
+```
+
+参考资料：[Flannel Backends][7]，[深信服虚拟化平台下k8s使用flannel...][8]
 
 [1]: https://docs.rancher.cn/docs/rancher2/troubleshooting/networking/_index/#%E6%A3%80%E6%9F%A5-overlay-%E7%BD%91%E7%BB%9C%E6%98%AF%E5%90%A6%E6%AD%A3%E5%B8%B8%E8%BF%90%E8%A1%8C
 [2]: https://docs.rancher.cn/docs/rancher2/installation/requirements/ports/_index
@@ -140,3 +180,5 @@ rancher_kubernetes_engine_config:
 [4]: https://www.speedguide.net/port.php?port=8472
 [5]: https://docs.rancher.cn/docs/rke/config-options/add-ons/network-plugins/_index#canal-%E6%8F%92%E4%BB%B6%E9%80%89%E9%A1%B9
 [6]: https://docs.rancher.cn/docs/rancher2/cluster-provisioning/rke-clusters/options/_index
+[7]: https://github.com/flannel-io/flannel/blob/master/Documentation/backends.md
+[8]: https://p.wpseco.cn/wiki/doc/626a0269352c70b82e6ac9fa
