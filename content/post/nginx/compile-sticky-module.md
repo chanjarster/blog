@@ -96,20 +96,37 @@ cd /root/nginx-1.22.1
 make && make install
 ```
 
-## 清理 Nginx
+## 创建 Systemd 服务
 
-```shell
-nginx -s stop
-rm -rf \
- /etc/nginx \
- /var/log/nginx \
- /var/run/nginx* \
- /usr/lib64/nginx \
- /var/lib/nginx \
- /usr/sbin/nginx \
- /usr/share/nginx
+新建 `/etc/systemd/system/nginx.service` 文件：
+
+```
+cat <<EOF > /etc/systemd/system/nginx.service
+[Unit]
+Description=nginx - high performance web server
+Documentation=https://nginx.org/en/docs/
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -c /etc/nginx/nginx.conf
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx.conf
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+EOF
 ```
 
+然后启动 Nginx 服务并将其设定为开机自启动：
+
+```shell
+systemctl start nginx.service
+systemctl enable nginx.service
+```
 ## 测试
 
 修改 `/etc/nginx/nginx.conf`：
@@ -130,36 +147,6 @@ http {
 $ nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
-```
-
-## 创建 Systemd 服务
-
-新建 `/etc/systemd/system/nginx.service` 文件：
-
-```
-[Unit]
-Description=nginx - high performance web server
-Documentation=https://nginx.org/en/docs/
-After=network-online.target remote-fs.target nss-lookup.target
-Wants=network-online.target
-
-[Service]
-Type=forking
-PIDFile=/var/run/nginx.pid
-ExecStartPre=/usr/sbin/nginx -t -c /etc/nginx/nginx.conf
-ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx.conf
-ExecReload=/bin/kill -s HUP $MAINPID
-ExecStop=/bin/kill -s TERM $MAINPID
-
-[Install]
-WantedBy=multi-user.target
-```
-
-然后启动 Nginx 服务并将其设定为开机自启动：
-
-```shell
-systemctl start nginx.service
-systemctl enable nginx.service
 ```
 
 ## 用法
@@ -219,6 +206,22 @@ systemctl enable nginx.service
 
 - secure    enable secure cookies; transferred only via https
 - httponly  enable cookies not to be leaked via js
+
+## 清理 Nginx
+
+```shell
+systemctl stop nginx
+systemctl disable nginx
+rm -rf \
+ /etc/nginx \
+ /var/log/nginx \
+ /var/run/nginx* \
+ /usr/lib64/nginx \
+ /var/lib/nginx \
+ /usr/sbin/nginx \
+ /usr/share/nginx \
+ /etc/systemd/system/nginx.service
+```
 
 [1]: https://nginx.org/en/download.html
 [2]: https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/downloads/
