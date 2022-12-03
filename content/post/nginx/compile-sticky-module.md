@@ -96,6 +96,8 @@ cd /root/nginx-1.22.1
 make && make install
 ```
 
+更多编译参数[参考这里][3]。
+
 ## 创建 Systemd 服务
 
 新建 `/etc/systemd/system/nginx.service` 文件：
@@ -225,3 +227,4 @@ rm -rf \
 
 [1]: https://nginx.org/en/download.html
 [2]: https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/downloads/
+[3]: https://nginx.org/en/docs/configure.html
