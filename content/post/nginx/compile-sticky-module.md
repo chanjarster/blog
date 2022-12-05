@@ -225,6 +225,11 @@ rm -rf \
  /etc/systemd/system/nginx.service
 ```
 
+## 参考资料
+
+- [Installing Nginx From Source on CentOS 7][4]
+
 [1]: https://nginx.org/en/download.html
 [2]: https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/downloads/
 [3]: https://nginx.org/en/docs/configure.html
+[4]: https://tylersguides.com/guides/installing-nginx-from-source-on-centos-7/
