@@ -7,7 +7,7 @@ date: 2022-12-06T09:30:27+08:00
 
 <!--more-->
 
-CoreDNS 是 Rancher 默认的 DNS 组件，现在想在它返回 hosts 静态文件结果，而不是到上游 DNS 服务器去查询。
+CoreDNS 是 Rancher 默认的 DNS 组件，想让它返回 hosts 静态文件结果，而不是到上游 DNS 服务器去查询。
 
 这样可以解决上游 DNS 服务器压根就没有办法解析所查询域名的问题。
 
