@@ -1,13 +1,13 @@
 ---
 title: "Linux命名空间一些笔记"
 author: "颇忒脱"
-tags: ["linux", "kernel", "docker"]
+tags: ["linux", "namespace", "kernel", "docker", "container"]
 date: 2021-12-07T16:35:45+08:00
 ---
 
 <!--more-->
 
-容器使用了 [Linux Namespace][2] 技术，通过Namespace技术可以做到网络、PID、用户等等信息的隔离，因此就产生了容器。
+容器通过 [Linux Namespace][2] 技术，对网络、PID、用户等等信息的隔离。
 
 但是这种隔离并非物理隔离，只是一种逻辑上的隔离，如果你是root用户，Host上可以看到一切信息。
 
@@ -31,7 +31,7 @@ docker inspect $container_id -f '{{.State.Pid}}'
 # 先touch个一文件
 $ docker exec $container_id touch /tmp/.pod_jvm_tools
 # stat这个文件
-$ docker exec $container_id stat -c '%u %U %g %G' /tmp/.pod_jvm_tools)
+$ docker exec $container_id stat -c '%u %U %g %G' /tmp/.pod_jvm_tools
 1000  java-app 65535 nogroup
 [uid] [usr]    [gid] [group]
 ```

@@ -2,14 +2,6 @@
   languageName = "English"
   weight = 1
 
-[fr]
-  languageName = "Français"
-  weight = 2
-  [fr.params]
-    dateFormat = "02-01-2006"
-    description = "Un thème de blog extrêmement rapide, réactif et riche en fonctionnalités pour Hugo"
-    keywords = "Hugo, Bootstrap, Thème Blog"
-
 [zh-cn]
   languageName = "简体中文"
   weight = 4
