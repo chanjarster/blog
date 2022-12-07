@@ -25,11 +25,59 @@ date: 2022-12-06T16:13:45+08:00
 $ grep 'NSpid' /proc/[host_pid]/status | awk '{print $2}'
 ```
 
-
-
 ## Linux Kernel < 4.1
 
-在 Linux Kernel 4.1 之前的版本则没有 `NSpid` 字段可以利用，那么就需要迂回一点，利用 procfs 的 `/proc/[pid]/maps` 伪文件来匹配查找。
+在 Linux Kernel 4.1 之前的版本则没有 `NSpid` 字段可以利用，那么就需要迂回一点，下面有两种方法。
+
+### 方法一
+
+利用 procfs 的 `/proc/[pid]/sched` 伪文件来匹配查找。
+
+如果你打开任何进程的 `/proc/[pid]/sched` 文件，可以看到类似下面的内容：
+
+```
+$ cat /proc/8416/sched
+bash (918, #threads: 1)
+-------------------------------------------------------------------
+se.exec_start                                :    2664031641.263979
+se.vruntime                                  :       2781932.438772
+se.sum_exec_runtime                          :             5.544571
+se.nr_migrations                             :                    5
+```
+
+`8416` 是进程在下层 namespace 里的 PID，而 `918` 是进程在 root namespace 里的 PID。
+
+所以你可以这样：
+
+* 进入 `host_pid` 的 namespace
+* 用 ps 列出这个 namespace 下所有的 PID，下面称为 `cont_pid`，然后遍历：
+  * 提取下层 namespace 里 `/proc/[cont_pid]/sched` 里的 PID
+  * 如果和 `host_pid` 一样，则 `cont_pid` 就是答案
+
+下面是脚本：
+
+```shell
+function get_container_pid_by_host_pid
+{
+  local host_pid=$1
+  for cont_pid in $(nsenter --target "$host_pid" --mount --pid ps -o 'pid=')
+  do
+    # 通过 /proc/[pid]/sched 来找 host_pid 对应的 cont_pid （容器 pid），这个文件的内容如下：
+    local sched_pid=$(nsenter --target "$host_pid" --mount --pid head -1 /proc/"$cont_pid"/sched | sed 's/[(),#:]//g' | awk '{print $2}')
+    if [[ "$host_pid" == "$sched_pid" ]]; then
+      echo "$cont_pid"
+      return 0
+    fi
+  done
+  echo ""  
+}
+```
+
+上面这个方法是受到 jattach 项目的这个 [issue][j1] 和这个 [commit][j2] 的启发。
+
+### 方法二
+
+利用 procfs 的 `/proc/[pid]/maps` 伪文件来匹配查找。
 
 具体原理是，只要两个 PID 实际指向的是同一个进程，那么 `/proc/[pid]/maps` 文件就应该是一样的，因为这个文件记录了进程的内存映射信息。
 
@@ -47,12 +95,12 @@ $ grep 'NSpid' /proc/[host_pid]/status | awk '{print $2}'
 function get_container_pid_by_host_pid
 {
   local host_pid=$1
-  for cont_pid in $(nsenter --target "$host_pid" --mount --uts --ipc --net --pid ps -o'pid=')
+  for cont_pid in $(nsenter --target "$host_pid" --mount --pid ps -o'pid=')
   do
     # 通过 md5 来找 host_pid 对应的 cont_pid （容器 pid）
     # 注意 /proc/[pid]/maps 文件会变，如果两次命令的间隔期间文件变了，则得到的 md5 会不同
     host_maps_md5=$(md5sum /proc/"$host_pid"/maps | awk '{print $1}')
-    cont_maps_md5=$(nsenter --target "$host_pid" --mount --uts --ipc --net --pid md5sum /proc/  "$cont_pid"/maps | awk '{print $1}')
+    cont_maps_md5=$(nsenter --target "$host_pid" --mount --pid md5sum /proc/  "$cont_pid"/maps | awk '{print $1}')
     if [[ "$host_maps_md5" == "$cont_maps_md5" ]]; then
       echo "$cont_pid"
       return 0
@@ -82,3 +130,5 @@ function get_container_pid_by_host_pid
 [5]: https://lwn.net/Articles/531419/
 [6]: https://cloud.tencent.com/developer/article/1529664
 
+[j1]: https://github.com/apangin/jattach/issues/13
+[j2]: https://github.com/apangin/jattach/commit/e408839a7b2f90b31cba8810012a9261c910b968
