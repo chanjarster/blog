@@ -11,6 +11,10 @@ date: 2022-10-05T18:02:16+08:00
 
 https://gceasy.io 是一个在线分析GC日志的工具。把得到的gc.log日志。
 
+## GCViewer
+
+[GCViewer](https://sourceforge.net/projects/gcviewer/) 是另一个本地分析 GC 日志的工具。
+
 ## 查看 heap 情况
 
 ```shell
