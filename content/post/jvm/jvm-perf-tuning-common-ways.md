@@ -86,23 +86,3 @@ date: 2020-03-05T18:02:16+08:00
 当你做了一个优化点后，你再压一遍，看看是否有改善，同时需要调整其他相关参数，比如前面提到的调小线程池。
 
 同时，有些时候做了一个优化点之后，会发现新的问题，这个问题可能在之前被那个占大部分因素的性能瓶颈遮蔽掉了，现在大问题解决了，那这个小问题就显现出来了。此时，你需要针对这个新问题再收集报告，然后再优化。举个例子，原来是SQL慢，优化好之后会发现程序算法也有问题。
-
-## 一些工具
-
-### GC分析
-
-https://gceasy.io 是一个在线分析GC日志的工具。把得到的gc.log日志。
-
-### heap dump分析
-
-利用下面命令得到heap dump，然后放到MAT中分析
-
-`jmap -dump:live,format=b,file=heap.bin <pid>`
-
-有些时候你需要把垃圾一起dump下来，比如GC很频繁，那么去掉live参数：
-
-`jmap -dump:format=b,file=heap.bin <pid>`
-
-### thread dump分析
-
-利用jstack得到thread dump，然后放到 https://fastthread.io/ 分析

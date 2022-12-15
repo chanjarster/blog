@@ -26,6 +26,8 @@ featured: true
 * [JVM - Card Table和Post-Write Barriers](../card-table)
 * [JVM - 并发标记之三色标记法和Pre-Write Barriers](../tri-color)
 * [JVM - GC日志参数](../gc-log-options)
+* [JVM - GC分析工具](../gc-ana-tools)
+* [GC Ergonomics 导致频繁 FullGC 的排障](../ergonomics-cause-too-many-fgc)
 
 ## ClassLoader
 
@@ -53,6 +55,7 @@ featured: true
 * [JVM - 线程](../thread)
 * [JVM - 线程安全](../thread-safe)
 * [JVM - 锁优化](../lock-optimization)
+* [JVM - 线程分析工具](../thread-dump-tools)
 
 ## 其他
 

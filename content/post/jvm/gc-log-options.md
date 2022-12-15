@@ -13,22 +13,26 @@ date: 2022-01-15T18:18:08+08:00
 
 ```bash
 -XX:+PrintGC
--XX:+PrintGCTimeStamps
 -XX:+PrintGCDetails
+-XX:+PrintGCTimeStamps
+-XX:+PrintGCDateStamps
+-XX:+PrintHeapAtGC
 -Xloggc:/path/to/gc.log
 -XX:+UseGCLogFileRotation
 -XX:GCLogFileSize=1M
 -XX:NumberOfGCLogFiles=5
 ```
 
-前4个参数文档在[Java 8文档][1]，后两个参数的文档只能在[Java 7文档][2]看到，不过Java 8也能用。
+[参考 Java 8文档][1]，后两个参数的文档只能在[Java 7文档][2]看到，不过Java 8也能用。
 
 如果你不想要日志滚动，可以这样：
 
 ```bash
 -XX:+PrintGC
--XX:+PrintGCTimeStamps
 -XX:+PrintGCDetails
+-XX:+PrintGCTimeStamps
+-XX:+PrintGCDateStamps
+-XX:+PrintHeapAtGC
 -Xloggc:/path/to/gc-%t.log
 ```
 
