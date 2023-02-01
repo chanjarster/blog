@@ -157,18 +157,22 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 
 为了方便，这里把用法在这里粘贴了一份：
 
+```
+upstream {
+  sticky;
+  server 127.0.0.1:9000 max_fails=20;
+  server 127.0.0.1:9001 max_fails=20;
+  server 127.0.0.1:9002 max_fails=20;
+}
 
-    upstream {
-      sticky;
-      server 127.0.0.1:9000;
-      server 127.0.0.1:9001;
-      server 127.0.0.1:9002;
-    }
+sticky [name=route] [domain=.foo.bar] [path=/] [expires=1h] 
+       [hash=index|md5|sha1] [no_fallback] [secure] [httponly];
+```  
 
-	  sticky [name=route] [domain=.foo.bar] [path=/] [expires=1h] 
-           [hash=index|md5|sha1] [no_fallback] [secure] [httponly];
-  
-  
+> 注意 max_fails 参数，该参数默认为 1，即在 fail_timeout 时间内（默认 10 秒），只要出现 1 个错误。
+> 那么接下来的请求就会迁移到另一个 server 上，导致 session 丢失。
+> 这里设置为 20 能够避免因为偶尔的错误导致大批量请求 session 丢失的问题。
+
 - name:    the name of the cookies used to track the persistant upstream srv; 
   default: route
 
