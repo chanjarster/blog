@@ -16,12 +16,24 @@ date: 2021-09-07T11:33:22+08:00
 根据连接状态分类统计：
 
 ```bash
-$ netstat -antpl | gawk -F' ' '{ print $6 }' | sort | uniq -c
+$ netstat -antpl | tail -n +3 | awk '{ print $6 }' | sort | uniq -c | sort -rn
       1 established)
       5 ESTABLISHED
       1 Foreign
       4 LISTEN
       2 TIME_WAIT
+```
+
+根据 连接状态 + Foreign Address 来统计：
+
+```
+$ netstat -antpl | tail -n +3 | awk '{print $6, $5}' | sed 's/:[[:print:]]*/\t/g' | sort | uniq -c | sort -rn
+     20 ESTABLISHED 127.0.0.1
+     10 ESTABLISHED 172.18.0.2
+      3 LISTEN 0.0.0.0
+      3 LISTEN
+      2 TIME_WAIT xx.xx.xx.xx
+      1 ESTABLISHED xx.xx.xx.xx
 ```
 
 各协议统计：
