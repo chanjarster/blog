@@ -1,7 +1,7 @@
 ---
 title: "Nginx 造成 Upstream 服务器大量 TIME_WAIT 连接"
 author: "颇忒脱"
-tags: ["nginx"]
+tags: ["nginx", "troubleshooting", "network"]
 date: 2023-02-01T11:02:45+08:00
 ---
 
