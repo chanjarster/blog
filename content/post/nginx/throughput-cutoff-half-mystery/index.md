@@ -2,8 +2,8 @@
 title: "Nginx 反向代理吞吐量砍半之谜"
 author: "颇忒脱"
 tags: ["nginx", "troubleshooting", "linux"]
-date: 2023-02-15T08:02:45+08:00
-draft: true
+date: 2023-02-22T15:02:45+08:00
+draft: false
 ---
 
 <!--more-->
@@ -76,7 +76,7 @@ http {
 
     upstream tomcat_server {
         server <tomcat-ip>:8080 max_fails=20;
-        keepalive 500;
+        keepalive 1000;
     }
     
     server {
@@ -102,16 +102,16 @@ http {
 ```shell
   4 threads and 500 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    62.59ms   55.90ms 734.80ms   84.47%
-    Req/Sec     2.30k   426.21     4.09k    75.95%
+    Latency    61.10ms  104.69ms 964.53ms   86.61%
+    Req/Sec     6.36k     1.15k    9.96k    73.61%
   Latency Distribution
-     50%   47.14ms
-     75%   91.74ms
-     90%  128.89ms
-     99%  264.21ms
-  548199 requests in 1.00m, 47.64GB read
-Requests/sec:   9122.52
-Transfer/sec:    811.76MB
+     50%   13.71ms
+     75%   43.46ms
+     90%  213.47ms
+     99%  465.04ms
+  1491946 requests in 1.00m, 129.60GB read
+Requests/sec:  24822.44
+Transfer/sec:      2.16GB
 ```
 
 压 Nginx：
@@ -119,276 +119,579 @@ Transfer/sec:    811.76MB
 ```shell
   4 threads and 500 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   145.33ms  130.15ms   1.69s    81.29%
-    Req/Sec     1.00k   177.16     1.43k    73.07%
+    Latency    43.34ms   45.88ms   1.11s    97.63%
+    Req/Sec     3.23k   463.18     4.62k    76.46%
   Latency Distribution
-     50%  129.99ms
-     75%  199.58ms
-     90%  304.58ms
-     99%  595.59ms
-  237912 requests in 1.00m, 20.69GB read
-Requests/sec:   3959.57
-Transfer/sec:    352.68MB
+     50%   37.20ms
+     75%   46.17ms
+     90%   57.18ms
+     99%  232.57ms
+  764342 requests in 1.00m, 66.43GB read
+Requests/sec:  12722.92
+Transfer/sec:      1.11GB
 ```
+
+对比一下性能指标：
+
+|         |   基准值      |  未优化              |
+|:-------:|:------------:|:-------------------:|
+| 50%     | 13.71ms      | 37.20ms   (+ 171%)  |
+| 75%     | 43.46ms      | 46.17ms   (+ 6.2%)  |
+| 90%     | 213.47ms     | 57.18ms   (- 73.2%) |
+| 99%     | 465.04ms     | 232.57ms  (- 49.9%) |
+| Avg     | 61.10ms      | 43.34ms   (- 29%)   |
+| Max     | 964.53ms     | 1.11s     (+ 15%)   |
+| RPS     | 24822.44     | 12722.92  (- 48.7%) |
+
 
 ## 排查过程
 
-看 top，发现压测期间 cpu 使用率只有 50% 左右：
+压测期间 Nginx 的 CPU 表现：
 
 ```
-top - 10:02:00 up 1 day, 18:49,  1 user,  load average: 1.45, 0.91, 0.45
-Tasks: 154 total,   4 running, 150 sleeping,   0 stopped,   0 zombie
-%Cpu(s):  6.5 us, 16.5 sy,  0.0 ni, 48.8 id,  0.0 wa,  0.0 hi, 27.4 si,  0.8 st
-MiB Mem :   3708.1 total,   1912.4 free,    272.5 used,   1523.2 buff/cache
-MiB Swap:   4032.0 total,   4032.0 free,      0.0 used.   3206.9 avail Mem
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-3379959 nginx     20   0   81668  12272   4432 R  30.6   0.3   1:04.68 nginx
-3379958 nginx     20   0   82336  13072   4432 R  29.9   0.3   0:59.11 nginx
-3379957 nginx     20   0   80680  11552   4432 R  25.9   0.3   0:52.61 nginx
-3379956 nginx     20   0   81240  11972   4428 S  25.2   0.3   0:53.03 nginx
+$ vmstat 1
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 5  0   7424 1977308   2044 1698108    0    0     0     0 73333  642 15 84  0  0  0
+ 4  0   7424 1975424   2044 1699728    0    0     0     0 65583  733 15 85  0  0  0
+ 5  0   7424 1965804   2044 1700800    0    0     0     0 53537 1013 12 60 29  0  0
+ 5  0   7424 1978396   2044 1702180    0    0     0     0 72517  626 16 84  0  0  0
+ 9  0   7424 1979584   2044 1703756    0    0     0     0 71537 1031 16 83  0  0  0
+ 5  0   7424 1978852   2044 1705108    0    0     0     0 71340 1281 16 83  1  0  0
+ 5  0   7424 1977956   2044 1706696    0    0     0     0 70989  693 15 85  0  0  0
+ 2  0   7424 1966884   2044 1708136    0    0     0     0 70589  672 15 85  0  0  0
+ 6  0   7424 1953472   2044 1709608    0    0     0     0 72448  630 17 83  0  0  0
+ 5  0   7424 1960272   2044 1710964    0    0     0 41920 72081  668 16 84  0  0  0
+ 6  0   7424 1959320   2044 1712124    0    0     0     0 71234  705 16 82  2  0  0
+10  0   7424 1970128   2044 1713612    0    0     0     0 70968 1173 17 82  0  0  0
+ 4  0   7424 1949780   2044 1714608    0    0     0     0 69815 1120 17 83  0  0  0
+ 6  0   7424 1945680   2044 1716060    0    0     0     0 70618  789 16 83  0  0  0
 ```
 
-看 pidstat 查看 Nginx 进程的 CPU 利用率和进程上下文切换情况，发现存在较高的 %wait，以及比较稳定的 cswch/s：
+可以看到 CPU 是用足的，但是 sy （系统调用）比较高，有 80% 左右。
 
-* %wait: Percentage of CPU spent by the task while waiting to run.
-* cswch/s: Total number of voluntary context switches the task made per second.  A voluntary context switch occurs when a task blocks because it requires a resource that is unavailable.
+用 strace 统计 30s 内单个 nginx 进程的系统调用：
 
 ```shell
-pidstat -G nginx -u -w 1
-
-10时05分17秒     USER       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-10时05分18秒    nginx   3379956    5.00   18.00    0.00   16.00   23.00     0  nginx
-10时05分18秒    nginx   3379957    6.00   20.00    0.00   16.00   26.00     1  nginx
-10时05分18秒    nginx   3379958    5.00   23.00    0.00   18.00   28.00     2  nginx
-10时05分18秒    nginx   3379959    6.00   24.00    0.00   16.00   30.00     3  nginx
-
-10时05分17秒     USER       PID   cswch/s nvcswch/s  Command
-10时05分18秒    nginx   3379956    938.00      0.00  nginx
-10时05分18秒    nginx   3379957    969.00      0.00  nginx
-10时05分18秒    nginx   3379958    802.00      0.00  nginx
-10时05分18秒    nginx   3379959    827.00      0.00  nginx
-```
-
-用 strace 统计单个 nginx 进程的系统调用：
-
-```shell
-strace -c -p $(pgrep -nx nginx)
+$ timeout 30 strace -c -p $(pgrep -nx nginx)
 % time     seconds  usecs/call     calls    errors syscall
 ------ ----------- ----------- --------- --------- ----------------
- 54.72    6.549331          14    443758        12 writev
- 31.62    3.784297           9    391982           readv
-  6.20    0.742566          10     70953        30 recvfrom
-  3.30    0.394956          11     35554           write
-  1.36    0.162781           3     48934           ioctl
-  1.20    0.144111          27      5253           epoll_wait
-  1.08    0.129113           3     35528           getsockopt
-  0.14    0.017326           3      5253           clock_gettime
-  0.14    0.017254           3      5253           gettimeofday
-  0.12    0.014294          27       520           close
-  0.05    0.006141          20       296       296 connect
-  0.03    0.003547          11       296           socket
-  0.01    0.001592           5       296           epoll_ctl
-  0.00    0.000468          19        24           brk
+ 53.49    4.035007          11    365710           writev
+ 30.32    2.287248           7    305123           readv
+  7.61    0.574073           9     60984           recvfrom
+  4.57    0.344557          11     30471           write
+  1.46    0.110045           3     30516           getsockopt
+  1.36    0.102238           3     30879           ioctl
+  0.85    0.064290          95       674           epoll_wait
+  0.11    0.008300          29       286           close
+  0.07    0.004944          14       337       337 connect
+  0.05    0.003852           7       514           epoll_ctl
+  0.05    0.003714          11       337           socket
+  0.03    0.002279           3       674           clock_gettime
+  0.02    0.001784           2       674           gettimeofday
+  0.01    0.000838           7       116        26 accept4
+  0.00    0.000330           4        78           setsockopt
+  0.00    0.000313           3        87           getsockname
 ------ ----------- ----------- --------- --------- ----------------
-100.00   11.967777          11   1043900       338 total
+100.00    7.543812           9    827460       363 total
 ```
 
-可以看到：
+可以看到 readv 和 writev 有 30.5w 次和 36.5w 次调用。
 
-* 总的 syscall 在单个 nginx 进程上耗时 17秒，总体不高
-* readv 和 writev 有较多的调用（关于 readv, writev 可以 `man 2 readv` 查看）
+`man 2 readv` 可以直到这两个系统调用是干什么的，简而言之就是和 TCP 读写有关（因为 socket 也是 fd）：
 
-详细采集一下 readv,writev 的系统调用都做了些啥：
+> The readv() system call reads iovcnt buffers from the file associated with the file descriptor fd into the buffers described by iov ("scatter input").
+>
+> The writev() system call writes iovcnt buffers of data described by iov to the file associated with the file descriptor fd ("gather output").
+
+接着再用 strace 详细采集一下 readv,writev 的系统调用都做了些啥：
 
 ```shell
-strace -e trace=readv,writev -p $(pgrep -nx nginx) -o output.unopt.txt
+$ timeout 30 strace -e trace=readv,writev -p $(pgrep -nx nginx) -o output.unopt.txt
 ```
 
 查看 output.unopt.txt，每行最后面的 `=` 指的是读 / 写的字节数：
 
 ```
 ...
-readv(209, [{iov_base="_Class_Name\">Filter Class Name</"..., iov_len=4096}], 1) = 945
+readv(85, [{iov_base="ST /rest/resources/addResource H"..., iov_len=4096}], 1) = 4096
 ...
-writev(54, [{iov_base="e_'x-forwarded-for'\">Basic confi"..., iov_len=4096}], 1) = 4096
+writev(47, [{iov_base="rg</code>.\n        <strong>Defau"..., iov_len=4096}, {iov_base="e&gt;true&lt;/param-value&gt;\n  "..., iov_len=4096}], 2) = 8192
 ```
 
-统计下 readv,writev 每次读/写字节数，发现绝大多数 writev 一次只写 8k，绝大多数 readv 一次只读 4k：
+统计下 readv 每次读的字节数，绝大多数 readv 一次只读 4k，最多一次读 36k（36864 字节）：
+
+```shell
+$ grep 'readv' output.unopt.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
+ 144120 4096
+  18007 36864
+  17796 19540
+    205 19559
+    196 0
+      9 3895
+      3 1843
+      3 17697
+      2 6113
+      2 395
+$ grep 'readv' output.unopt.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort -rn | head -1
+36864
+```
+
+统计下 writev 写的字节数，发现绝大多数 writev 一次只写 8k，最多一次写 35.08k（35924 字节）：
 
 ```shell
 $ grep 'writev' output.unopt.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
- 337515 8192
-  99268 4096
-  47105 143
-  46472 8238
-  16175 19540
-   5582 7252
-   5215 11348
-   4842 3156
-   3257 23636
-   3179 15444
+ 126115 8192
+  36032 4096
+  18028 143
+  17811 8238
+  17797 19540
+    205 8219
+    205 19559
+      5 3156
+      3 35924
+      3 15444
 
-
-$ grep 'readv' output.unopt.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
- 364062 4096
-  19862 36864
-  13031 19540
-   3127 3156
-   2784 7252
-   2126 5792
-   1885 8688
-   1883 2896
-   1796 11348
-   1672 11584
+$ grep 'writev' output.unopt.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort -rn | head -1
+35924
 ```
 
-优化一下 Nginx：
+## 第一次优化
 
-```
-...
-  # 加大读取上游服务器响应的 buffer 尺寸，默认 8 4k
-  proxy_buffers 8 128k;
-  # 加大写到下游客户端的 buffer 尺寸，默认 8k
-  proxy_busy_buffers_size 128k;
-...
+nginx 关于代理缓冲的参数有 [`proxy_buffers`][n1] 和 [`proxy_buffer_size`][n2] ，他们的默认值是 `proxy_buffer_size 4k|8k` 和 `proxy_buffers 8 4k|8k`。
+
+因为当前平台内存页大小是 4K（通过 `getconf PAGE_SIZE` 可以得到），因此实际上是：`proxy_buffer_size 4k` 和 `proxy_buffers 8 4k`，正好是 36k，和 `readv` 的结果不谋而合。
+
+`proxy_buffer_size` 是读取 upstream 单个响应的第一个部分的响应头的缓冲区大小，通常这个部分会包含响应头，如果响应头比较少也会包含响应体，甚至于整个响应。
+
+`proxy_buffers` 则是读取 upstream 完整响应的缓冲区，默认值总尺寸是 32k。
+
+因为压测 URL 的响应尺寸在 ~91K 左右，那么我们放大一下 `proxy_buffers`，看看有没有效果：
+
+```conf
+http {
+    proxy_buffers 128 4k;
+}
 ```
 
-重启 nginx 再统计一次：
+压一把，吞吐量提升了，从 1.2w 提升到了 1.4w
 
 ```shell
-strace -c -p $(pgrep -nx nginx)
-% time     seconds  usecs/call     calls    errors syscall
------- ----------- ----------- --------- --------- ----------------
- 50.70    8.343907          12    681345           readv
- 31.02    5.105203          22    223353         1 writev
-  7.33    1.205871           8    149436        48 recvfrom
-  3.46    0.569587          17     31695           epoll_wait
-  3.42    0.562130           7     74686           write
-  1.33    0.218460           2     75497           ioctl
-  1.32    0.217599           2     74754           getsockopt
-  0.56    0.091542           2     31696           clock_gettime
-  0.52    0.085991           2     31696           gettimeofday
-  0.10    0.016032          18       885           close
-  0.09    0.015248          18       811       811 connect
-  0.06    0.010170          12       811           socket
-  0.06    0.009189          10       904           brk
-  0.03    0.005516           5      1077           epoll_ctl
-  0.00    0.000614           4       135         2 accept4
-  0.00    0.000478           3       133           setsockopt
-  0.00    0.000358           2       133           getsockname
------- ----------- ----------- --------- --------- ----------------
-100.00   16.457895          11   1379047       862 total
+  4 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    39.12ms   48.03ms   1.11s    97.22%
+    Req/Sec     3.68k   510.09     5.00k    76.49%
+  Latency Distribution
+     50%   32.05ms
+     75%   40.66ms
+     90%   53.17ms
+     99%  226.92ms
+  871572 requests in 1.00m, 75.75GB read
+Requests/sec:  14510.78
+Transfer/sec:      1.26GB
 ```
 
-发现 syscall 没有显著变化，但是压测结果吞吐量提升了 22%，响应延迟也降低了：
+对比一下性能指标：
+
+|         |   基准值      |  未优化              |  第一次优化           |
+|:-------:|:------------:|:-------------------:|:-------------------:|
+| 50%     | 13.71ms      | 37.20ms  (+ 171%)  | 32.05ms  (+ 133%)    |
+| 75%     | 43.46ms      | 46.17ms  (+ 6.2%)  | 40.66ms  (- 0.64%)   |
+| 90%     | 213.47ms     | 57.18ms  (- 73.2%) | 53.17ms  (- 75.0%)   |
+| 99%     | 465.04ms     | 232.57ms (- 49.9%) | 226.92ms (- 50.2%)   |
+| Avg     | 61.10ms      | 43.34ms  (- 29%)   | 39.12ms  (- 35.9%)   |
+| Max     | 964.53ms     | 1.11s    (+ 15%)   | 1.11s    (+ 15%)     |
+| RPS     | 24822.44     | 12722.92 (- 48.7%) | 14510.78 (- 41.5%)   |
+
+吞吐量略微提升。
+
+
+统计一下 readv,writev 的调用次数：
+
+```shell
+$ timeout 30 strace -c -p $(pgrep -nx nginx)
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 53.19    3.534995           5    691405           readv
+ 28.61    1.901240          23     81985           writev
+  8.56    0.569164           8     63561           recvfrom
+  4.88    0.324340          10     31742           write
+  1.72    0.114049           3     31820           getsockopt
+  1.67    0.111064           3     32146           ioctl
+  0.99    0.065817         119       553           epoll_wait
+  0.10    0.006479          22       282           close
+  0.07    0.004570          12       364       364 connect
+  0.06    0.003871          10       364           socket
+  0.05    0.003311           5       580           epoll_ctl
+  0.02    0.001509          11       136           brk
+  0.02    0.001504          11       130        22 accept4
+  0.02    0.001466           2       553           gettimeofday
+  0.02    0.001312           2       553           clock_gettime
+  0.01    0.000512           4       108           setsockopt
+  0.01    0.000375           3       108           getsockname
+------ ----------- ----------- --------- --------- ----------------
+100.00    6.645578           7    936390       386 total
+```
+
+目前可以看到效果显著：
+
+|  syscall      |   未优化          |    第一次优化    |
+|:-------------:|:----------------:|:--------------:|
+| readv         | 305123 (2.28s)   | 691405 (3.53s) |
+| writev        | 365710 (4.03s)   | 81985  (1.90s) |
+| recvfrom      | 60984  (0.57s)   | 63561  (0.56s) |
+| 总耗时         | 7.54s            | 6.64s          |
+
+采集一下 readv,writev 的实际调用参数：
+
+```shell
+$ timeout 30 strace -e trace=readv,writev -p $(pgrep -nx nginx) -o output.opt1.txt
+
+$ grep 'readv' output.opt1.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
+ 482455 4096
+  22416 3156
+    226 3175
+    222 0
+     79 7252
+     71 11348
+     68 15444
+     48 19540
+     33 23636
+     29 27732
+
+$ grep 'readv' output.opt1.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort -rn | head -1
+48179
+
+$ grep 'writev' output.opt1.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
+  23152 143
+  22520 93314
+   4308 8192
+    546 8238
+    254 4096
+     94 3156
+     83 7252
+     77 11348
+     70 15444
+     53 19540
+
+$ grep 'writev' output.opt1.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort -rn | head -1
+93314
+```
+
+目前可以看到：
+
+* readv 每次读的字节数，绝大多数一次只读 4k，最多一次读 ~47k（48179字节）。
+* writev 每次写的字节数，绝大多数一次写 143 字节和 ~91k（93314字节），最多一次写 ~91k（93314字节）。
+
+readv 怎么会数量激增，看看 strace 的可以看到这个：
+
+
+```shell
+readv(420, [{iov_base="nitialisation parameters</a></li"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="e_'x-forwarded-for'\">Basic confi"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="_Class_Name\">Filter Class Name</"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="rg</code>.\n        <strong>Defau"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="e&gt;true&lt;/param-value&gt;\n  "..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base=" <p>The number of previously iss"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="ST /rest/resources/addResource H"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="ocument's\n    validity and persi"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="m&gt;\n &lt;param-name&gt;Expires"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="useful to ease usage of <code>Ex"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="\n         <div class=\"codeBox\"><"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="ation parameters.</p>\n\n  </div><"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="rotectionEnabled</code></td><td>"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="\n        &lt;param-value&gt;127\\"..., iov_len=4096}], 1) = 4096
+readv(420, [{iov_base="i><code>Order</code> will always"..., iov_len=4096}], 1) = 4096
+```
+
+可以看到每次从 upstream 读取响应的时候，只利用了一个 buffer (4K)，而且分了好几次读取。
+
+writev 的 143 字节是怎么回事呢，看看，原来是转发请求到 upstream 的时候发生的动作：
+
+```shell
+writev(516, [{iov_base="GET /docs/config/filter.html HTT"..., iov_len=143}], 1) = 143
+```
+
+writev 的 ~91k（93314字节）也看看，发现是把 upstream 的响应返回给 client 时发生的，这个倒是一口气全部写出去的：
+
+```shell
+writev(53, [
+    {iov_base="HTTP/1.1 200 \r\nServer: nginx/1.2"..., iov_len=247}, 
+    {iov_base="<!DOCTYPE html SYSTEM \"about:leg"..., iov_len=3895}, 
+    {iov_base="nitialisation parameters</a></li"..., iov_len=4096},
+    ...
+    ],
+    1)  = 93314
+```
+
+## 第二次优化
+
+那么到现在问题很明确了，readv 一次读取的数据量太小，导致分了很多次读，形成了比较多的系统调用，那么再优化 `proxy_buffers`，总容量不变，减少 buffer 数量，扩充单个 buffer 的尺寸：
+
+```conf
+http {
+    proxy_buffers 4 128k;
+}
+```
+
+压一把看看：
 
 ```
   4 threads and 500 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   116.70ms  101.24ms   1.39s    77.44%
-    Req/Sec     1.23k   194.56     1.92k    74.44%
+    Latency    42.06ms   55.45ms   1.14s    93.33%
+    Req/Sec     3.91k   578.27     5.73k    78.55%
   Latency Distribution
-     50%  108.57ms
-     75%  154.83ms
-     90%  235.66ms
-     99%  473.26ms
-  292245 requests in 1.00m, 25.40GB read
-Requests/sec:   4864.97
-Transfer/sec:    432.97MB
+     50%   28.55ms
+     75%   40.53ms
+     90%   68.06ms
+     99%  286.52ms
+  924858 requests in 1.00m, 80.38GB read
+  Non-2xx or 3xx responses: 1
+Requests/sec:  15390.49
+Transfer/sec:      1.34GB
 ```
 
-再次分析 readv,writev 的缓冲区大小：
+对比一下性能指标：
 
-blah, blah, blah 这里没有什么可以分析的，有点问题，先放弃。
+|         |   基准值      |  未优化              |  第一次优化           |  第二次优化           |
+|:-------:|:------------:|:-------------------:|:-------------------:|:-------------------:|
+| 50%     | 13.71ms      | 37.20ms  (+ 171%)  | 32.05ms  (+ 133%)    | 28.55ms  (+ 108%)    |
+| 75%     | 43.46ms      | 46.17ms  (+ 6.2%)  | 40.66ms  (- 0.64%)   | 40.53ms  (- 0.67%)   |
+| 90%     | 213.47ms     | 57.18ms  (- 73.2%) | 53.17ms  (- 75.0%)   | 68.06ms  (- 68.1%)   |
+| 99%     | 465.04ms     | 232.57ms (- 49.9%) | 226.92ms (- 50.2%)   | 286.52ms (- 38.3%)   |
+| Avg     | 61.10ms      | 43.34ms  (- 29%)   | 39.12ms  (- 35.9%)   | 42.06ms  (- 31.1%)   |
+| Max     | 964.53ms     | 1.11s    (+ 15%)   | 1.11s    (+ 15%)     | 1.14s    (+ 18.1%)   |
+| RPS     | 24822.44     | 12722.92 (- 48.7%) | 14510.78 (- 41.5%)   | 15390.49 (- 37.9%)   |
 
+吞吐量比之前有所提升。
+
+看看系统调用次数：
 
 ```shell
-$ strace -e trace=readv,writev -p $(pgrep -nx nginx) -o output.opt.txt
-
-$ grep 'writev' output.opt.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
-  62422 143
-  61296 4142
-  61239 89172
-    558 93314
-    557 89191
-    557 4123
-
-$ grep 'readv' output.opt.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
- 202366 2896
-  41072 5792
-  13181 4344
-  12423 1448
-  12072 8688
-   9016 11584
-   9006 1897
-   8164 1843
-   8148 999
-   8042 17376
-
+$ timeout 30 strace -c -p $(pgrep -nx nginx)
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 36.25    3.749784          29    126213           writev
+ 35.87    3.710298          52     70403           readv
+ 15.03    1.554814          13    115917           recvfrom
+  5.49    0.567726           9     57932           write
+  2.30    0.237950           4     57974           getsockopt
+  2.13    0.220522           3     58524           ioctl
+  1.83    0.188874         165      1144           epoll_wait
+  0.67    0.069087          20      3314           brk
+  0.14    0.014583          25       572           close
+  0.10    0.010315          17       585       585 connect
+  0.07    0.007178          12       585           socket
+  0.05    0.004685           6       719           epoll_ctl
+  0.03    0.003239           2      1144           clock_gettime
+  0.03    0.003082           2      1144           gettimeofday
+  0.01    0.001498          13       110        42 accept4
+  0.00    0.000284           4        66           setsockopt
+  0.00    0.000173           2        66           getsockname
+------ ----------- ----------- --------- --------- ----------------
+100.00   10.344092          20    496412       627 total
 ```
 
-## 另起方向
+目前可以看到：
 
+|  syscall      |   未优化          |    第一次优化    |    第二次优化   |
+|:-------------:|:----------------:|:--------------:|:--------------:|
+| readv         | 305123 (2.28s)   | 691405 (3.53s) | 70403 （3.71s) | 
+| writev        | 365710 (4.03s)   | 81985  (1.90s) | 126213 (3.74s) | 
+| recvfrom      | 60984  (0.57s)   | 63561  (0.56s) | 115917 (1.55s) |
+| 总耗时         | 7.54s            | 6.64s          | 10.34s         |
 
-直压 tomcat 时，tomcat 上的 vmstat：
+可以看见，第二次优化效果显著，但是 recvfrom 的调用次数有较大的增加。
+  
+采集一下系统调用的详细信息看看：
+
 
 ```
-procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
- r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
- 4  0  12288 1239440   3344 1420264    0    0     0     5    4    8  1  2 97  0  0
- 3  0  12288 1235288   3344 1420888    0    0     0     0 15060 19662 10 51 38  0  1
- 6  0  12288 1234728   3344 1421680    0    0     0    40 16310 20511 11 56 33  0  1
- 2  0  12288 1234560   3344 1422248    0    0     0     0 15382 20328 10 52 37  0  1
- 1  0  12288 1232604   3344 1422744    0    0     0     0 16187 22907 11 51 38  0  0
- 7  0  12288 1230584   3344 1423468    0    0     0  4516 14792 18986 11 53 34  0  2
- 4  0  12288 1231080   3344 1423844    0    0     0     0 13024 13419 17 40 42  0  1
- 2  0  12288 1232100   3344 1424452    0    0     0     0 15994 20549 11 56 32  0  1
- 1  0  12288 1232876   3344 1425436    0    0     0     0 15600 21469 10 50 40  0  1
- 3  0  12288 1230512   3344 1426060    0    0     0    12 16113 22552  9 51 40  0  0
- 2  0  12288 1228716   3344 1426812    0    0     0     0 15688 19341 11 53 35  0  1
+$ timeout 30 strace -e trace=readv,writev,recvfrom -p $(pgrep -nx nginx) -o output.opt2.txt
+
+$ grep 'readv' output.opt2.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
+  39932 89172
+    783 3895
+    416 0
+    412 89191
+    304 1843
+    301 395
+    298 4739
+    297 87329
+    292 88777
+    290 84433
+
+$ grep 'readv' output.opt2.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort -rn | head -1
+89191
+
+$ grep 'writev' output.opt2.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
+  45971 143
+  40343 93314
+   5561 89172
+   5561 4142
+     24 89191
+     24 4123
+
+$ grep 'writev' output.opt2.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort -rn | head -1
+93314
+
+$ grep 'recvfrom' output.opt2.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort | uniq -c | sort -rn | head
+  45971 67
+  45137 4096
+    754 201
+      9 220
+
+$ grep 'recvfrom' output.opt2.txt | awk 'BEGIN{FS=" = "}; {print $2}' | sort -rn | head -1
+4096
 ```
 
-压 nginx，tomcat 上的 vmstat：
+目前可以看到：
+
+* readv 每次读的字节数，绝大多数一次只读 ~87k（89172字节），说明我们的配置起到了作用。
+* writev 每次写的字节数，和之前一样，绝大多数一次写 143 字节和 ~91k（93314字节），最多一次写 ~91k（93314字节）。
+* recvfrom 没次读的字节数，绝大多数是 67 字节 和 4k（4096字节）
+
+再看看 readv 的系统调用详情，可以发现读取 upstream 的响应时就读了 1 次，每次都是使用 128k buffer 读的：
+
+```
+readv(250, [{iov_base="nitialisation parameters</a></li"..., iov_len=131072}], 1) = 89172
+readv(159, [{iov_base="nitialisation parameters</a></li"..., iov_len=131072}], 1) = 89172
+```
+
+看看 recvfrom 的系统调用详情：
+
+```
+recvfrom(105, "GET /docs/config/filter.html HTT"..., 1024, 0, NULL, NULL) = 67
+recvfrom(159, "GET /docs/config/filter.html HTT"..., 1024, 0, NULL, NULL) = 67
+recvfrom(264, "HTTP/1.1 200 \r\nAccept-Ranges: by"..., 4096, 0, NULL, NULL) = 4096
+recvfrom(226, "HTTP/1.1 200 \r\nAccept-Ranges: by"..., 4096, 0, NULL, NULL) = 4096
+```
+
+可以发现：
+
+* 读取 67 字节的是来自 client（wrk） 的请求，用的是 1024 的 buf，具体参数参考（`man 2 recvfrom`）
+* 读取 4096 字节的是来自 upstream 的响应，用的是 4096 的 buffer
+
+实际上这两个缓冲区的大小分别由 [`client_header_buffer_size 1k`][n3] 和 [`proxy_buffer_size 4k`][n2]，调整这两个参数可以影响 recvfrom 的调用。
+本人对此这个做过实验，确认的确如此，有兴趣的同学可以自行实验。
+
+## 第三次优化
+
+应该还有优化空间。
+
+压测的时候用 pidstat 观察一下：
 
 ```shell
-procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
- r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
- 3  0  12288 1262856   3344 1394064    0    0     0     5    4    7  1  2 97  0  0
- 0  0  12288 1263840   3344 1394644    0    0     0     0 12990 17651  9 37 53  0  1
- 4  0  12288 1263996   3344 1394892    0    0     0     0 13344 17402  8 37 53  0  2
- 7  0  12288 1262220   3344 1395372    0    0     0     0 12959 16325 10 39 49  0  2
- 1  0  12288 1263268   3344 1395876    0    0     0     0 13885 18231  8 38 52  0  1
- 3  0  12288 1266276   3344 1396376    0    0     0     0 13554 18120  9 36 53  0  2
- 2  0  12288 1264220   3344 1396648    0    0     0     0 11956 14535  7 35 54  0  3
- 2  0  12288 1260536   3344 1397016    0    0     0     0 13349 17299  8 36 55  0  2
- 3  0  12288 1259136   3344 1397520    0    0     0    12 13199 17742  8 35 56  0  1
+$ pidstat -u -w -G nginx 1 30
+...
+平均时间:   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+平均时间:   990   4038174   15.52   75.77    0.00    4.92   91.29     -  nginx
+平均时间:   990   4038175   15.39   74.14    0.00    5.98   89.53     -  nginx
+平均时间:   990   4038176   15.15   70.92    0.00    8.18   86.08     -  nginx
+平均时间:   990   4038177   15.39   73.55    0.00    7.28   88.93     -  nginx
+
+平均时间:   UID       PID   cswch/s nvcswch/s  Command
+平均时间:   990   4038174     80.72     54.50  nginx
+平均时间:   990   4038175    127.95     53.94  nginx
+平均时间:   990   4038176    154.34     54.57  nginx
+平均时间:   990   4038177     94.08     48.75  nginx
 ```
 
+可以看到 CPU 占用率是比较高的，其中系统调用是占的比较多，自愿上下文切换和非资源上下文切换在正常数值内。
 
-与此同时 nginx 上的 vmstat：
+那么利用 [openresty-systemtap-toolkit][or-1] 来采集一下 CPU 火焰图：
 
 ```shell
-procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
- r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
- 6  0      0 1969992   3324 1686324    0    0     2     3   39   42  1  2 97  0  0
- 3  0      0 1956596   3324 1686812    0    0     0     0 14843 19794  9 40 50  0  1
- 2  0      0 1961424   3324 1687344    0    0     0     0 14485 17160 11 46 43  0  1
- 0  0      0 1962696   3324 1687808    0    0     0     0 14253 18582  8 39 52  0  1
- 0  0      0 1964520   3324 1688312    0    0     0     4 14101 19303  9 40 50  0  1
- 0  0      0 1966612   3324 1688820    0    0     0     0 14672 18052  8 40 49  0  2
- 4  0      0 1964648   3324 1689320    0    0     0     0 14784 17256  8 43 47  0  1
- 3  0      0 1956316   3324 1689852    0    0     0     0 15930 19795  9 46 44  0  1
- 7  0      0 1966920   3324 1690360    0    0     0     0 15188 20035  8 41 48  0  2
+$ /root/openresty-systemtap-toolkit/sample-bt -p $(pgrep -nx nginx) -t 30 -u -k -a '-D MAXMAPENTRIES=100000' > openresty-oncpu.bt \
+&& /root/FlameGraph/stackcollapse-stap.pl openresty-oncpu.bt > openresty-oncpu.cbt \
+&& /root/FlameGraph/flamegraph.pl --title="Openresty On-CPU Time Flame Graph (user/kernel)" < openresty-oncpu.cbt > /usr/share/nginx/html/openresty-oncpu.svg
 ```
 
-可以看到 cs 都比较高，每秒大概有 2w 左右，而且 r 也比较高，有时候达到 7 。
+> openresty-systemap-toolkit 依赖于 SystemTap，安装的坑在[这篇文章里有写](../../linux/stap-kernel-debug-mismatch)。
+
+火焰图如下：
+
+![](openresty-oncpu.svg?s=tcp)
+
+这里还看不清，点击[此处进入交互界面](openresty-oncpu.svg?s=tcp)，可以发现 `tcp_` 收发相关的系统调用占了绝大部分。
+
+用 bcc netqtop 看一下网卡队列：
+
+```shell
+$ /usr/share/bcc/tools/netqtop -n ens18 -t
+TX
+ QueueID    avg_size   [0, 64)    [64, 512)  [512, 2K)  [2K, 16K)  [16K, 64K) BPS        PPS
+ 0          16.8K      0          12.01K     94         1.07K      7.68K      350.16M    20.84K
+ 1          16.8K      0          13.91K     248        1.05K      9.03K      406.93M    24.23K
+ 2          16.67K     0          13.95K     124        867        8.6K       391.95M    23.52K
+ 3          16.22K     0          12.21K     118        1.04K      7.4K       336.94M    20.78K
+ Total      16.63K     0          52.07K     584        4.01K      32.71K     1485.89M   89.36K
+
+RX
+ QueueID    avg_size   [0, 64)    [64, 512)  [512, 2K)  [2K, 16K)  [16K, 64K) BPS        PPS
+ 0          8.48K      26.14K     34.26K     5.23K      82.44K     25.28K     1462.63M   172.58K
+ 1          0          0          0          0          0          0          0.0        0.0
+ 2          0          0          0          0          0          0          0.0        0.0
+ 3          0          0          0          0          0          0          0.0        0.0
+ Total      8.48K      26.14K     34.26K     5.23K      82.44K     25.28K     1462.63M   172.57K
+-----------------------------------------------------------------------------------------------
+```
+
+可以发现 TX 的4个队列在工作，RX 只有一个队列在工作，不平衡。
+但是经过调查发现是 virtio 网卡驱动的问题，它会把所有 RX 队列都归到一个上面，详情见[这里](https://github.com/iovisor/bcc/blob/master/tools/netqtop.c#L105)。
+
+看一下网卡到底有几个队列：
+
+```shell
+ethtool -S ens18 |  grep -i queue
+    rx_queue_0_...: 
+    rx_queue_1_...:
+    rx_queue_2_...: 
+    rx_queue_3_...:
+    tx_queue_0_...: 
+    tx_queue_1_...:
+    tx_queue_2_...: 
+    tx_queue_3_...:
+```
+
+可以看到有 4 个 TX 队列，4 个 RX 队列，再用 `ethtool` 看看：
+
+```shell
+ethtool --show-channels ens18
+Channel parameters for ens18:
+Pre-set maximums:
+RX:	        0
+TX:	        0
+Other:	    0
+Combined:	4
+Current hardware settings:
+RX:	        0
+TX:	        0
+Other:	    0
+Combined:   4
+```
+
+可以发现 RX 和 TX 队列是 Combined 即共用的，也说明不了什么问题。
+
+## 坑
+
+后来又测了几次，居然吞吐量可以达到 `Requests/sec:  20891.36` 了，这么算起来性能损失在 15.8%。
+
+而配置什么都没有修改。
+
+那么说明问题出在外部，要么是虚拟化平台的问题，要么是物理机的问题。
+
+问题排查就此告一段落。
+
+[n1]: https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_buffers
+[n2]: https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_buffer_size
+[n3]: https://nginx.org/en/docs/http/ngx_http_core_module.html#client_header_buffer_size
+[or-1]: https://github.com/openresty/openresty-systemtap-toolkit
 
 
 
-使用 [openresty-systemap-toolkit sample-bt-off-cpu][1] 工具采集一下 Off-CPU 的火焰图，发现 `epoll_wait` 的发生了较多的等待。
 
-> openresty-systemap-toolkit 依赖于 SystemTap，安装的坑在[这篇文章里有写](../../linux/stap-kernel-debug-mismatch)
 
-[1]: https://github.com/openresty/openresty-systemtap-toolkit#sample-bt-off-cpu
+
 
