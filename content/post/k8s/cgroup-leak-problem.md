@@ -1,7 +1,7 @@
 ---
 title: "cgroup 内存泄漏导致容器无法创建的问题"
 date: 2023-03-22T12:24:45+08:00
-tags: ["k8s", "troubleshooting"]
+tags: ["k8s", "docker", "troubleshooting"]
 author: "颇忒脱"
 ---
 
