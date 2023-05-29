@@ -110,14 +110,14 @@ iptables -t <table> -Z <chain>
 **追加规则**，在 chain 的尾部添加新规则：
 
 ```shell
-iptables -t <table> -A <rule>
+iptables -t <table> -A <chain> <rule>
 ```
 
 **插入规则**，在 chain 的某个位置插入规则：
 
 ```shell
 # 先用 -L --line-numbers 确定要插入的位置
-iptables -t <table> -I <rulenum> <rule>
+iptables -t <table> -I <chain> <rulenum> <rule>
 ```
 
 **删除规则：**
