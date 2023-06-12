@@ -87,7 +87,7 @@ PEM实际上就是把DER编码的文件的二进制内容用base64编码一下�
 
 我们可以通过下面的方法验证这个结论，先生成一个RSA Private Key，编码格式是PEM格式：
 
-```bash
+```shell
 openssl genrsa -out key.pem
 ```
 
@@ -101,13 +101,19 @@ BASE64Encoded
 
 然后我们把PEM格式转换成DER格式：
 
-```bash
+```shell
 openssl rsa -in key.pem -outform der -out key.der
+```
+
+如果是 x509 PEM 转换成 DER 格式，则是：
+
+```shell
+openssl x509 -in cert.pem -outform der -out cert.der
 ```
 
 如果你这个时候看一下文件内容会发现都是二进制。然后我们把DER文件的内容Base64一下，会看到内容和PEM文件一样（忽略头尾和换行）：
 
-```bash
+```shell
 base64 -i key.der -o key.der.base64
 ```
 
@@ -157,7 +163,7 @@ PKCS #12定义了通常用来存储Private Keys和Public Key Certificates（例�
 
 如果你用自己的CA所签发了一个证书，运行下列命令可以生成PKCS #12 keystore：
 
-```bash
+```shell
 openssl pkcs12 -export \
   -in <cert> \
   -inkey <private-key> \
@@ -240,7 +246,7 @@ BASE64Encoded
 
 **生成PKCS #1格式的RSA Private Key**
 
-```bash
+```shell
 openssl genrsa -out private-key.p1.pem 2048
 ```
 
@@ -248,13 +254,13 @@ openssl genrsa -out private-key.p1.pem 2048
 
 **PKCS #1 -> Unencrypted PKCS #8**
 
-```bash
+```shell
 openssl pkcs8 -topk8 -in private-key.p1.pem -out private-key.p8.pem -nocrypt
 ```
 
 **PKCS #1 -> Encrypted PKCS #8**
 
-```bash
+```shell
 openssl pkcs8 -topk8 -in private-key.p1.pem -out private-key.p8.pem
 ```
 
@@ -262,7 +268,7 @@ openssl pkcs8 -topk8 -in private-key.p1.pem -out private-key.p8.pem
 
 **PKCS #8 -> PKCS #1**
 
-```bash
+```shell
 openssl rsa -in private-key.p8.pem -out private-key.p1.pem
 ```
 
@@ -270,7 +276,7 @@ openssl rsa -in private-key.p8.pem -out private-key.p1.pem
 
 **PKCS #8 Unencrypted -> PKCS #8 Encrypted**
 
-```bash
+```shell
 openssl pkcs8 -topk8 -in private-key.p8.nocrypt.pem -out private-key.p8.crypt.pem
 ```
 
@@ -278,7 +284,7 @@ openssl pkcs8 -topk8 -in private-key.p8.nocrypt.pem -out private-key.p8.crypt.pe
 
 **PKCS #8 Encrypted -> PKCS #8 Unencrypted**
 
-```bash
+```shell
 openssl pkcs8 -topk8 -in private-key.p8.crypt.pem -out private-key.p8.nocrypt.pem -nocrypt
 ```
 
@@ -292,19 +298,19 @@ openssl pkcs8 -topk8 -in private-key.p8.crypt.pem -out private-key.p8.nocrypt.pe
 
 **提取X.509格式RSA Public Key**
 
-```bash
+```shell
 openssl rsa -in private-key.pem -pubout -out public-key.x509.pem
 ```
 
 **提取PKCS #1格式RSA Public Key**
 
-```bash
+```shell
 openssl rsa -in private-key.pem -out public-key.p1.pem -RSAPublicKey_out
 ```
 
 ### 从X.509证书提取
 
-```bash
+```shell
 openssl x509 -in cert.pem -pubkey -noout > public-key.x509.pem
 ```
 
@@ -312,13 +318,13 @@ openssl x509 -in cert.pem -pubkey -noout > public-key.x509.pem
 
 **X.509 RSA Public Key -> PKCS #1 RSA Public Key**
 
-```bash
+```shell
 openssl rsa -pubin -in public-key.x509.pem -RSAPublicKey_out -out public-key.p1.pem
 ```
 
 **PKCS #1 RSA Public Key -> X.509 RSA Public Key**
 
-```bash
+```shell
 openssl rsa -RSAPublicKey_in -in public-key.p1.pem -pubout -out public-key.x509.pem
 ```
 

@@ -52,7 +52,9 @@ AAoACxGV2lZFA4gKn2fQ1XmxqI1AbQ3CekD6819kR5LLU7m7Wc5P/dAVUwHY3+vZ
 EOF
 ```
 
-执行下列命令把 CA 证书导入进 JDK 的 cacerts（注意下面 `-alias` 参数，这个是给证书取个别名）：
+## 如果你安装的是 JDK
+
+执行下列命令把 CA 证书导入进 JDK 的 cacerts：
 
 ```shell
 keytool -import \
@@ -63,15 +65,40 @@ keytool -import \
   -file cfcaevroot-ca.pem
 ```
 
+注意上面 `-alias` 参数，这个是给证书取个别名；`-file` 参数，指定的是 CA 证书的路径。
+
+
 执行下列命令确认证书已经导入（如果没有结果则说明没有导入）：
 
 ```shell
 keytool -list \
   -keystore $JAVA_HOME/jre/lib/security/cacerts \
   -storepass changeit \
-  | grep -C1 -i cfca
+  | grep -C1 -i cfcaevroot
 ```
 
-然后重启 Java 程序。
+## 如果你安装的是 JRE
+
+注意 `-keystore` 参数的区别：
+
+```shell
+keytool -import \
+  -alias cfcaevroot \
+  -keystore $JAVA_HOME/lib/security/cacerts \
+  -storepass changeit \
+  -noprompt \
+  -file cfcaevroot-ca.pem
+```
+
+执行下列命令确认证书已经导入（如果没有结果则说明没有导入）：
+
+```shell
+keytool -list \
+  -keystore $JAVA_HOME/lib/security/cacerts \
+  -storepass changeit \
+  | grep -C1 -i cfcaevroot
+```
+
+## 最后重启 Java 程序
 
 [1]: https://www.cfca.com.cn/
