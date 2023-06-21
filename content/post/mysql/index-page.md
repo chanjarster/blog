@@ -20,3 +20,4 @@ featured: true
 * [数据库选错索引怎么办](../force-index)
 * [给字符串加索引](../index-for-string)
 * [常用命令及参数](../commands-params)
+* [开启日志记录](../logging)
