@@ -1,7 +1,7 @@
 ---
 title: "Rancher安装Grafana Loki"
 author: "颇忒脱"
-tags: ["grafana", "监控", "日志"]
+tags: ["grafana", "rancher", "监控", "日志"]
 date: 2021-05-31T12:55:10+08:00
 ---
 
