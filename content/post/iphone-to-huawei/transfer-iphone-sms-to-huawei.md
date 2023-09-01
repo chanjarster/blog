@@ -1,7 +1,7 @@
 ---
-title: "迁移Iphone手机短信到华为手机"
+title: "迁移iPhone手机短信到华为手机"
 author: "颇忒脱"
-tags: ["数码"]
+tags: ["iphone", "华为", "苹果", "ios"]
 date: 2019-10-04T14:29:58+08:00
 ---
 
@@ -16,6 +16,11 @@ date: 2019-10-04T14:29:58+08:00
 ## 第一步
 
 还是按照[isms2droid][isms2droid]的方法，提取到`3d0d7e5fb2ce288813306e4d4636395e047a3d28`文件，一定要注意，在备份Iphone到本机到时候不要加密备份。
+
+1. iPhone 连到电脑，采用**非加密**备份。
+2. 到（Windows）`C:\Users[YourUsername]\AppData\Roaming\Apple Computer\MobileSync\Backup\` 或者（OS X）`~/Library/Application Support/MobileSync/Backup/
+` 目录下找到备份目录。
+3. 在目录下找到 `3d0d7e5fb2ce288813306e4d4636395e047a3d28` 文件。
 
 ## 第二步
 
