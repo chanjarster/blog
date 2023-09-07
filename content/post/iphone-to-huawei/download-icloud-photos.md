@@ -58,7 +58,6 @@ auth_china=True
 authentication_type=2FA
 convert_heic_to_jpeg=True
 jpeg_quality=100
-photo_album="all albums"
 delete_accompanying=False
 EOF
 ```
