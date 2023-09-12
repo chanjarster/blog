@@ -18,9 +18,10 @@ date: 2019-10-04T14:29:58+08:00
 还是按照[isms2droid][isms2droid]的方法，提取到`3d0d7e5fb2ce288813306e4d4636395e047a3d28`文件，一定要注意，在备份Iphone到本机到时候不要加密备份。
 
 1. iPhone 连到电脑，采用**非加密**备份。
-2. 到（Windows）`C:\Users[YourUsername]\AppData\Roaming\Apple Computer\MobileSync\Backup\` 或者（OS X）`~/Library/Application Support/MobileSync/Backup/
-` 目录下找到备份目录。
-3. 在目录下找到 `3d0d7e5fb2ce288813306e4d4636395e047a3d28` 文件。
+2. 到（Windows）`C:\Users[YourUsername]\AppData\Roaming\Apple Computer\MobileSync\Backup\` 
+或者（OS X）`~/Library/Application Support/MobileSync/Backup/` （你得在 Finder 中使用 `Cmd + Shift + G` 打开 `前往文件夹` 才能进入该目录）
+搜索对应文件。
+3. 找到 `3d0d7e5fb2ce288813306e4d4636395e047a3d28` 文件复制出来。
 
 ## 第二步
 
@@ -42,7 +43,13 @@ php iphone-sms-xml.php 3d0d7e5fb2ce288813306e4d4636395e047a3d28 > sms.xml
 
 ## 第四步
 
-把前面的sms.xml传到你的手机上，然后运行“SMS Backup and Restore”恢复短信，大功告成。
+把前面的sms.xml传到你的手机上，然后运行“SMS Backup and Restore”恢复短信。
+
+恢复过程中会提示你把 “SMS Backup and Restore” 作为默认短信应用，照做就是。
+
+恢复完成后，打开系统自带的短信，把它设置会默认短信应用即可。
+
+大功告成！
 
 [isms2droid]: https://isms2droid.com
 [article]: https://www.kolmann.at/2017/05/export-iphone-messages-to-xml/
