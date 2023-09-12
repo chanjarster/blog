@@ -29,6 +29,94 @@ date: 2019-10-04T14:29:58+08:00
 
 本文采用的是[这篇文章][article]所提供的php脚本，不过它的脚本存在一些bug，导出的短信时间存在问题（这个问题在[这篇文章][article2]里也有提到过）。因此我作了一些修改，代码在[gist][gist]。
 
+也可以直接复制这里的：
+
+```php
+#!/usr/bin/php5
+<?php
+
+if (count($argv) <> 2) {
+    print "Usage: ".$argv[0]." iPhone-SMS-DB (Usually 3d0d7e5fb2ce288813306e4d4636395e047a3d28.*)\n";
+    exit -1;
+}
+
+$DBfile = $argv[1];
+
+if (! is_readable($DBfile)) {
+    print "File $DBfile is not readable!\n";
+    exit -2;
+}
+
+try {
+    $sqlite = new SQLite3($DBfile);
+} catch (Exception $exception) {
+    echo '<p>There was an error connecting to the database!</p>';
+    echo $exception->getMessage();
+    exit -3;
+}
+
+$query  = "
+    SELECT datetime(message.date / 1000000000, 'unixepoch', '+31 years') AS Datum, 
+	   CAST(strftime('%s', datetime(message.date / 1000000000, 'unixepoch', '+31 years')) AS INT) * 1000 AS Date,
+     message.is_from_me, 
+	   handle.id AS Contact, 
+	   message.text,
+	   message.service
+    FROM message, handle 
+    WHERE message.handle_id = handle.ROWID;
+";
+
+$sqliteResult = $sqlite->query($query);
+if (!$sqliteResult) {
+    // the query failed and debugging is enabled
+    echo "There was an error in query: $query\n";
+    echo $sqlite->lastErrorMsg();
+    exit -4;
+}
+
+
+$smses = array();
+while ($record = $sqliteResult->fetchArray()) {
+    $sms = array();
+    $sms['Datum'] = $record['Datum'];
+    $sms['Date'] = $record['Date'];
+    $sms['is_from_me'] = $record['is_from_me'];
+    $sms['Contact'] = $record['Contact'];
+    $sms['text'] = $record['text'];
+    $sms['service'] = $record['service'];
+    $smses[] = $sms;
+}
+
+$sqliteResult->finalize();
+$sqlite->close();
+
+print "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\n";
+print "<?xml-stylesheet type='text/xsl' href='sms.xsl'?>\n";
+print "<smses count=\"".count($smses)."\">\n";
+foreach ($smses as $key => $sms) {
+    $body = $sms['text'];
+    $body = str_replace('&', '&amp;', $body);
+    $body = str_replace('"', '&quot;', $body);
+    $body = str_replace("\n", '&#10;', $body);
+    print '  <sms ';
+    print 'address="';
+    print $sms['Contact'];
+    print '" date="';
+    print $sms['Date'];
+    print '" type="';
+    print ++$sms['is_from_me'];
+    print '" body="';
+    print $body;
+    print '" readable_date="';
+    print $sms['Datum'];
+    print '" service="';
+    print $sms['service'];
+    print '" />';
+    print "\n";
+}
+print "</smses>\n";
+```
+
 执行：
 
 ```bash
