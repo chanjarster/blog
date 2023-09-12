@@ -119,7 +119,7 @@ print "</smses>\n";
 
 执行：
 
-```bash
+```shell
 php iphone-sms-xml.php 3d0d7e5fb2ce288813306e4d4636395e047a3d28 > sms.xml
 ```
 
