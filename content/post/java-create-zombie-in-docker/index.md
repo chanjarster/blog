@@ -26,7 +26,7 @@ root      2546  0.0  0.0      0     0 ?        Z    Jan23   0:00 [docker] <defun
 ...
 ```
 
-然后 `pstree -apscl <pid>` 找到了其是某个Java进程创建的：
+然后 `pstree -apscl <pid>` (如果没有或者参数不识别 `yum -y install psmisc`) 找到了其是某个Java进程创建的：
 
 ```
 systemd,1 maybe-ubiquity
