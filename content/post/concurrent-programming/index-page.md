@@ -39,3 +39,7 @@ featured: true
 * [Scheduling In Go : Part III - Concurrency 阅读笔记](/post/go/scheduling-in-go-part-3/)
 * Google I/O 2012 - Go Concurrency Patterns, [video](https://www.youtube.com/watch?v=f6kdp27TYZs)
 * Rob Pike - 'Concurrency Is Not Parallelism', [video](https://www.youtube.com/watch?v=cN_DpYBzKso), [slides](https://talks.golang.org/2012/concurrency.slide#1)
+
+## 实战案例
+
+* [缓存穿透后的并发数据库查询优化](/post/cache-through-conc-db-query-opt/)
