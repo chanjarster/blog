@@ -131,7 +131,7 @@ kubectl label nodes --all kubernetes-host=
 
 使用下面模版给每个 K8S 节点创建对应的 HostEndpoint：
 
-```shell
+```yaml
 apiVersion: crd.projectcalico.org/v1
 kind: HostEndpoint
 metadata:
@@ -142,6 +142,23 @@ spec:
   expectedIPs:
   - <节点的IP>
   interfaceName: '<节点网卡的名字>'
+  node: <节点的名字>
+```
+
+如果节点上有两个网卡，那么使用下面的模板：
+
+```yaml
+apiVersion: crd.projectcalico.org/v1
+kind: HostEndpoint
+metadata:
+  labels:
+    kubernetes-host: ""
+  name: <节点的名字>
+spec:
+  expectedIPs:
+  - <网卡1的IP>
+  - <网卡2的IP>
+  interfaceName: '*'
   node: <节点的名字>
 ```
 
