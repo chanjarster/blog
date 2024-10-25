@@ -1,7 +1,7 @@
 ---
 title: "用 iptables 保护 Docker host"
 author: "颇忒脱"
-tags: ["network", "k8s", "docker"]
+tags: ["network", "iptables", "docker"]
 date: 2024-10-25T12:50:00+08:00
 ---
 
@@ -90,7 +90,7 @@ iptables -t filter -L DOCKER-USER -n --line-numbers -v
 Chain DOCKER-USER (1 references)
 num   pkts bytes target     prot opt in     out     source               destination
 1      186  108K ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
-2       11  3519 ACCEPT     all  --  eth0   *       0.0.0.0/0            0.0.0.0/0            match-set k8s-node-ips src
+2       11  3519 ACCEPT     all  --  eth0   *       0.0.0.0/0            0.0.0.0/0            match-set allow-ips src
 3       58  3704 REJECT     all  --  eth0   *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable
 4     1073  494K RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0
 ```
