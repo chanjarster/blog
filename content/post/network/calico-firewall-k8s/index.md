@@ -145,7 +145,7 @@ spec:
   node: <节点的名字>
 ```
 
-如果节点上有两个网卡，那么使用下面的模板：
+如果节点上有两个网卡，就创建两个 HostEndpoint，比如：
 
 ```yaml
 apiVersion: crd.projectcalico.org/v1
@@ -153,13 +153,24 @@ kind: HostEndpoint
 metadata:
   labels:
     kubernetes-host: ""
-  name: <节点的名字>
+  name: k8s-worker01-eth0
 spec:
   expectedIPs:
-  - <网卡1的IP>
-  - <网卡2的IP>
-  interfaceName: '*'
-  node: <节点的名字>
+  - 172.18.18.1
+  interfaceName: 'eth0'
+  node: k8s-worker01
+---
+apiVersion: crd.projectcalico.org/v1
+kind: HostEndpoint
+metadata:
+  labels:
+    kubernetes-host: ""
+  name: k8s-worker01-eth1
+spec:
+  expectedIPs:
+  - 192.168.1.1
+  interfaceName: 'eth1'
+  node: k8s-worker01
 ```
 
 ## 其他
