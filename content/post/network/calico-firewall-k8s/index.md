@@ -158,7 +158,8 @@ spec:
 如果你想对上述端口应用防火墙规则，你需要修改[Calico - Felix configuration][2] 的 `failsafeInboundHostPorts` 和 `failsafeOutboundHostPorts`，把默认值中的端口拿掉，修改的时候千万小心。
 
 另外，虽然 calico 文档 [Protect Kubernetes nodes][4] 里提到可以全自动给 K8S 节点创建 HostEndpoint，但实践中发现了一些网络故障。
-允许这个 [issue][5] 能够解决这个问题。
+
+这个 [issue][5] 描述了这个问题。
 
 ## 参考文档
 
