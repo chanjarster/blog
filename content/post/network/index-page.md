@@ -30,7 +30,7 @@ Linux 网络：
 * [找到 Docker 的 netns](../find-docker-netns)
 * [IP Forwarding 在K8S中的安全问题](../ip-forwarding-k8s)
 * [保护 K8S IP Forwarding 的安全](../ip-forwarding-k8s-2)
-* [用 iptables 保护 Docker 容器](../iptables-docker)
+* [用 iptables 保护 Docker host](../iptables-docker)
 
 文章精粹：
 
