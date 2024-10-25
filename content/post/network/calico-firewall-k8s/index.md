@@ -181,6 +181,7 @@ spec:
 ## 参考文档
 
 * [Calico - Protect hosts tutorial][3]
+* [calico - Apply policy to forwarded traffic][6]
 * [Calico - Felix configuration][2]
 
 [1]: https://docs.tigera.io/archive/v3.17/security/protect-hosts#avoid-accidentally-cutting-all-host-connectivity
@@ -188,3 +189,4 @@ spec:
 [3]: https://docs.tigera.io/archive/v3.17/security/tutorials/protect-hosts
 [4]: https://docs.tigera.io/archive/v3.17/security/kubernetes-nodes
 [5]: https://github.com/projectcalico/calico/issues/4478
+[6]: https://docs.tigera.io/archive/v3.17/security/host-forwarded-traffic
