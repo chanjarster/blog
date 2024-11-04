@@ -64,6 +64,7 @@ num  target     prot opt source               destination
 然后添加规则：
 
 ```shell
+iptables -t filter -I INPUT 1 -m state --state ESTABLISHED,RELATED -j ACCEPT
 # 允许 allow-ips 访问 80,443 端口
 iptables -t filter -A INPUT -i eth0 -p tcp --dport 80  -m set --match-set allow-ips src -j ACCEPT
 iptables -t filter -A INPUT -i eth0 -p tcp --dport 443 -m set --match-set allow-ips src -j ACCEPT
@@ -81,10 +82,11 @@ iptables -t filter -A INPUT -i eth0 -j REJECT
 iptables -t filter -L INPUT -n --line-numbers
 Chain INPUT (policy ACCEPT)
 num  target     prot opt source               destination
-1    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0            udp dpt:53
-2    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:53
-3    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0            udp dpt:67
-4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:67
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            state ESTABLISHED,RELATED
+2    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0            udp dpt:53
+3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:53
+4    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0            udp dpt:67
+5    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:67
 ...
 7    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80  match-set allow-ips src
 8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443 match-set allow-ips src
