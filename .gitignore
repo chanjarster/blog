@@ -1,0 +1,5 @@
+resources
+.qoder/
+.DS_Store
+~$*
+.image-backup/

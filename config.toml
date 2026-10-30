@@ -1,4 +1,3 @@
-baseURL = "https://chanjarster.github.io/"
+baseURL = "http://example.org/"
 languageCode = "zh-cn"
-title = "颇忒脱的技术博客"
-theme = "ananke"
+title = "My New Hugo Site"
